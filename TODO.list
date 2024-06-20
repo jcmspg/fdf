@@ -1,0 +1,24 @@
+TODO
+
+read a .fdf file
+iterate the file and figure out how many lines and columns
+
+ex:     [ ][ ][ ][ ][ ]
+        [ ][ ][ ][ ][ ] 
+        [ ][ ][ ][ ][ ] 
+        [ ][ ][ ][ ][ ] 
+        [ ][ ][ ][ ][ ] 
+
+so it means i need a grid with 5x5 intersections, (it is the vertices/intersec
+that have the height value)
+
+first i need to draw the gid. ignore the height values for now.
+
+---HOW TO READ A FDF FILE???
+1. feed the file as an arg to the main
+2. read the file (GNL)
+3. check the nbr of lines
+4. use split to check nr of columns
+
+
+
