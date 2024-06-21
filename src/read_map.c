@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:15:46 by joamiran          #+#    #+#             */
-/*   Updated: 2024/06/20 17:07:29 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/06/21 20:35:24 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,110 @@ void    read_fdf(const char *file, t_grid *grid)
     close(fd);
 }
 
+// map_alloc: allocates memory for the map and creates a 2D array for the Z values of points
+int **map_alloc(const char *file, t_grid *grid)
+{
+    int     **map;
+    int     fd;
+    char    *line;
+    char    **split_line;
+    int     i;
+    int     j;
 
+    map = (int **)malloc(sizeof(int *) * grid->rows);
+    if (!map)
+    {
+        fprintf(stderr, "Error: Could not allocate memory for map\n");
+        exit(1);
+    }
+
+    fd = open(file, O_RDONLY);
+    if (fd < 0)
+    {
+        fprintf(stderr, "Error: Could not open file %s\n", file);
+        exit(1);
+    }
+
+    i = 0;
+    while (i < grid->rows)
+    {
+        line = get_next_line(fd);
+        split_line = ft_split(line, ' ');
+        map[i] = (int *)malloc(sizeof(int) * grid->cols);
+        if (!map[i])
+        {
+            fprintf(stderr, "Error: Could not allocate memory for map\n");
+            exit(1);
+        }
+        j = 0;
+        while (j < grid->cols)
+        {
+            map[i][j] = ft_atoi(split_line[j]);
+            j++;
+        }
+        free(line);
+        free(split_line);
+        i++;
+    }
+
+    close(fd);
+    return (map);
+}
+
+// populate_grid: fills the grid with the points
+// points is a 2D array of characters
+// each character is a point in the grid
+// the character is the Z value of the point
+
+
+// make array of points to then assign coordinates to them
+t_point **make_points(t_grid *grid, w_data *data)
+{
+    int lines;
+    int cols;
+    int i;
+    int j;
+    t_point **points;
+
+    lines = grid->rows;
+    cols = grid->cols;
+    
+    points = (t_point **)malloc(sizeof(char *) * lines);
+    if (!points)
+    {
+        fprintf(stderr, "Error: Could not allocate memory for points\n");
+        exit(1);
+    }
+    i = 0;
+    while (i < lines)
+    {
+        points[i] = (t_point *)malloc(sizeof(t_point) * cols);
+        if (!points[i])
+        {
+            fprintf(stderr, "Error: Could not allocate memory for points\n");
+            while (i >= 0)
+            {
+                free(points[i]);
+                i--;
+            }
+            free(points);
+            exit(1);
+        }
+        i++;
+    }
+    i = 0;
+    while (i < lines)
+    {
+        j = 0;
+        while (j < cols)
+        {
+            points[i][j].x = j * (pointcalc(data, grid));
+            points[i][j].y = i * (pointcalc(data, grid));
+            points[i][j].z = 10;
+            j++;
+
+        }
+        i++;
+    }
+    return (points);    
+}

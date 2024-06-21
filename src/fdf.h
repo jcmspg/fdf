@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 20:19:20 by joamiran          #+#    #+#             */
-/*   Updated: 2024/06/20 20:11:50 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/06/21 20:49:38 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,15 +67,14 @@ typedef struct s_grid
     int cols;
 }   t_grid;
 
-/*
-typedef struct t_points
+
+typedef struct s_points
 {
     int x;
     int y;
     int z;
-    struct t_points *next;
-}   point;
-*/
+}   t_point;
+
 
 typedef struct s_use 
 {
@@ -104,17 +103,22 @@ void create_image(w_data *window);
 
 // read functions
 void read_fdf(const char *file, t_grid *grid);
+int **map_alloc(const char *line, t_grid *grid);
 
-
-//draw functions with arrays
-void draw_line(w_data *window, int *p0, int *p1, int color);
-//void draw_poly(w_data *window, char **array, int color);
-
-/*
 // draw functions
-void draw_line(w_data *window, point *p0, point *p1, int color);
-void draw_poly(w_data *window, point *points, int color);
-*/
+void draw_line(w_data *window, t_point *p0, t_point *p1, int color);
+void draw_poly(w_data *window, t_grid *grid, t_point **points, int color);
+
+// point arithmetics
+
+int pointcalc (w_data *data, t_grid *grid);
+t_point *center_point(w_data *data);
+
+t_point **make_points(t_grid *grid, w_data *data);
+
+
+
+
 
 /*
 // point functions
@@ -122,7 +126,6 @@ point *create_point(int x, int y, int z);
 void add_point(point **head, point *new);
 void free_points(point **head);
 */
-
 
 
 #endif
