@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:15:46 by joamiran          #+#    #+#             */
-/*   Updated: 2024/06/21 20:35:24 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/06/24 19:21:05 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,10 +116,43 @@ int **map_alloc(const char *file, t_grid *grid)
     return (map);
 }
 
+
+
+
+
 // populate_grid: fills the grid with the points
 // points is a 2D array of characters
 // each character is a point in the grid
 // the character is the Z value of the point
+
+
+//center_grid: centers the grid in the window
+//
+//
+void center_grid (t_grid *grid, t_point **points)
+{
+    int i;
+    int j;
+    int lines;
+    int cols;
+
+    lines = grid->rows;
+    cols = grid->cols;
+    
+         
+    i = 0;
+    while (i < grid->rows)
+    {
+        j = 0;
+        while (j < grid->cols)
+        {
+            points[i][j].x += grid->half_x;
+            points[i][j].y += grid->half_y;
+            j++;
+        }
+        i++;
+    }
+}
 
 
 // make array of points to then assign coordinates to them
@@ -171,5 +204,10 @@ t_point **make_points(t_grid *grid, w_data *data)
         }
         i++;
     }
+
+
+    grid->half_x = (data->window_width / 2) - (points[0][cols - 1].x / 2);
+    grid->half_y = (data->window_height / 2) - (points[lines - 1][0].y / 2);
+
     return (points);    
 }

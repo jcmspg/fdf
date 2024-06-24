@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 20:19:20 by joamiran          #+#    #+#             */
-/*   Updated: 2024/06/21 20:49:38 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/06/24 19:17:38 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,10 @@ typedef struct s_grid
 {
     int rows;
     int cols;
+
+    int half_x;
+    int half_y;
+
 }   t_grid;
 
 
@@ -114,9 +118,18 @@ void draw_poly(w_data *window, t_grid *grid, t_point **points, int color);
 int pointcalc (w_data *data, t_grid *grid);
 t_point *center_point(w_data *data);
 
+void center_grid(t_grid *grid, t_point **points);
+
+
+void pcoords_iso(t_point **points, t_grid *grid);
+
 t_point **make_points(t_grid *grid, w_data *data);
 
-
+// math aux functions
+int ft_abs(int n);
+int ft_max(int a, int b);
+int ft_min(int a, int b);
+int round_n(float n);
 
 
 

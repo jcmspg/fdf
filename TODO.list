@@ -1,24 +1,22 @@
 TODO
 
-read a .fdf file
-iterate the file and figure out how many lines and columns
+recheck the distance between the points in order to be able to draw the whole grid INSIDE THE WINDOW
 
-ex:     [ ][ ][ ][ ][ ]
-        [ ][ ][ ][ ][ ] 
-        [ ][ ][ ][ ][ ] 
-        [ ][ ][ ][ ][ ] 
-        [ ][ ][ ][ ][ ] 
+also, need to CENTER THE WINDOW
 
-so it means i need a grid with 5x5 intersections, (it is the vertices/intersec
-that have the height value)
+---- ALSO AND IMPORTANT ! ----
+it is crashing when i try to run the maps t1 and t2 so far. it has to do with the atois and splits when reading the map. perhaps its because of the color codes>? NEED TO IMPLEMENT THE COLOR CHECK
 
-first i need to draw the gid. ignore the height values for now.
 
----HOW TO READ A FDF FILE???
-1. feed the file as an arg to the main
-2. read the file (GNL)
-3. check the nbr of lines
-4. use split to check nr of columns
+isometric view is kinda sorted.. just need to resize and center the grid
+
+
+--- NEXT STEPS ---
+
+IMPLEMENT THE Z AXIS !!!!!!!\
+there has to be a way to just multiply with the y coordinate and BAAM ! done
+
+
 
 
 

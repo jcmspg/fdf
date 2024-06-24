@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 19:11:54 by joamiran          #+#    #+#             */
-/*   Updated: 2024/06/20 19:44:54 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/06/24 17:36:28 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,55 +79,3 @@ void    create_image(w_data *window)
         return;
     }
 }
-
-//Point functions
-//Create a new point
-/* point *create_point(int x, int y, int z)
-{
-    point *p;
-
-    p = malloc(sizeof(point));
-    if (!p)
-    {
-        fprintf(stderr, "Error allocating memory for point\n");
-        return NULL;
-    }
-    p->x = x;
-    p->y = y;
-    p->z = z;
-    p->next = NULL;
-    return p;
-}
-
-//Add a point to the end of the list
-void add_point(point **head, point *new)
-{
-    point *tmp;
-
-    if (!*head)
-    {
-        *head = new;
-        return;
-    }
-    tmp = *head;
-    while (tmp->next)
-        tmp = tmp->next;
-    tmp->next = new;
-}
-
-//Free all points
-void free_points(point **head)
-{
-    point *tmp;
-
-    if (!*head)
-        return;
-
-    while (*head)
-    {
-        tmp = *head;
-        *head = (*head)->next;
-        free(tmp);
-    }
-}
-*/
