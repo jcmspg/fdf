@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 20:19:20 by joamiran          #+#    #+#             */
-/*   Updated: 2024/06/24 19:17:38 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/08/08 19:03:42 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,18 +48,6 @@ typedef struct image_data
     int     endian;
 }               img_data;
 
-typedef struct window_data
-{
-    void    *mlx;
-    void    *win;
-
-    int     window_width;
-    int     window_height;
-    char    *title;
-
-    img_data img;
-
-}               w_data;
 
 typedef struct s_grid
 {
@@ -92,6 +80,23 @@ typedef struct s_use
     int e2;
 }   t_bres;
 
+typedef struct window_data
+{
+    void    *mlx;
+    void    *win;
+
+    int     window_width;
+    int     window_height;
+    char    *title;
+
+    img_data img;
+    int **map;
+    t_point **points;
+    t_grid  *grid;
+
+
+}               w_data;
+
 // data functions
 void free_data(w_data *win);
 
@@ -106,8 +111,8 @@ void create_window(w_data *window);
 void create_image(w_data *window);
 
 // read functions
-void read_fdf(const char *file, t_grid *grid);
-int **map_alloc(const char *line, t_grid *grid);
+void read_fdf(const char *file, w_data *window);
+int **map_alloc(const char *line, w_data *window);
 
 // draw functions
 void draw_line(w_data *window, t_point *p0, t_point *p1, int color);

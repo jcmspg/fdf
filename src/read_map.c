@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:15:46 by joamiran          #+#    #+#             */
-/*   Updated: 2024/06/24 19:21:05 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/08/08 19:00:40 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 // get_next_line: reads a line from the file descriptor
 // counts the number of lines and columns in the file
-static void  count_grid(int fd, t_grid *grid)
+static void  count_grid(int fd, w_data *window)
 {
     char    *line;
     int     num_lines;
@@ -46,12 +46,12 @@ static void  count_grid(int fd, t_grid *grid)
 
     free(line);
 
-    grid->cols = num_cols;
-    grid->rows = num_lines;
+    window->grid->cols = num_cols;
+    window->grid->rows = num_lines;
 }
 
 //read_fdf: reads the file and counts the number of lines and columns
-void    read_fdf(const char *file, t_grid *grid)
+void    read_fdf(const char *file, w_data *window)
 {
     int     fd;
 
@@ -62,12 +62,12 @@ void    read_fdf(const char *file, t_grid *grid)
         exit(1);
     }
     
-    count_grid(fd, grid);
+    count_grid(fd, window);
     close(fd);
 }
 
 // map_alloc: allocates memory for the map and creates a 2D array for the Z values of points
-int **map_alloc(const char *file, t_grid *grid)
+int **map_alloc(const char *file, w_data *window)
 {
     int     **map;
     int     fd;
@@ -75,8 +75,10 @@ int **map_alloc(const char *file, t_grid *grid)
     char    **split_line;
     int     i;
     int     j;
+ 
 
-    map = (int **)malloc(sizeof(int *) * grid->rows);
+
+    map = (int **)malloc(sizeof(int *) * window->grid->rows);
     if (!map)
     {
         fprintf(stderr, "Error: Could not allocate memory for map\n");
@@ -91,27 +93,31 @@ int **map_alloc(const char *file, t_grid *grid)
     }
 
     i = 0;
-    while (i < grid->rows)
+    while (i < window->grid->rows)
     {
         line = get_next_line(fd);
         split_line = ft_split(line, ' ');
-        map[i] = (int *)malloc(sizeof(int) * grid->cols);
+        map[i] = (int *)malloc(sizeof(int) * window->grid->cols);
         if (!map[i])
         {
             fprintf(stderr, "Error: Could not allocate memory for map\n");
             exit(1);
         }
         j = 0;
-        while (j < grid->cols)
+        while (j < window->grid->cols)
         {
             map[i][j] = ft_atoi(split_line[j]);
             j++;
         }
         free(line);
+        while (j >= 0)
+        {
+            free(split_line[j]);
+            j--;
+        }
         free(split_line);
         i++;
     }
-
     close(fd);
     return (map);
 }
@@ -141,10 +147,10 @@ void center_grid (t_grid *grid, t_point **points)
     
          
     i = 0;
-    while (i < grid->rows)
+    while (i < lines)
     {
         j = 0;
-        while (j < grid->cols)
+        while (j < cols)
         {
             points[i][j].x += grid->half_x;
             points[i][j].y += grid->half_y;

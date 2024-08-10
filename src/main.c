@@ -9,8 +9,6 @@ int main(int argc, char ** argv)
     }
     
     char *file = argv[1];
-    int **map;
-    t_point **test_points;
     w_data window;
   
     window.title = "FDF";
@@ -18,27 +16,27 @@ int main(int argc, char ** argv)
     window.window_height = 800; //ft_atoi(argv[2]);
 
 
-    t_grid *grid = (t_grid *)malloc(sizeof(t_grid));
-    if (grid == NULL)
+    window.grid = (t_grid *)malloc(sizeof(t_grid));
+    if (window.grid == NULL)
     {
         fprintf(stderr, "Memory allocation failed\n");
         return 1;
     }
-    grid->rows = 0;
-    grid->cols = 0;
+    window.grid->rows = 0;
+    window.grid->cols = 0;
 
-    read_fdf(file, grid);
-    printf("Rows: %d\nCols: %d\n", grid->rows, grid->cols);
+    read_fdf(file, &window);
+    printf("Rows: %d\nCols: %d\n", window.grid->rows, window.grid->cols);
     
-    map = map_alloc(file, grid);
-    if (map == NULL)
+    window.map = map_alloc(file, &window);
+    if (window.map == NULL)
     {
         fprintf(stderr, "Memory allocation failed\n");
-        free(grid);
+        free(window.grid);
         return 1;
     }
     
-    test_points = make_points(grid, &window);
+    window.points = make_points(window.grid, &window);
     
 
     window.mlx = init_mlx();
@@ -56,11 +54,11 @@ int main(int argc, char ** argv)
 //  printf("Image address: %p\n", window.img.address);
 
     
- //   pcoords_iso(test_points, grid);
+    pcoords_iso(window.points, window.grid);
 
- //   center_grid(grid, test_points);
+    center_grid(window.grid, window.points);
 
-    draw_poly(&window, grid, test_points, 0x00FF0000);
+    draw_poly(&window, window.grid, window.points, 0x00FF0000);
 
 
 
@@ -73,18 +71,18 @@ int main(int argc, char ** argv)
     mlx_string_put(window.mlx, window.win, 600, 620, 0x00FFFFFF, ft_itoa(window.window_width));
     mlx_string_put(window.mlx, window.win, 600, 640, 0x00FFFFFF, ft_itoa(window.window_height));
     */
-        
+    
+    // key input handling
     mlx_key_hook(window.win, key_handle, &window);
     
+    // click upper X to close 
     mlx_hook(window.win, 17, 0, close_window, &window);
 
     mlx_loop(window.mlx);
 
     // Free the allocated memory
- 
-    free(test_points);
-    free(grid);
-    free(map);
+
+    
 
 
     return 0;

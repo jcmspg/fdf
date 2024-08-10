@@ -1,1 +1,1 @@
-SRC_FILES = ./src/pointcalc.c ./src/read_map.c ./src/draw_line.c ./src/math_utils.c ./src/utils.c ./src/main.c
+SRC_FILES = ./src/pointcalc.c ./src/main.c ./src/read_map.c ./src/utils.c ./src/draw_line.c ./src/math_utils.c

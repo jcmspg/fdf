@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 19:31:12 by joamiran          #+#    #+#             */
-/*   Updated: 2024/06/24 19:30:41 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/08/08 16:09:50 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ int pointcalc (w_data *data, t_grid *grid)
     int width;
     int distance;
 
-    t_point *center;
+   // t_point *center;
 
-    center = center_point(data);
+    //center = center_point(data);
  
     height = ((data->window_height - (data->window_height / 10)) / grid->rows);
     width = ((data->window_width - (data->window_width / 10)) / grid->cols);
