@@ -12,8 +12,8 @@ int main(int argc, char ** argv)
     w_data window;
   
     window.title = "FDF";
-    window.window_width = 800; //ft_atoi(argv[1]);
-    window.window_height = 800; //ft_atoi(argv[2]);
+    window.window_width = 2000; //ft_atoi(argv[1]);
+    window.window_height = 2000; //ft_atoi(argv[2]);
 
 
     window.grid = (t_grid *)malloc(sizeof(t_grid));
@@ -36,7 +36,7 @@ int main(int argc, char ** argv)
         return 1;
     }
     
-    window.points = make_points(window.grid, &window);
+    window.points = make_points(&window);
     
 
     window.mlx = init_mlx();
@@ -54,14 +54,35 @@ int main(int argc, char ** argv)
 //  printf("Image address: %p\n", window.img.address);
 
     
-    pcoords_iso(window.points, window.grid);
+    pcoords_iso(&window);
 
-    center_grid(window.grid, window.points);
+    center_grid(&window);
 
-    draw_poly(&window, window.grid, window.points, 0x00FF0000);
+    //assign z coords to each point
+    z_coords(&window);
 
+    //adding z to y coords to create 3d effect
+    z_assign(&window);
 
+    colorize(&window);
 
+    draw_poly(&window);
+
+    //print the z coord of each point
+    
+   /* int i = 0;
+    int j = 0;
+
+    while (i < window.grid->rows)
+    {
+        j = 0;
+        while (j < window.grid->cols)
+        {
+            printf("z: %d\n", window.points[i][j].z);
+            j++;
+        }
+        i++;
+    }*/
 
 
     mlx_put_image_to_window(window.mlx, window.win, window.img.img, 0, 0);

@@ -1,6 +1,6 @@
 NAME = fdf
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
 POSTCC = -I $(INC_DIR) -I $(SRC_DIR) -L $(INC_DIR)/minilibx-linux -lmlx -lX11 -lXext -lm -L $(INC_DIR)/lib_ft -lft
 
 SRC_DIR = ./src

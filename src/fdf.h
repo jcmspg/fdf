@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 20:19:20 by joamiran          #+#    #+#             */
-/*   Updated: 2024/08/08 19:03:42 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/08/21 18:31:10 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ typedef struct s_points
     int x;
     int y;
     int z;
+    int color;
+
 }   t_point;
 
 
@@ -91,6 +93,7 @@ typedef struct window_data
 
     img_data img;
     int **map;
+    int scale;
     t_point **points;
     t_grid  *grid;
 
@@ -98,37 +101,49 @@ typedef struct window_data
 }               w_data;
 
 // data functions
-void free_data(w_data *win);
+void free_data(w_data *data);
 
 // keybind functions
-int close_window(w_data *win);
+int close_window(w_data *data);
 
-int key_handle(int key, w_data *win);
+int key_handle(int key, w_data *data);
 
 // mlx functions
 void *init_mlx(void);
-void create_window(w_data *window);
-void create_image(w_data *window);
+void create_window(w_data *data);
+void create_image(w_data *data);
 
 // read functions
-void read_fdf(const char *file, w_data *window);
-int **map_alloc(const char *line, w_data *window);
+void read_fdf(const char *file, w_data *data);
+int **map_alloc(const char *line, w_data *data);
 
 // draw functions
-void draw_line(w_data *window, t_point *p0, t_point *p1, int color);
-void draw_poly(w_data *window, t_grid *grid, t_point **points, int color);
+void draw_line(w_data *data, t_point *p0, t_point *p1, int color);
+void draw_poly(w_data *data);
 
 // point arithmetics
 
-int pointcalc (w_data *data, t_grid *grid);
+int pointcalc (w_data *data);
 t_point *center_point(w_data *data);
 
-void center_grid(t_grid *grid, t_point **points);
+// point scaling
+void scale_grid(w_data *data);
 
 
-void pcoords_iso(t_point **points, t_grid *grid);
+// point Z coordinate
+void z_coords(w_data *data);
 
-t_point **make_points(t_grid *grid, w_data *data);
+// adding z to y to make the grid 3D
+void z_assign(w_data *data);
+
+void center_grid(w_data *data);
+
+void pcoords_iso(w_data *data);
+
+//function to colorize points
+void colorize(w_data *data);
+
+t_point **make_points(w_data *data);
 
 // math aux functions
 int ft_abs(int n);

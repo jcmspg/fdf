@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 20:20:29 by joamiran          #+#    #+#             */
-/*   Updated: 2024/06/21 21:06:45 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/08/21 18:38:37 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,14 @@ static void my_mlx_pixel_put(w_data *data, int x, int y, int color)
     *(unsigned int *)distance = color;
 }
 
-void draw_line(w_data *window, t_point *p0, t_point *p1, int color)
+void draw_line(w_data *data, t_point *p0, t_point *p1, int color)
 {
     t_bres bresen;
     bresen_calc(p0, p1, &bresen);
 
     while (1)
     {
-        my_mlx_pixel_put(window, bresen.x0, bresen.y0, color);
+        my_mlx_pixel_put(data, bresen.x0, bresen.y0, color);
         if (bresen.x0 == p1->x && bresen.y0 == p1->y)
             break;
         bresen.e2 = 2 * bresen.err;
@@ -68,31 +68,31 @@ void draw_line(w_data *window, t_point *p0, t_point *p1, int color)
     }
 }
 
-void draw_poly(w_data *window, t_grid *grid, t_point **points, int color)
+void draw_poly(w_data *data)
 {
     int i;
     int j;
 
     i = 0;
     // draw horizontal lines between points in the same row for each column
-    while (i < grid->rows)
+    while (i < data->grid->rows)
     {
         j = 0;
-        while (j < grid->cols - 1)
+        while (j < data->grid->cols - 1)
         {
-            draw_line(window, &points[i][j], &points[i][j + 1], color);
+            draw_line(data, &data->points[i][j], &data->points[i][j + 1], data->points[i][j].color);
             j++;
         }
         i++;
     }
     // draw vertical lines between points in the same column for each row
     i = 0;
-    while (i < grid->cols)
+    while (i < data->grid->cols)
     {
         j = 0;
-        while (j < grid->rows - 1)
+        while (j < data->grid->rows - 1)
         {
-            draw_line(window, &points[j][i], &points[j + 1][i], color);
+            draw_line(data, &data->points[j][i], &data->points[j + 1][i], data->points[j][i].color);
             j++;
         }
         i++;

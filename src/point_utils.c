@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pointcalc.c                                        :+:      :+:    :+:   */
+/*   point_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: joamiran <joamiran@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 19:31:12 by joamiran          #+#    #+#             */
-/*   Updated: 2024/08/08 16:09:50 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/08/21 18:30:40 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 // the function will return the size of the square
 // that will be used to draw the points
 // the size will be the minimum between the height and the width of the window
-int pointcalc (w_data *data, t_grid *grid)
+int pointcalc (w_data *data)
 {
     int height;
     int width;
@@ -31,8 +31,8 @@ int pointcalc (w_data *data, t_grid *grid)
 
     //center = center_point(data);
  
-    height = ((data->window_height - (data->window_height / 10)) / grid->rows);
-    width = ((data->window_width - (data->window_width / 10)) / grid->cols);
+    height = ((data->window_height - (data->window_height / 10)) / data->grid->rows);
+    width = ((data->window_width - (data->window_width / 10)) / data->grid->cols);
 
 
     if(height < width)
@@ -68,7 +68,7 @@ t_point *center_point(w_data *data)
 // y' = (x + y) / 2
 // this rotates the grid 45 degrees and scales the y axis by 0.5
 // in order to make the grid look like a 3d grid
-void pcoords_iso(t_point **points, t_grid *grid)
+void pcoords_iso(w_data *data)
 {
     int i;
     int j;
@@ -78,16 +78,15 @@ void pcoords_iso(t_point **points, t_grid *grid)
     i = 0;
     j = 0;
 
-    while (i < grid->rows)
+    while (i < data->grid->rows)
     {
-        while (j < grid->cols)
+        while (j < data->grid->cols)
         {
-            x_iso = points[i][j].x - points[i][j].y;
-            y_iso = round_n((points[i][j].x + points[i][j].y) / 2.0);
+            x_iso = data->points[i][j].x - data->points[i][j].y;
+            y_iso = round_n((data->points[i][j].x + data->points[i][j].y) / 2.0);
 
-
-            points[i][j].x = (int)x_iso;
-            points[i][j].y = (int)y_iso;
+            data->points[i][j].x = (int)x_iso;
+            data->points[i][j].y = (int)y_iso;
 
             j++;
         }
@@ -96,13 +95,65 @@ void pcoords_iso(t_point **points, t_grid *grid)
     }
 }
 
+// assigning the z value to the points
+void z_coords(w_data *data)
+{
+    int i;
+    int j;
 
+    i = 0;
+    j = 0;
 
+    while( i < data->grid->rows)
+    {
+        while (j < data->grid->cols)
+        {
+            data->points[i][j].z = data->map[i][j];
+            j++;
+        }
+        j = 0;
+        i++;
+    }
+}
 
+// function to add the Z value to the Y to simulate the 3d view
+void z_assign(w_data *data)
+{
+    int i;
+    int j;
 
+    i = 0;
+    j = 0;
 
+    while (i < data->grid->rows)
+    {
+        while (j < data->grid->cols)
+        {
+            data->points[i][j].y = (data->points[i][j].y + data->points[i][j].z);
+            j++;
+        }
+        j = 0;
+        i++;
+    }
+}
 
+// colorize the points. The color will be set to red for now
+void colorize(w_data *data)
+{
+    int i;
+    int j;
 
+    i = 0;
+    j = 0;
 
-
-
+    while (i < data->grid->rows)
+    {
+        while (j < data->grid->cols)
+        {
+            data->points[i][j].color = 0xFF0000;
+            j++;
+        }
+        j = 0;
+        i++;
+    }
+}

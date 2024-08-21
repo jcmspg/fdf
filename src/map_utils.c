@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   read_map.c                                         :+:      :+:    :+:   */
+/*   map_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: joamiran <joamiran@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:15:46 by joamiran          #+#    #+#             */
-/*   Updated: 2024/08/08 19:00:40 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/08/21 20:15:57 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 // get_next_line: reads a line from the file descriptor
 // counts the number of lines and columns in the file
-static void  count_grid(int fd, w_data *window)
+static void  count_grid(int fd, w_data *data)
 {
     char    *line;
     int     num_lines;
@@ -46,12 +46,12 @@ static void  count_grid(int fd, w_data *window)
 
     free(line);
 
-    window->grid->cols = num_cols;
-    window->grid->rows = num_lines;
+    data->grid->cols = num_cols;
+    data->grid->rows = num_lines;
 }
 
 //read_fdf: reads the file and counts the number of lines and columns
-void    read_fdf(const char *file, w_data *window)
+void    read_fdf(const char *file, w_data *data)
 {
     int     fd;
 
@@ -62,12 +62,12 @@ void    read_fdf(const char *file, w_data *window)
         exit(1);
     }
     
-    count_grid(fd, window);
+    count_grid(fd, data);
     close(fd);
 }
 
 // map_alloc: allocates memory for the map and creates a 2D array for the Z values of points
-int **map_alloc(const char *file, w_data *window)
+int **map_alloc(const char *file, w_data *data)
 {
     int     **map;
     int     fd;
@@ -78,7 +78,7 @@ int **map_alloc(const char *file, w_data *window)
  
 
 
-    map = (int **)malloc(sizeof(int *) * window->grid->rows);
+    map = (int **)ft_calloc(sizeof(int*), data->grid->rows * data->grid->cols);
     if (!map)
     {
         fprintf(stderr, "Error: Could not allocate memory for map\n");
@@ -93,18 +93,18 @@ int **map_alloc(const char *file, w_data *window)
     }
 
     i = 0;
-    while (i < window->grid->rows)
+    while (i < data->grid->rows)
     {
         line = get_next_line(fd);
         split_line = ft_split(line, ' ');
-        map[i] = (int *)malloc(sizeof(int) * window->grid->cols);
+        map[i] = (int *)ft_calloc(sizeof(int) , data->grid->cols);
         if (!map[i])
         {
             fprintf(stderr, "Error: Could not allocate memory for map\n");
             exit(1);
         }
         j = 0;
-        while (j < window->grid->cols)
+        while (j < data->grid->cols)
         {
             map[i][j] = ft_atoi(split_line[j]);
             j++;
@@ -135,15 +135,15 @@ int **map_alloc(const char *file, w_data *window)
 //center_grid: centers the grid in the window
 //
 //
-void center_grid (t_grid *grid, t_point **points)
+void center_grid (w_data *data)
 {
     int i;
     int j;
     int lines;
     int cols;
 
-    lines = grid->rows;
-    cols = grid->cols;
+    lines = data->grid->rows;
+    cols = data->grid->cols;
     
          
     i = 0;
@@ -152,8 +152,8 @@ void center_grid (t_grid *grid, t_point **points)
         j = 0;
         while (j < cols)
         {
-            points[i][j].x += grid->half_x;
-            points[i][j].y += grid->half_y;
+            data->points[i][j].x += data->grid->half_x;
+            data->points[i][j].y += data->grid->half_y;
             j++;
         }
         i++;
@@ -162,7 +162,7 @@ void center_grid (t_grid *grid, t_point **points)
 
 
 // make array of points to then assign coordinates to them
-t_point **make_points(t_grid *grid, w_data *data)
+t_point **make_points(w_data *data)
 {
     int lines;
     int cols;
@@ -170,10 +170,10 @@ t_point **make_points(t_grid *grid, w_data *data)
     int j;
     t_point **points;
 
-    lines = grid->rows;
-    cols = grid->cols;
+    lines = data->grid->rows;
+    cols = data->grid->cols;
     
-    points = (t_point **)malloc(sizeof(char *) * lines);
+    points = (t_point **)ft_calloc(sizeof(t_point *) , (cols * lines));
     if (!points)
     {
         fprintf(stderr, "Error: Could not allocate memory for points\n");
@@ -182,7 +182,7 @@ t_point **make_points(t_grid *grid, w_data *data)
     i = 0;
     while (i < lines)
     {
-        points[i] = (t_point *)malloc(sizeof(t_point) * cols);
+        points[i] = (t_point *)ft_calloc(sizeof(t_point) , cols);
         if (!points[i])
         {
             fprintf(stderr, "Error: Could not allocate memory for points\n");
@@ -202,8 +202,8 @@ t_point **make_points(t_grid *grid, w_data *data)
         j = 0;
         while (j < cols)
         {
-            points[i][j].x = j * (pointcalc(data, grid));
-            points[i][j].y = i * (pointcalc(data, grid));
+            points[i][j].x = j * (pointcalc(data));
+            points[i][j].y = i * (pointcalc(data));
             points[i][j].z = 10;
             j++;
 
@@ -212,8 +212,8 @@ t_point **make_points(t_grid *grid, w_data *data)
     }
 
 
-    grid->half_x = (data->window_width / 2) - (points[0][cols - 1].x / 2);
-    grid->half_y = (data->window_height / 2) - (points[lines - 1][0].y / 2);
+    data->grid->half_x = (data->window_width / 2) - (points[0][cols - 1].x / 2);
+    data->grid->half_y = (data->window_height / 2) - (points[lines - 1][0].y / 2);
 
     return (points);    
 }
