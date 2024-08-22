@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:15:46 by joamiran          #+#    #+#             */
-/*   Updated: 2024/08/22 20:02:09 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/08/22 21:07:01 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,9 @@ void    read_fdf(const char *file, w_data *data)
 }
 
 // map_alloc: allocates memory for the map and creates a 2D array for the Z values of points
-int **map_alloc(const char *file, w_data *data)
+char **map_alloc(const char *file, w_data *data)
 {
-    int     **map;
+    char     **map;
     int     fd;
     char    *line;
     char    **split_line;
@@ -90,7 +90,7 @@ int **map_alloc(const char *file, w_data *data)
  
 
 
-    map = (int **)ft_calloc(sizeof(int*), data->grid->rows * data->grid->cols);
+    map = (char **)ft_calloc(sizeof(char *), data->grid->rows * data->grid->cols);
     if (!map)
     {
         fprintf(stderr, "Error: Could not allocate memory for map\n");
@@ -109,7 +109,7 @@ int **map_alloc(const char *file, w_data *data)
     {
         line = get_next_line(fd);
         split_line = ft_split(line,' ' );
-        map[i] = (int *)ft_calloc(sizeof(int) , data->grid->cols);
+        map[i] = (char *)ft_calloc(sizeof(int) , data->grid->cols);
         if (!map[i])
         {
             fprintf(stderr, "Error: Could not allocate memory for map\n");
@@ -119,6 +119,8 @@ int **map_alloc(const char *file, w_data *data)
         while (j < data->grid->cols)
         {
             map[i][j] = ft_atoi(split_line[j]);
+            printf("atoi %d\n", ft_atoi(split_line[j]));
+            printf("row %d: %d\n", i, map[i][j]);
             j++;
         }
         free(line);

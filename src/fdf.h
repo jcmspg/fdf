@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 20:19:20 by joamiran          #+#    #+#             */
-/*   Updated: 2024/08/21 18:31:10 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/08/22 20:32:21 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ typedef struct window_data
     char    *title;
 
     img_data img;
-    int **map;
+    char **map;
     int scale;
     t_point **points;
     t_grid  *grid;
@@ -115,7 +115,7 @@ void create_image(w_data *data);
 
 // read functions
 void read_fdf(const char *file, w_data *data);
-int **map_alloc(const char *line, w_data *data);
+char **map_alloc(const char *line, w_data *data);
 
 // draw functions
 void draw_line(w_data *data, t_point *p0, t_point *p1, int color);
