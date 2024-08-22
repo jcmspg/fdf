@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:15:46 by joamiran          #+#    #+#             */
-/*   Updated: 2024/08/21 20:15:57 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/08/22 20:02:09 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,18 @@
 
 // get_next_line: reads a line from the file descriptor
 // counts the number of lines and columns in the file
+
+/*
+static int len_line(char **c){
+    int i = 0;
+    while (c[i])
+        i++;
+    return (i);
+}
+
+*/
+
+
 static void  count_grid(int fd, w_data *data)
 {
     char    *line;
@@ -96,7 +108,7 @@ int **map_alloc(const char *file, w_data *data)
     while (i < data->grid->rows)
     {
         line = get_next_line(fd);
-        split_line = ft_split(line, ' ');
+        split_line = ft_split(line,' ' );
         map[i] = (int *)ft_calloc(sizeof(int) , data->grid->cols);
         if (!map[i])
         {

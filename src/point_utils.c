@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 19:31:12 by joamiran          #+#    #+#             */
-/*   Updated: 2024/08/21 18:30:40 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/08/22 19:36:18 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ void z_assign(w_data *data)
     {
         while (j < data->grid->cols)
         {
-            data->points[i][j].y = (data->points[i][j].y + data->points[i][j].z);
+            data->points[i][j].y = (data->points[i][j].y + (data->points[i][j].z * 1));
             j++;
         }
         j = 0;

@@ -12,8 +12,8 @@ int main(int argc, char ** argv)
     w_data window;
   
     window.title = "FDF";
-    window.window_width = 2000; //ft_atoi(argv[1]);
-    window.window_height = 2000; //ft_atoi(argv[2]);
+    window.window_width = 800; //ft_atoi(argv[1]);
+    window.window_height = 800; //ft_atoi(argv[2]);
 
 
     window.grid = (t_grid *)malloc(sizeof(t_grid));
@@ -35,7 +35,7 @@ int main(int argc, char ** argv)
         free(window.grid);
         return 1;
     }
-    
+   
     window.points = make_points(&window);
     
 
