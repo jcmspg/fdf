@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 19:31:12 by joamiran          #+#    #+#             */
-/*   Updated: 2024/08/22 19:36:18 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/08/23 19:04:26 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ int pointcalc (w_data *data)
 
     return (distance);
 }
+
+
 
 
 // function to calculate the center of the window
@@ -96,26 +98,10 @@ void pcoords_iso(w_data *data)
 }
 
 // assigning the z value to the points
-void z_coords(w_data *data)
-{
-    int i;
-    int j;
 
-    i = 0;
-    j = 0;
 
-    while( i < data->grid->rows)
-    {
-        while (j < data->grid->cols)
-        {
-            data->points[i][j].z = data->map[i][j];
-            j++;
-        }
-        j = 0;
-        i++;
-    }
-}
 
+   
 // function to add the Z value to the Y to simulate the 3d view
 void z_assign(w_data *data)
 {
@@ -129,7 +115,7 @@ void z_assign(w_data *data)
     {
         while (j < data->grid->cols)
         {
-            data->points[i][j].y = (data->points[i][j].y + (data->points[i][j].z * 1));
+            data->points[i][j].y = (data->points[i][j].y - (data->points[i][j].z * SCALE_FACTOR_Z));
             j++;
         }
         j = 0;
@@ -150,7 +136,8 @@ void colorize(w_data *data)
     {
         while (j < data->grid->cols)
         {
-            data->points[i][j].color = 0xFF0000;
+            if (data->points[i][j].color == 0)
+                data->points[i][j].color = 0xFF0000;
             j++;
         }
         j = 0;

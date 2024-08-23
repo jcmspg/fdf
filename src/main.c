@@ -28,15 +28,7 @@ int main(int argc, char ** argv)
     read_fdf(file, &window);
     printf("Rows: %d\nCols: %d\n", window.grid->rows, window.grid->cols);
     
-    window.map = map_alloc(file, &window);
-    if (window.map == NULL)
-    {
-        fprintf(stderr, "Memory allocation failed\n");
-        free(window.grid);
-        return 1;
-    }
-   
-    window.points = make_points(&window);
+   // window.points = make_points(&window);
     
 
     window.mlx = init_mlx();
@@ -58,13 +50,13 @@ int main(int argc, char ** argv)
 
     center_grid(&window);
 
-    //assign z coords to each point
-    z_coords(&window);
 
     //adding z to y coords to create 3d effect
-    z_assign(&window);
+    //
 
+    z_assign(&window);
     colorize(&window);
+
 
     draw_poly(&window);
 

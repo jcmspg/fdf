@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 20:19:20 by joamiran          #+#    #+#             */
-/*   Updated: 2024/08/22 20:32:21 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/08/23 19:06:33 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <X11/X.h>
 # include <X11/keysym.h>
 # include <math.h>
+# include <stdbool.h>
 
 # define PI 3.14159265358979323846
 
@@ -37,6 +38,9 @@
 # define MINUS 65453
 # define WHELL_UP 4
 # define WHELL_DOWN 5
+
+# define SCALE_FACTOR_Z 1.5
+
 
 
 typedef struct image_data
@@ -92,8 +96,9 @@ typedef struct window_data
     char    *title;
 
     img_data img;
-    char **map;
     int scale;
+    int scale_z;
+    char **z_values;
     t_point **points;
     t_grid  *grid;
 
@@ -114,8 +119,13 @@ void create_window(w_data *data);
 void create_image(w_data *data);
 
 // read functions
+bool format_checker(const char *file);
+char **info_parser(int fd, w_data *data);
+int ft_getcolor(const char *str);
 void read_fdf(const char *file, w_data *data);
-char **map_alloc(const char *line, w_data *data);
+void assign_info(w_data *data);
+
+
 
 // draw functions
 void draw_line(w_data *data, t_point *p0, t_point *p1, int color);
@@ -130,8 +140,6 @@ t_point *center_point(w_data *data);
 void scale_grid(w_data *data);
 
 
-// point Z coordinate
-void z_coords(w_data *data);
 
 // adding z to y to make the grid 3D
 void z_assign(w_data *data);
@@ -150,6 +158,7 @@ int ft_abs(int n);
 int ft_max(int a, int b);
 int ft_min(int a, int b);
 int round_n(float n);
+int ft_atoi_base(const char *str, int base);
 
 
 
