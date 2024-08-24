@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 17:15:24 by joamiran          #+#    #+#             */
-/*   Updated: 2024/08/23 19:32:32 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/08/24 19:53:07 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,18 @@ static void  count_grid(int fd, w_data *data)
 
     while (line[i] != '\n' && line[i] != '\0')
     {
-        if (ft_isdigit(line[i]))
+        if (ft_isdigit(line[i]) || line[i] == '-')
         {
             num_cols++;
-            while (ft_isdigit(line[i]))
+            while (ft_isdigit(line[i]) || line[i] == '-')
                 i++;
+            // if theres a comma, we skip the color code
+            if (line[i] == ',')
+            {
+                i++;
+                while (ft_isalnum(line[i]))
+                    i++;
+            }
         }
         else
             i++;
@@ -65,11 +72,43 @@ bool format_checker (const char *file)
     return (true);
 }
 
+/*
+static int count_columns(const char *line)
+{
+    int i;
+    int count;
+
+    i = 0;
+    count = 0;
+    while (line[i] != '\n' && line[i] != '\0')
+    {
+        if (ft_isdigit(line[i]) || line[i] == '-')
+        {
+            count++;
+            while (ft_isdigit(line[i]) || line[i] == '-')
+                i++;
+            // if theres a comma, we skip the color code
+            if (line[i] == ',')
+            {
+                i++;
+                while (ft_isalnum(line[i]))
+                    i++;
+            }
+        }
+        else
+            i++;
+    }
+    return count;
+}
+*/
+
 char **info_parser(int fd, w_data *data)
 {
     char **z_values;
     char *line;
     int i;
+ //   int expected_cols;
+ //   int line_cols;
 
     z_values = ft_calloc(data->grid->rows, sizeof(char *));
     if (!z_values)
@@ -77,6 +116,8 @@ char **info_parser(int fd, w_data *data)
         fprintf(stderr, "Error: Could not allocate memory for z_values\n");
         exit(1);
     }
+    
+ //   expected_cols = data->grid->cols;
 
     i = 0;
     while (i < data->grid->rows)
@@ -87,6 +128,20 @@ char **info_parser(int fd, w_data *data)
             fprintf(stderr, "Error: Failed to read line from file\n");
             exit(1);
         }
+    
+   //     line_cols = count_columns(line);
+  /*      if (line_cols != expected_cols)
+        {
+            fprintf(stderr, "Error: Line %d has %d columns, expected %d\n", i, line_cols, expected_cols);
+            free(line);
+            while (i > 0)
+            {
+                free(z_values[i]);
+                i--;
+            }
+            exit(1);
+        }
+*/
 
         z_values[i] = ft_strdup(line); // or copy the content properly
         if (!z_values[i])
@@ -122,6 +177,7 @@ int ft_getcolor(const char *str)
         if (ft_strncmp(color[1], "0x", 2))
         {
             fprintf(stderr, "Error: Color value is not in hexadecimal format\n");
+            printf("color[1]: %s\n", color[1]);
             free(color);
             exit(1);
         }
@@ -182,7 +238,7 @@ void print_data(w_data *data)
         j = 0;
         while (j < data->grid->cols)
         {
-            printf("Point[%d][%d]: x = %d, y = %d, z = %d, color = %d\n", i, j, data->points[i][j].x, data->points[i][j].y, data->points[i][j].z, data->points[i][j].color);
+            printf("Point[%d][%d]: x = %d, y = %d, z = %d, color = %x\n", i, j, data->points[i][j].x, data->points[i][j].y, data->points[i][j].z, data->points[i][j].color);
             j++;
         }
         i++;
@@ -209,7 +265,6 @@ void    read_fdf(const char *file, w_data *data)
    
     //counting the number of lines and columns in the file
     count_grid(fd, data);
-    printf("Rows: %d\nCols: %d\n", data->grid->rows, data->grid->cols);
     close(fd);
 
     //reopening the file to read the values
@@ -218,15 +273,43 @@ void    read_fdf(const char *file, w_data *data)
     data->points = make_points(data);
     // getting the Z and color values from the file
     data->z_values = info_parser(fd, data);
+    
 
 
     //assigning the Z and color values to the points array
     assign_info(data);
-
+    
     //printing the points coords and colors
     print_data(data);
 
     //closing the file
     close(fd);
 }
+
+void find_min_max_z(w_data *data)
+{
+    int i;
+    int j;
+
+    i = 0;
+    j = 0;
+
+    data->min_z = data->points[0][0].z;
+    data->max_z = data->points[0][0].z;
+
+    while (i < data->grid->rows)
+    {
+        j = 0;
+        while (j < data->grid->cols)
+        {
+            if (data->points[i][j].z < data->min_z)
+                data->min_z = data->points[i][j].z;
+            if (data->points[i][j].z > data->max_z)
+                data->max_z = data->points[i][j].z;
+            j++;
+        }
+        i++;
+    }
+}
+
 

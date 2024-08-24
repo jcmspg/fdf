@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 20:19:20 by joamiran          #+#    #+#             */
-/*   Updated: 2024/08/23 19:06:33 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/08/24 19:21:54 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@
 # define WHELL_DOWN 5
 
 # define SCALE_FACTOR_Z 1.5
+# define SCALE_FACTOR 1.5
 
 
 
@@ -98,6 +99,8 @@ typedef struct window_data
     img_data img;
     int scale;
     int scale_z;
+    int min_z;
+    int max_z;
     char **z_values;
     t_point **points;
     t_grid  *grid;
@@ -128,7 +131,7 @@ void assign_info(w_data *data);
 
 
 // draw functions
-void draw_line(w_data *data, t_point *p0, t_point *p1, int color);
+void draw_line(w_data *data, t_point *p0, t_point *p1);
 void draw_poly(w_data *data);
 
 // point arithmetics
