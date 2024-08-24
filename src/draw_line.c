@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 20:20:29 by joamiran          #+#    #+#             */
-/*   Updated: 2024/08/21 18:38:37 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/08/24 19:39:05 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,15 @@ static void bresen_calc (t_point *p0, t_point *p1, t_bres *bresen)
     bresen->e2 = 2 * bresen->err;
 }
 
+int height_to_color(int height, int min_height, int max_height)
+{
+    float percentage;
+    int color;
+
+    percentage = (float)(height - min_height) / (max_height - min_height);
+    color = (int)(percentage * 255);
+    return (color);
+}
 
 static void my_mlx_pixel_put(w_data *data, int x, int y, int color)
 {
@@ -44,6 +53,41 @@ static void my_mlx_pixel_put(w_data *data, int x, int y, int color)
     *(unsigned int *)distance = color;
 }
 
+void draw_line(w_data *data, t_point *p0, t_point *p1)
+{
+    t_bres bresen;
+    bresen_calc(p0, p1, &bresen);
+
+    int steps;
+    float color_step;
+    float color;
+
+    steps = ft_max(bresen.dx, bresen.dy);
+    color_step = (float)(p1->color - p0->color) / steps;
+    color = (float)p0->color;
+
+    while (1)
+    {
+        my_mlx_pixel_put(data, bresen.x0, bresen.y0, (int)color);
+        if (bresen.x0 == p1->x && bresen.y0 == p1->y)
+            break;
+        bresen.e2 = 2 * bresen.err;
+        if (bresen.e2 > -bresen.dy)
+        {
+            bresen.err -= bresen.dy;
+            bresen.x0 += increment(bresen.x0, p1->x);
+        }
+        if (bresen.e2 < bresen.dx)
+        {
+            bresen.err += bresen.dx;
+            bresen.y0 += increment(bresen.y0, p1->y);
+        }
+        color += color_step;
+    }
+}
+
+
+/*
 void draw_line(w_data *data, t_point *p0, t_point *p1, int color)
 {
     t_bres bresen;
@@ -67,7 +111,7 @@ void draw_line(w_data *data, t_point *p0, t_point *p1, int color)
         }
     }
 }
-
+*/
 void draw_poly(w_data *data)
 {
     int i;
@@ -80,7 +124,7 @@ void draw_poly(w_data *data)
         j = 0;
         while (j < data->grid->cols - 1)
         {
-            draw_line(data, &data->points[i][j], &data->points[i][j + 1], data->points[i][j].color);
+            draw_line(data, &data->points[i][j], &data->points[i][j + 1]);
             j++;
         }
         i++;
@@ -92,7 +136,7 @@ void draw_poly(w_data *data)
         j = 0;
         while (j < data->grid->rows - 1)
         {
-            draw_line(data, &data->points[j][i], &data->points[j + 1][i], data->points[j][i].color);
+            draw_line(data, &data->points[j][i], &data->points[j + 1][i]);
             j++;
         }
         i++;

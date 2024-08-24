@@ -26,17 +26,9 @@ int main(int argc, char ** argv)
     window.grid->cols = 0;
 
     read_fdf(file, &window);
-    printf("Rows: %d\nCols: %d\n", window.grid->rows, window.grid->cols);
+   // printf("Rows: %d\nCols: %d\n", window.grid->rows, window.grid->cols);
     
-    window.map = map_alloc(file, &window);
-    if (window.map == NULL)
-    {
-        fprintf(stderr, "Memory allocation failed\n");
-        free(window.grid);
-        return 1;
-    }
-   
-    window.points = make_points(&window);
+   // window.points = make_points(&window);
     
 
     window.mlx = init_mlx();
@@ -58,13 +50,13 @@ int main(int argc, char ** argv)
 
     center_grid(&window);
 
-    //assign z coords to each point
-    z_coords(&window);
 
     //adding z to y coords to create 3d effect
-    z_assign(&window);
+    //
 
+    z_assign(&window);
     colorize(&window);
+
 
     draw_poly(&window);
 
@@ -87,12 +79,23 @@ int main(int argc, char ** argv)
 
     mlx_put_image_to_window(window.mlx, window.win, window.img.img, 0, 0);
 
-    /*
-    mlx_string_put(window.mlx, window.win, 600, 600, 0x00FFFFFF, "window size:");
-    mlx_string_put(window.mlx, window.win, 600, 620, 0x00FFFFFF, ft_itoa(window.window_width));
-    mlx_string_put(window.mlx, window.win, 600, 640, 0x00FFFFFF, ft_itoa(window.window_height));
-    */
-    
+   
+    // display window size and grid size
+    //display the arg[1]
+    mlx_string_put(window.mlx, window.win, 600, 580, 0x00FFFFFF, "File:");
+    //just the file name
+    mlx_string_put(window.mlx, window.win, 600, 600, 0x00FFFFFF, argv[1]);
+    mlx_string_put(window.mlx, window.win, 600, 620, 0x00FFFFFF, "window size:");
+    char *str = ft_itoa(window.window_width);
+    char *str2 = ft_itoa(window.window_height);
+    char *s3 = ft_strjoin(ft_strjoin(str , " X "),  str2);
+    char *s4 = ft_itoa(window.grid->rows);
+    char *s5 = ft_itoa(window.grid->cols);
+    char *s6 = ft_strjoin(ft_strjoin(s4 , " X "),  s5);
+    mlx_string_put(window.mlx, window.win, 600, 640, 0x00FFFFFF, s3);
+    mlx_string_put(window.mlx, window.win, 600, 680, 0x00FFFFFF, "grid size:");
+    mlx_string_put(window.mlx, window.win, 600, 700, 0x00FFFFFF, s6);
+
     // key input handling
     mlx_key_hook(window.win, key_handle, &window);
     

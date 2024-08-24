@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 19:11:54 by joamiran          #+#    #+#             */
-/*   Updated: 2024/08/21 20:12:10 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/08/23 16:38:53 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,6 @@ int close_window(w_data *data)
 
     i = 0;
 
-   while (data->map[i])
-    {
-        free(data->map[i]);
-        i++;
-    }
-   i = 0;
    while (data->points[i])
     {
         free(data->points[i]);
@@ -40,7 +34,6 @@ int close_window(w_data *data)
     }
     free(data->points);
     free(data->grid);
-    free(data->map);
     free_data(data);
     exit(0);
 }
