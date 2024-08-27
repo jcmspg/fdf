@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 20:20:29 by joamiran          #+#    #+#             */
-/*   Updated: 2024/08/24 19:39:05 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/08/27 20:35:26 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,9 @@ void draw_poly(w_data *data)
         {
             draw_line(data, &data->points[j][i], &data->points[j + 1][i]);
             j++;
+         /*   if (i == data->grid->cols - 1)
+                printf("color or point [%d][%d]: %x\n",data->points[i][j].x, data->points[i][j].y, data->points[j][i].color);
+                */
         }
         i++;
     }

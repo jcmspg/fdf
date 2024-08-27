@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 19:31:12 by joamiran          #+#    #+#             */
-/*   Updated: 2024/08/23 19:04:26 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/08/27 21:12:03 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,15 @@ void z_assign(w_data *data)
     }
 }
 
-// colorize the points. The color will be set to red for now
+// colorize the points. if the color is not assigned, it will be assigned the default color
+// if theres no color data in the whole map, we set colors for the various heights
+// if there is color data, we assign the color to the points
+// if the color data is invalid, we assign the default color
+// if the color data is valid, we assign the color to the points
+// the highest point will be red, the lowest will be blue
+// the middle will be white; the points in between will be a gradient between the two colors
+// the points in between will be a gradient between the two colors
+//
 void colorize(w_data *data)
 {
     int i;
@@ -136,11 +144,144 @@ void colorize(w_data *data)
     {
         while (j < data->grid->cols)
         {
-            if (data->points[i][j].color == 0)
-                data->points[i][j].color = 0xFF0000;
+            if (!data->points[i][j].color)
+                data->points[i][j].color = STD_COLOR;
             j++;
         }
         j = 0;
         i++;
     }
 }
+
+void colorize_gradient(w_data *data)
+{
+    int i;
+    int j;
+    int max;
+    int min;
+    int range;
+    int color;
+    int red;
+    int green;
+    int blue;
+
+    double ratio;
+
+    i = 0;
+    j = 0;
+    max = data->max_z;
+    min = data->min_z;
+    range = max - min;
+
+    if (range == 0)
+        range = 1;
+    
+    while (i < data->grid->rows)
+    {
+        while (j < data->grid->cols)
+        {
+            if (data->points[i][j].z == max)
+                color = MAX_COLOR;
+            else if (data->points[i][j].z == 0)
+                color = WHITE;
+            else if (data->points[i][j].z == min)
+                color = MIN_COLOR;
+            else
+            {
+                // the ratio will be the percentage of the height of the point
+                ratio = ((double)data->points[i][j].z - min) / range;
+                red = (int)((1 - ratio) * 255);
+                green = 0;
+                blue = (int)(ratio * 255);
+
+                color = (red * 256 * 256) + (green * 256) + blue;
+            }
+            data->points[i][j].color = color;
+            j++;
+        }
+        j = 0;
+        i++;
+    }
+}
+
+/*
+void colorize_gradient(w_data *data)
+{
+    int i;
+    int j;
+    int max;
+    int min;
+    int range;
+    int color;
+    int red;
+    int green;
+    int blue;
+    int z;
+
+    double ratio;
+
+    i = 0;
+    j = 0;
+    max = data->max_z;
+    min = data->min_z;
+    range = max - min;
+
+    if (range == 0)
+        range = 1;
+    
+    while (i < data->grid->rows)
+    {
+        while (j < data->grid->cols)
+        {
+            z = data->points[i][j].z;
+
+            if (z == max)
+                color = MAX_COLOR;
+            else if (z == 0)
+                color = WHITE;
+            else if (z == min)
+                color = MIN_COLOR;
+            else
+            {
+                ratio = ((double)(z - min) / range);
+
+                if (z > 0)
+                {
+                    ratio = (double)z / max;
+                    red = (int)(255 * ratio);
+                    green = (int)(255 * (1 - ratio);
+                    blue = (int)(255 * (1 - ratio));
+                }
+                else
+                {
+                    ratio = (double)(z - min) / range;
+                    red = (int)(255 * (1 - ratio));
+                    green = (int)(255 * (1 - ratio));
+                    blue = 255;
+                }
+
+                if (red < 0)
+                    red = 0;
+                else if (red > 255)
+                    red = 255;
+                if (green < 0)
+                    green = 0;
+                else if (green > 255)
+                    green = 255;
+                if (blue < 0)
+                    blue = 0;
+                else if (blue > 255)
+                    blue = 255;
+                }
+                color = (red * 0x10000) | (green * 0x100) | blue;
+            }
+            data->points[i][j].color = color;
+            j++;
+            printf("Point[%d][%d]: z=%d, red=%d, green=%d, blue=%d, color=%06x\n", 
+       i, j, data->points[i][j].z, red, green, blue, color);
+        }
+        j = 0;
+        i++;
+    }
+}
+*/
