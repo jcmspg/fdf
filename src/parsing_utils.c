@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 17:15:24 by joamiran          #+#    #+#             */
-/*   Updated: 2024/08/24 19:53:07 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/08/27 20:33:01 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,61 +15,46 @@
 static void  count_grid(int fd, w_data *data)
 {
     char    *line;
+    char    **tmp;
     int     num_lines;
     int     num_cols;
     int     i;
 
     num_lines = 0;
-    num_cols = 0;
+    num_cols = -1;
     i = 0;
     line = get_next_line(fd);
 
-    while (line[i] != '\n' && line[i] != '\0')
+    if (!line)
     {
-        if (ft_isdigit(line[i]) || line[i] == '-')
-        {
-            num_cols++;
-            while (ft_isdigit(line[i]) || line[i] == '-')
-                i++;
-            // if theres a comma, we skip the color code
-            if (line[i] == ',')
-            {
-                i++;
-                while (ft_isalnum(line[i]))
-                    i++;
-            }
-        }
-        else
-            i++;
+        fprintf(stderr, "Error: Failed to read line from file\n");
+        exit(1);
     }
-    while (line)
+
+    while (line != NULL)
     {
-        num_lines++;
+        if (num_cols == -1)
+        {
+            tmp = ft_split(line, ' ');
+            if (!tmp)
+            {
+                fprintf(stderr, "Error: Could not allocate memory for tmp\n");
+                exit(1);
+            }
+            num_cols = 0;
+            while (tmp[num_cols])
+            {
+                free(tmp[num_cols]);
+                num_cols++;
+            }
+            free(tmp);
+        }
         free(line);
+        num_lines++;
         line = get_next_line(fd);
     }
-
-    free(line);
-
     data->grid->cols = num_cols;
     data->grid->rows = num_lines;
-}
-
-bool format_checker (const char *file)
-{
-    if (!file)
-    {
-        fprintf(stderr, "Error: No file specified\n");
-        return (false);
-    }
-
-    // checker to see if file is .fdf format
-    if (ft_strncmp(file + ft_strlen(file) - 4, ".fdf", 4))
-    {
-        fprintf(stderr, "Error: File is not in .fdf format\n");
-        return (false);
-    }
-    return (true);
 }
 
 /*
@@ -78,7 +63,7 @@ static int count_columns(const char *line)
     int i;
     int count;
 
-    i = 0;
+    i = 0;0123456789ABCDEF
     count = 0;
     while (line[i] != '\n' && line[i] != '\0')
     {
@@ -96,11 +81,28 @@ static int count_columns(const char *line)
             }
         }
         else
-            i++;
+            i++;0123456789ABCDEF
     }
     return count;
 }
 */
+
+// check if theres any color info in the file. If there is, w_data->has_color =1
+// if not, w_data->has_color = 0
+
+void check_color(const char *line, w_data *data)
+{
+    while (*line)
+    {
+        if (*line == ',')
+        {
+            data->has_color = true;
+           return; 
+        }
+        line++;
+    }
+}
+
 
 char **info_parser(int fd, w_data *data)
 {
@@ -143,6 +145,10 @@ char **info_parser(int fd, w_data *data)
         }
 */
 
+        // check if the line has color info
+        check_color(line, data);
+        
+
         z_values[i] = ft_strdup(line); // or copy the content properly
         if (!z_values[i])
         {
@@ -154,14 +160,17 @@ char **info_parser(int fd, w_data *data)
         free(line);
         i++;
     }
+    printf("has color: %i \n", data->has_color);
     return z_values;
 }
 
+/*
 int ft_getcolor(const char *str)
 {
     char **color;
     int i;
     int j;
+    int k;
 
     j = 0;
 
@@ -171,25 +180,93 @@ int ft_getcolor(const char *str)
         fprintf(stderr, "Error: Could not allocate memory for color values\n");
         exit(1);
     }
-    i = 0;
-    if (color[1])
+
+
+    i = 0; // if the color is not in the correct format, we set it to 0
+           // if it is, we convert it to an int
+    if (color[1] && color[1][0] == '0' && (color[1][1] == 'x'|| color[1][1] == 'X'))
     {
-        if (ft_strncmp(color[1], "0x", 2))
+        j = 2;
+        while (color[1][j])
         {
-            fprintf(stderr, "Error: Color value is not in hexadecimal format\n");
-            printf("color[1]: %s\n", color[1]);
-            free(color);
-            exit(1);
+            if (!ft_isalnum(color[1][j]) || (i >= 8))
+            {
+                k = 0;
+                while (color[k])
+                {
+                    free(color[k]);
+                    k++;
+                }
+                free(color);
+                return (0);
+            }
+            j++;
         }
-        i = ft_atoi_base(color[1] + 2, 16);
+
+        if (j <= 8)
+            i = ft_atoi_base(color[1] + 2, HEX_BASE);
+        else
+            i = 0;
     }
+    j = 0;
     while (color[j])
     {
         free(color[j]);
         j++;
     }
-    return (i);
+    free(color);
+    return i;
 }
+*/
+
+int ft_getcolor(const char *str)
+{
+    char **color;
+    int color_value = 0;  // Default color value is 0 (black)
+    int i;
+
+    // Split the string by ','
+    color = ft_split(str, ',');
+    if (!color)
+    {
+        fprintf(stderr, "Error: Could not allocate memory for color values\n");
+        exit(1);
+    }
+
+    // Check if the color part exists and starts with '0x' or '0X'
+    if (color[1] && color[1][0] == '0' && (color[1][1] == 'x' || color[1][1] == 'X'))
+    {
+        i = 2;
+        // Validate the remaining characters after '0x'
+        while (color[1][i])
+        {
+            if (!ft_isalnum(color[1][i]) || i >= 8)  // Adjusted to allow shorter hex colors like 0xFFF
+            {
+                color_value = 0; // Invalid format, return 0 (default color)
+                break;
+            }
+            i++;
+        }
+        // If valid, convert to an integer (hexadecimal base)
+        if (i <= 8)  // Allow shorter formats like 0xFFF or 0xFFFFFF
+        {
+            color_value = ft_atoi_base(color[1] + 2, HEX_BASE);
+        }
+    }
+
+    // Free allocated memory
+    i = 0;
+    while (color[i])
+    {
+        free(color[i]);
+        i++;
+    }
+    free(color);
+
+    return color_value;
+}
+
+
 
 void assign_info(w_data *data)
 {
@@ -198,8 +275,7 @@ void assign_info(w_data *data)
     char **split_line;
 
     i = 0;
-    j = 0;
-
+    
     while (i < data->grid->rows)
     {
         split_line = ft_split(data->z_values[i], ' ');
@@ -211,10 +287,24 @@ void assign_info(w_data *data)
         j = 0;
         while (j < data->grid->cols)
         {
+            // check if the value is a number
+            if (!ft_isdigit(split_line[j][0]) && split_line[j][0] != '-')
+            {
+                fprintf(stderr, "Error: Invalid character in file\n");
+                //the data is :
+                printf("data: %s\n in point[%d][%d]\n", split_line[j], i, j);
+                exit(1);
+                //if it is, set it to 0
+                data->points[i][j].z = 0;
+            }
+            // assigning the z value to the points array
             data->points[i][j].z = ft_atoi(split_line[j]);
             data->points[i][j].color = ft_getcolor(split_line[j]);
             j++;
         }
+
+        // free the split line
+        j = 0;
         while (split_line[j])
         {
             free(split_line[j]);
@@ -225,25 +315,7 @@ void assign_info(w_data *data)
     }
 }
 
-void print_data(w_data *data)
-{
-    int i;
-    int j;
 
-    i = 0;
-    j = 0;
-
-    while (i < data->grid->rows)
-    {
-        j = 0;
-        while (j < data->grid->cols)
-        {
-            printf("Point[%d][%d]: x = %d, y = %d, z = %d, color = %x\n", i, j, data->points[i][j].x, data->points[i][j].y, data->points[i][j].z, data->points[i][j].color);
-            j++;
-        }
-        i++;
-    }
-}
        
 //reads the file and assigns important values to the data struct
 void    read_fdf(const char *file, w_data *data)
@@ -280,7 +352,7 @@ void    read_fdf(const char *file, w_data *data)
     assign_info(data);
     
     //printing the points coords and colors
-    print_data(data);
+    //print_data(data);
 
     //closing the file
     close(fd);

@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 20:19:20 by joamiran          #+#    #+#             */
-/*   Updated: 2024/08/24 19:21:54 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/08/27 18:52:36 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
 
 # define PI 3.14159265358979323846
 
+# define HEX_BASE "0123456789ABCDEF"
+
 # define ESC 65307
 # define W 119
 # define A 97
@@ -39,10 +41,20 @@
 # define WHELL_UP 4
 # define WHELL_DOWN 5
 
-# define SCALE_FACTOR_Z 1.5
+# define SCALE_FACTOR_Z 0.5
 # define SCALE_FACTOR 1.5
 
+// define colors
+# define RED 0xFF0000
+# define GREEN 0x00FF00
+# define BLUE 0x0000FF
+# define YELLOW 0xFFFF00
+# define CYAN 0x00FFFF
+# define WHITE 0xFFFFFF
 
+# define STD_COLOR 0xFFFFFF
+# define MAX_COLOR 0xFF0000 
+# define MIN_COLOR 0x0000FF
 
 typedef struct image_data
 {
@@ -61,6 +73,14 @@ typedef struct s_grid
 
     int half_x;
     int half_y;
+
+    int max_x;
+    int max_y;
+    int min_x;
+    int min_y;
+
+    int width;
+    int height;
 
 }   t_grid;
 
@@ -96,16 +116,18 @@ typedef struct window_data
     int     window_height;
     char    *title;
 
+    int mid_x;
+    int mid_y;
+
     img_data img;
-    int scale;
-    int scale_z;
+    float scale;
+    float scale_z;
     int min_z;
     int max_z;
+    bool has_color;
     char **z_values;
     t_point **points;
-    t_grid  *grid;
-
-
+    t_grid  *grid;                
 }               w_data;
 
 // data functions
@@ -128,6 +150,8 @@ int ft_getcolor(const char *str);
 void read_fdf(const char *file, w_data *data);
 void assign_info(w_data *data);
 
+void check_color(const char *line, w_data *data);
+
 
 
 // draw functions
@@ -138,6 +162,8 @@ void draw_poly(w_data *data);
 
 int pointcalc (w_data *data);
 t_point *center_point(w_data *data);
+void center_points(w_data *data);
+
 
 // point scaling
 void scale_grid(w_data *data);
@@ -151,8 +177,18 @@ void center_grid(w_data *data);
 
 void pcoords_iso(w_data *data);
 
+//adjusting the grid to the window
+void calc_boundaries(w_data *data);
+void calc_sc_mid(w_data *data);
+void scale_center(w_data *data);
+
+
+
+
+
 //function to colorize points
 void colorize(w_data *data);
+void colorize_gradient(w_data *data);
 
 t_point **make_points(w_data *data);
 
@@ -161,7 +197,7 @@ int ft_abs(int n);
 int ft_max(int a, int b);
 int ft_min(int a, int b);
 int round_n(float n);
-int ft_atoi_base(const char *str, int base);
+int ft_atoi_base(const char *str, const char *base_str);
 
 
 

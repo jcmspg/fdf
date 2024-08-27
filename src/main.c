@@ -48,14 +48,32 @@ int main(int argc, char ** argv)
     
     pcoords_iso(&window);
 
-    center_grid(&window);
+    //center_grid(&window);
+    
+    
+    //center the grid
+    calc_sc_mid(&window);
+    //printf("Mid x: %d\nMid y: %d\n", window.mid_x, window.mid_y);
 
+    //scale the grid
+    scale_center(&window);
 
     //adding z to y coords to create 3d effect
     //
-
+    
     z_assign(&window);
-    colorize(&window);
+    
+    
+    //colorize the grid
+    //if window.has_color is true -> colorize
+    //else -> colorize_gradient
+    
+    if (window.has_color)
+        colorize(&window);
+    else
+        colorize_gradient(&window);
+
+   // center_points(&window);
 
 
     draw_poly(&window);
