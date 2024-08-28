@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_line.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joamiran <joamiran@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: joao <joao@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 20:20:29 by joamiran          #+#    #+#             */
-/*   Updated: 2024/08/27 20:35:26 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/08/28 20:30:30 by joao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int height_to_color(int height, int min_height, int max_height)
     return (color);
 }
 
-static void my_mlx_pixel_put(w_data *data, int x, int y, int color)
+void my_mlx_pixel_put(w_data *data, int x, int y, int color)
 {
     char    *distance;
     if (x < 0 || x >= data->window_width || y < 0 || y >= data->window_height)

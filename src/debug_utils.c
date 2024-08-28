@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joamiran <joamiran@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: joao <joao@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 16:15:11 by joamiran          #+#    #+#             */
-/*   Updated: 2024/08/27 16:15:40 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/08/28 20:17:47 by joao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,20 @@ bool format_checker (const char *file)
         return (false);
     }
     return (true);
+}
+
+// function to free any number of pointers
+void free_pointers(void *ptr, ...)
+{
+    va_list args;
+    void *tmp;
+
+    va_start(args, ptr);
+    tmp = ptr;
+    while (tmp)
+    {
+        free(tmp);
+        tmp = va_arg(args, void *);
+    }
+    va_end(args);
 }

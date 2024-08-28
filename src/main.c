@@ -8,7 +8,6 @@ int main(int argc, char ** argv)
         return 1;
     }
     
-    char *file = argv[1];
     w_data window;
   
     window.title = "FDF";
@@ -25,10 +24,9 @@ int main(int argc, char ** argv)
     window.grid->rows = 0;
     window.grid->cols = 0;
 
-    read_fdf(file, &window);
-   // printf("Rows: %d\nCols: %d\n", window.grid->rows, window.grid->cols);
+    window.file = argv[1];
+
     
-   // window.points = make_points(&window);
     
 
     window.mlx = init_mlx();
@@ -38,82 +36,14 @@ int main(int argc, char ** argv)
         fprintf(stderr, "Failed to initialize mlx\n");
         return 1;
     }
-    
-    create_window(&window); 
-//  printf("Window address: %p\n", window.win);
-
+    create_window(&window);
     create_image(&window);
-//  printf("Image address: %p\n", window.img.address);
 
-    
-    pcoords_iso(&window);
-
-    //center_grid(&window);
-    
-    
-    //center the grid
-    calc_sc_mid(&window);
-    //printf("Mid x: %d\nMid y: %d\n", window.mid_x, window.mid_y);
-
-    //scale the grid
-    scale_center(&window);
-
-    //adding z to y coords to create 3d effect
-    //
-    
-    z_assign(&window);
-    
-    
-    //colorize the grid
-    //if window.has_color is true -> colorize
-    //else -> colorize_gradient
-    
-    if (window.has_color)
-        colorize(&window);
-    else
-        colorize_gradient(&window);
-
-   // center_points(&window);
-
-
-    draw_poly(&window);
-
-    //print the z coord of each point
-    
-   /* int i = 0;
-    int j = 0;
-
-    while (i < window.grid->rows)
-    {
-        j = 0;
-        while (j < window.grid->cols)
-        {
-            printf("z: %d\n", window.points[i][j].z);
-            j++;
-        }
-        i++;
-    }*/
-
-
-    mlx_put_image_to_window(window.mlx, window.win, window.img.img, 0, 0);
+    read_fdf(&window);
+    init_3d(&window);
 
    
-    // display window size and grid size
-    //display the arg[1]
-    mlx_string_put(window.mlx, window.win, 600, 580, 0x00FFFFFF, "File:");
-    //just the file name
-    mlx_string_put(window.mlx, window.win, 600, 600, 0x00FFFFFF, argv[1]);
-    mlx_string_put(window.mlx, window.win, 600, 620, 0x00FFFFFF, "window size:");
-    char *str = ft_itoa(window.window_width);
-    char *str2 = ft_itoa(window.window_height);
-    char *s3 = ft_strjoin(ft_strjoin(str , " X "),  str2);
-    char *s4 = ft_itoa(window.grid->rows);
-    char *s5 = ft_itoa(window.grid->cols);
-    char *s6 = ft_strjoin(ft_strjoin(s4 , " X "),  s5);
-    mlx_string_put(window.mlx, window.win, 600, 640, 0x00FFFFFF, s3);
-    mlx_string_put(window.mlx, window.win, 600, 680, 0x00FFFFFF, "grid size:");
-    mlx_string_put(window.mlx, window.win, 600, 700, 0x00FFFFFF, s6);
-
+    
     // key input handling
     mlx_key_hook(window.win, key_handle, &window);
     

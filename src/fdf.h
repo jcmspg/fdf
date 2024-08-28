@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joamiran <joamiran@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: joao <joao@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 20:19:20 by joamiran          #+#    #+#             */
-/*   Updated: 2024/08/27 18:52:36 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/08/29 00:16:29 by joao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 # include <X11/keysym.h>
 # include <math.h>
 # include <stdbool.h>
+# include <fcntl.h>
+# include <stdarg.h>
 
 # define PI 3.14159265358979323846
 
@@ -32,6 +34,8 @@
 # define A 97
 # define S 115
 # define D 100
+# define C 99
+# define R 114
 # define UP 65362
 # define DOWN 65364
 # define LEFT 65361
@@ -55,6 +59,13 @@
 # define STD_COLOR 0xFFFFFF
 # define MAX_COLOR 0xFF0000 
 # define MIN_COLOR 0x0000FF
+
+# define BACKGROUND 0x000000
+
+# define MOVE_FACTOR 50
+
+# define DEGREE_MAX 360
+# define SCALE_TRIG 1000
 
 typedef struct image_data
 {
@@ -107,6 +118,13 @@ typedef struct s_use
     int e2;
 }   t_bres;
 
+
+typedef struct lookup_table
+{
+    int *sin_table;
+    int *cos_table;
+}   t_lookup;
+
 typedef struct window_data
 {
     void    *mlx;
@@ -115,6 +133,9 @@ typedef struct window_data
     int     window_width;
     int     window_height;
     char    *title;
+    char    *file;
+
+    t_lookup *lookup;
 
     int mid_x;
     int mid_y;
@@ -127,11 +148,13 @@ typedef struct window_data
     bool has_color;
     char **z_values;
     t_point **points;
-    t_grid  *grid;                
+    t_grid  *grid;
 }               w_data;
+
 
 // data functions
 void free_data(w_data *data);
+void free_pointers(void *ptr, ...);
 
 // keybind functions
 int close_window(w_data *data);
@@ -143,18 +166,29 @@ void *init_mlx(void);
 void create_window(w_data *data);
 void create_image(w_data *data);
 
+void my_mlx_pixel_put(w_data *data, int x, int y, int color);
+
+
 // read functions
 bool format_checker(const char *file);
 char **info_parser(int fd, w_data *data);
 int ft_getcolor(const char *str);
-void read_fdf(const char *file, w_data *data);
+void read_fdf(w_data *data);
 void assign_info(w_data *data);
 
 void check_color(const char *line, w_data *data);
+void color_mode(w_data *data);
 
 
 
 // draw functions
+
+void init_3d(w_data *data);
+
+void recreate_model(w_data *data);
+
+void draw_gui(w_data *data);
+
 void draw_line(w_data *data, t_point *p0, t_point *p1);
 void draw_poly(w_data *data);
 
@@ -163,6 +197,7 @@ void draw_poly(w_data *data);
 int pointcalc (w_data *data);
 t_point *center_point(w_data *data);
 void center_points(w_data *data);
+
 
 
 // point scaling
@@ -182,9 +217,16 @@ void calc_boundaries(w_data *data);
 void calc_sc_mid(w_data *data);
 void scale_center(w_data *data);
 
+// moving and rotating the grid functions
+void init_move(w_data *data);
 
+void reset_movement(w_data *data);
 
+void reset_position(w_data *data);
 
+void move(int key, w_data *data);
+
+t_point **new_points(w_data *data);
 
 //function to colorize points
 void colorize(w_data *data);
@@ -198,6 +240,13 @@ int ft_max(int a, int b);
 int ft_min(int a, int b);
 int round_n(float n);
 int ft_atoi_base(const char *str, const char *base_str);
+
+// lookup table functions
+void trig_table_sin(w_data *data);
+void trig_table_cos(w_data *data);
+int lookup_sin(w_data *data, int angle);
+int lookup_cos(w_data *data, int angle);
+
 
 
 
