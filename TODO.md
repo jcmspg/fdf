@@ -16,3 +16,15 @@
 6. need to make a decent gui
 
 7. also, adding a splash screen would be fun.
+
+### make a toggle for keyboard commands
+
+. for instance, press P -> WASD to pan around
+              press R -> WASD QE to rotate around each axis
+              press Z -> WS to zoom in and out
+              press T -> WS increase or decrease the heights
+
+. non toggle:
+              press Z -> RESET
+              press C -> switch color scheme (grayscale, RGB, etc etc)
+              
