@@ -1,8 +1,8 @@
-#TODO
+# TODO
 
 
 
-##MAYBE ADD A FEATURE TO TURN HIDDEN LINES ON / OFF ?? --for the sake of readability
+## MAYBE ADD A FEATURE TO TURN HIDDEN LINES ON / OFF ?? --for the sake of readability
 
 1. refactor the reset_movement so it wont read the file all over again.. make it faster and simpler.
 
