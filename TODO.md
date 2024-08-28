@@ -4,7 +4,7 @@
 
 ## MAYBE ADD A FEATURE TO TURN HIDDEN LINES ON / OFF ?? --for the sake of readability
 
-1. refactor the reset_movement so it wont read the file all over again.. make it faster and simpler.
+==1. refactor the reset_movement so it wont read the file all over again.. make it faster and simpler.==
 
 2. need to implement zoom
 3. need to implement rotation
@@ -19,12 +19,20 @@
 
 ### make a toggle for keyboard commands
 
-. for instance, press P -> WASD to pan around
-              press R -> WASD QE to rotate around each axis
-              press Z -> WS to zoom in and out
-              press T -> WS increase or decrease the heights
+- press P
+  : ASD to pan around
+- press R
+  : WASD QE to rotate around each axis
+- press R
+  : WASD QE to rotate around each axis
+- press Z
+  : WS to zoom in and out
+- press T
+  : WS increase or decrease the heights
 
-. non toggle:
-              press Z -> RESET
-              press C -> switch color scheme (grayscale, RGB, etc etc)
+- non toggle
+  - press Z
+    : RESET
+  - press C
+    : switch color scheme (grayscale, RGB, etc etc)
               
