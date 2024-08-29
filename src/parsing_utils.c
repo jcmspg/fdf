@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joao <joao@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 17:15:24 by joamiran          #+#    #+#             */
-/*   Updated: 2024/08/29 00:13:35 by joao             ###   ########.fr       */
+/*   Updated: 2024/08/29 21:23:10 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ static void count_grid(int fd, w_data *data)
                 free(tmp[num_cols]);
                 num_cols++;
             }
+			draw_poly(data);
             free(tmp);
         }
         free(line);
@@ -55,39 +56,10 @@ static void count_grid(int fd, w_data *data)
     data->grid->rows = num_lines;
 }
 
-/*
-static int count_columns(const char *line)
-{
-    int i;
-    int count;
 
-    i = 0;0123456789ABCDEF
-    count = 0;
-    while (line[i] != '\n' && line[i] != '\0')
-    {
-        if (ft_isdigit(line[i]) || line[i] == '-')
-        {
-            count++;
-            while (ft_isdigit(line[i]) || line[i] == '-')
-                i++;
-            // if theres a comma, we skip the color code
-            if (line[i] == ',')
-            {
-                i++;
-                while (ft_isalnum(line[i]))
-                    i++;
-            }
-        }
-        else
-            i++;0123456789ABCDEF
-    }
-    return count;
-}
-*/
 
 // check if theres any color info in the file. If there is, w_data->has_color =1
 // if not, w_data->has_color = 0
-
 void check_color(const char *line, w_data *data)
 {
     while (*line)
@@ -106,8 +78,6 @@ char **info_parser(int fd, w_data *data)
     char **z_values;
     char *line;
     int i;
-    //   int expected_cols;
-    //   int line_cols;
 
     z_values = ft_calloc(data->grid->rows, sizeof(char *));
     if (!z_values)
@@ -115,8 +85,6 @@ char **info_parser(int fd, w_data *data)
         fprintf(stderr, "Error: Could not allocate memory for z_values\n");
         exit(1);
     }
-
-    //   expected_cols = data->grid->cols;
 
     i = 0;
     while (i < data->grid->rows)
@@ -127,21 +95,6 @@ char **info_parser(int fd, w_data *data)
             fprintf(stderr, "Error: Failed to read line from file\n");
             exit(1);
         }
-
-        //     line_cols = count_columns(line);
-        /*      if (line_cols != expected_cols)
-              {
-                  fprintf(stderr, "Error: Line %d has %d columns, expected %d\n", i, line_cols, expected_cols);
-                  free(line);
-                  while (i > 0)
-                  {
-                      free(z_values[i]);
-                      i--;
-                  }
-                  exit(1);
-              }
-      */
-
         // check if the line has color info
         check_color(line, data);
 
@@ -160,61 +113,7 @@ char **info_parser(int fd, w_data *data)
     return z_values;
 }
 
-/*
-int ft_getcolor(const char *str)
-{
-    char **color;
-    int i;
-    int j;
-    int k;
-
-    j = 0;
-
-    color = ft_split(str, ',');
-    if (!color)
-    {
-        fprintf(stderr, "Error: Could not allocate memory for color values\n");
-        exit(1);
-    }
-
-
-    i = 0; // if the color is not in the correct format, we set it to 0
-           // if it is, we convert it to an int
-    if (color[1] && color[1][0] == '0' && (color[1][1] == 'x'|| color[1][1] == 'X'))
-    {
-        j = 2;
-        while (color[1][j])
-        {
-            if (!ft_isalnum(color[1][j]) || (i >= 8))
-            {
-                k = 0;
-                while (color[k])
-                {
-                    free(color[k]);
-                    k++;
-                }
-                free(color);
-                return (0);
-            }
-            j++;
-        }
-
-        if (j <= 8)
-            i = ft_atoi_base(color[1] + 2, HEX_BASE);
-        else
-            i = 0;
-    }
-    j = 0;
-    while (color[j])
-    {
-        free(color[j]);
-        j++;
-    }
-    free(color);
-    return i;
-}
-*/
-
+// Get the color value from the string
 int ft_getcolor(const char *str)
 {
     char **color;
@@ -316,6 +215,14 @@ void assign_info(w_data *data)
         free(split_line);
         i++;
     }
+    // free z_values
+    i = 0;
+    while (data->z_values[i])
+    {
+        free(data->z_values[i]);
+        i++;
+    }
+     free(data->z_values);
 }
 
 // reads the file and assigns important values to the data struct
@@ -346,11 +253,14 @@ void read_fdf(w_data *data)
     data->points = make_points(data);
     // getting the Z and color values from the file
     data->z_values = info_parser(fd, data);
-    
+	
+	
     // assigning the Z and color values to the points array
     assign_info(data);
 
-    // printing the points coords and colors
+	//create backup points values
+    
+	// printing the points coords and colors
     // print_data(data);
 
     // closing the file

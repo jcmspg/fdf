@@ -23,6 +23,7 @@ int main(int argc, char ** argv)
     }
     window.grid->rows = 0;
     window.grid->cols = 0;
+	window.scale = 1.0;
 
     window.file = argv[1];
 
@@ -40,8 +41,11 @@ int main(int argc, char ** argv)
     create_image(&window);
 
     read_fdf(&window);
-    init_3d(&window);
+    build_model(&window);
+	backup_data(&window);
+	make_image(&window);
 
+	reset_position(&window);
    
     
     // key input handling

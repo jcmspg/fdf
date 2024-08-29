@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   grid_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joamiran <joamiran@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:15:46 by joamiran          #+#    #+#             */
-/*   Updated: 2024/08/27 19:12:21 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/08/29 20:28:10 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,8 @@ t_point **make_points(w_data *data)
         j = 0;
         while (j < cols)
         {
-            points[i][j].x = j * (pointcalc(data));
-            points[i][j].y = i * (pointcalc(data));
+            points[i][j].x = (int)j * (pointcalc(data));
+            points[i][j].y = (int)i * (pointcalc(data));
             points[i][j].z = 0;
             j++;
 
@@ -187,4 +187,8 @@ void scale_center(w_data *data)
     }
 }
 
-
+void backup_data(w_data *data)
+{
+	data->points_backup = backup_points(data);
+	data->points_restore = backup_points(data);
+}

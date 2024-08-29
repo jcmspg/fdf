@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joao <joao@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 20:19:20 by joamiran          #+#    #+#             */
-/*   Updated: 2024/08/29 00:16:29 by joao             ###   ########.fr       */
+/*   Updated: 2024/08/29 20:28:49 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,9 @@
 # define WHELL_DOWN 5
 
 # define SCALE_FACTOR_Z 0.5
-# define SCALE_FACTOR 1.5
+# define SCALE_FACTOR_IN 1.1
+# define SCALE_FACTOR_OUT 0.9
+# define SCALE_FACTOR 1.1
 
 // define colors
 # define RED 0xFF0000
@@ -148,6 +150,8 @@ typedef struct window_data
     bool has_color;
     char **z_values;
     t_point **points;
+	t_point **points_backup;
+	t_point **points_restore;
     t_grid  *grid;
 }               w_data;
 
@@ -183,7 +187,9 @@ void color_mode(w_data *data);
 
 // draw functions
 
-void init_3d(w_data *data);
+void build_model(w_data *data);
+
+void make_image(w_data *data);
 
 void recreate_model(w_data *data);
 
@@ -192,13 +198,16 @@ void draw_gui(w_data *data);
 void draw_line(w_data *data, t_point *p0, t_point *p1);
 void draw_poly(w_data *data);
 
+
 // point arithmetics
 
 int pointcalc (w_data *data);
 t_point *center_point(w_data *data);
 void center_points(w_data *data);
 
+void zoom(int keycode, w_data *data);
 
+void restore_origin(w_data *data);
 
 // point scaling
 void scale_grid(w_data *data);
@@ -226,13 +235,20 @@ void reset_position(w_data *data);
 
 void move(int key, w_data *data);
 
+void clear_image(w_data *data);
+
+void update_img(w_data *data);
+
 t_point **new_points(w_data *data);
+
+void backup_data(w_data *data);
 
 //function to colorize points
 void colorize(w_data *data);
 void colorize_gradient(w_data *data);
 
 t_point **make_points(w_data *data);
+t_point **backup_points(w_data *data);
 
 // math aux functions
 int ft_abs(int n);

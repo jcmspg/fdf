@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   point_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joao <joao@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 19:31:12 by joamiran          #+#    #+#             */
-/*   Updated: 2024/08/28 21:25:15 by joao             ###   ########.fr       */
+/*   Updated: 2024/08/29 18:59:30 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,8 @@ void pcoords_iso(w_data *data)
             x_iso = data->points[i][j].x - data->points[i][j].y;
             y_iso = round_n((data->points[i][j].x + data->points[i][j].y) / 2.0);
 
-            data->points[i][j].x = (int)x_iso;
-            data->points[i][j].y = (int)y_iso;
+            data->points[i][j].x = x_iso;
+            data->points[i][j].y = y_iso;
 
             j++;
         }
@@ -204,17 +204,64 @@ void colorize_gradient(w_data *data)
     }
 }
 
-
-// handle function to group up all the functions that need to be called
-// for making the points
-
-void recreate_model(w_data *data)
+void build_model(w_data *data)
 {
-    data->points = make_points(data);
-    pcoords_iso(data);
-    calc_sc_mid(data);
-    scale_center(data);
-    z_assign(data);
-    color_mode(data);
-    draw_poly(data);
+	pcoords_iso(data);
+	calc_sc_mid(data);
+	scale_center(data);
+	z_assign(data);
+	color_mode(data);
+	draw_poly(data);
+}
+
+
+t_point	**backup_points(w_data *data)
+{
+	int lines;
+    int cols;
+    int i;
+    int j;
+    t_point **points;
+
+    lines = data->grid->rows;
+    cols = data->grid->cols;
+    
+    points = (t_point **)ft_calloc(sizeof(t_point *) , (cols * lines));
+    if (!points)
+    {
+        fprintf(stderr, "Error: Could not allocate memory for points\n");
+        exit(1);
+    }
+    i = 0;
+    while (i < lines)
+    {
+        points[i] = (t_point *)ft_calloc(sizeof(t_point) , cols);
+        if (!points[i])
+        {
+            fprintf(stderr, "Error: Could not allocate memory for points\n");
+            while (i >= 0)
+            {
+                free(points[i]);
+                i--;
+            }
+            free(points);
+            exit(1);
+        }
+        i++;
+    }
+    i = 0;
+    while (i < lines)
+    {
+        j = 0;
+        while (j < cols)
+        {
+            points[i][j].x = data->points[i][j].x;
+            points[i][j].y = data->points[i][j].y;
+            points[i][j].z = data->points[i][j].z;
+            j++;
+
+        }
+        i++;
+    }
+	return (points);
 }

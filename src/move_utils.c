@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joao <joao@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 18:28:26 by joao              #+#    #+#             */
-/*   Updated: 2024/08/29 00:17:41 by joao             ###   ########.fr       */
+/*   Updated: 2024/08/29 20:30:55 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,24 +16,55 @@
 void    reset_position(w_data *data)
 {
     int i;
+	int j;
 
     i = 0;
     if (data->points != NULL)
     {
-        //clear the points
-        while (data->points[i])
+        //assign points_backup values to points
+        while (i < data->grid->rows)
         {
-            free(data->points[i]);
-            i++;
-        }
-        free(data->points);
-    }
-    
-    //recreate the model
-    recreate_model(data);
+			j = 0;
+			while( j < data->grid->cols)
+			{
+				data->points[i][j].x = data->points_backup[i][j].x;
+				data->points[i][j].y = data->points_backup[i][j].y;
+				data->points[i][j].z = data->points_backup[i][j].z;
+				j++;
+			}
+			i++;
+		}
+	}
+	data->scale = 1;
 }
 
+void restore_origin(w_data *data)
+{
+	int i;
+	int j;
 
+	i = 0;
+	if (data->points != NULL)
+	{
+		//assign points_backup values to points
+		while (i < data->grid->rows)
+		{
+			j = 0;
+			while( j < data->grid->cols)
+			{
+				data->points[i][j].x = data->points_restore[i][j].x;
+				data->points[i][j].y = data->points_restore[i][j].y;
+				data->points[i][j].z = data->points_restore[i][j].z;
+				data->points_backup[i][j].x = data->points_restore[i][j].x;
+				data->points_backup[i][j].y = data->points_restore[i][j].y;
+				data->points_backup[i][j].z = data->points_restore[i][j].z;
+				j++;
+			}
+			i++;
+		}
+	}
+	data->scale = 1;
+}
 
 //function get the movement values from the keyboard
 void	move(int keycode, w_data *data)
@@ -62,13 +93,14 @@ void	move(int keycode, w_data *data)
         j = 0;
         while(j < data->grid->cols)
         {
-            data->points[i][j].x = data->points[i][j].x + movement_x;
-            data->points[i][j].y = data->points[i][j].y + movement_y;
+            data->points[i][j].x += movement_x;
+            data->points[i][j].y += movement_y;
+
+			data->points_backup[i][j].x += movement_x;
+			data->points_backup[i][j].y += movement_y;
+			
             j++;
         }
         i++;
     }
 }
-
-
-

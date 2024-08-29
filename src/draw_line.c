@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_line.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joao <joao@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 20:20:29 by joamiran          #+#    #+#             */
-/*   Updated: 2024/08/28 20:30:30 by joao             ###   ########.fr       */
+/*   Updated: 2024/08/29 19:09:48 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ static void bresen_calc (t_point *p0, t_point *p1, t_bres *bresen)
     bresen->x0 = p0->x;
     bresen->y0 = p0->y;
     bresen->z0 = p0->z;
-    bresen->dx = abs(p1->x - p0->x);
-    bresen->dy = abs(p1->y - p0->y);
-    bresen->dz = abs(p1->z - p0->z);
+    bresen->dx = ft_abs(p1->x - p0->x);
+    bresen->dy = ft_abs(p1->y - p0->y);
+    bresen->dz = ft_abs(p1->z - p0->z);
     bresen->err = bresen->dx - bresen->dy;
     bresen->e2 = 2 * bresen->err;
 }
