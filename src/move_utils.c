@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: joao <joao@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 18:28:26 by joao              #+#    #+#             */
-/*   Updated: 2024/08/29 20:30:55 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/08/30 02:41:55 by joao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void    reset_position(w_data *data)
 		}
 	}
 	data->scale = 1;
+	data->scale_z = 1;
 }
 
 void restore_origin(w_data *data)

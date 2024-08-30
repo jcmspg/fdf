@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   display_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: joao <joao@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 19:11:54 by joamiran          #+#    #+#             */
-/*   Updated: 2024/08/29 21:07:22 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/08/30 04:31:40 by joao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,32 +108,70 @@ void create_image(w_data *data)
 
 void draw_gui(w_data *data)
 {
+    int x_left = data->window_width * 0.05; // 5% from the left
+    int y = data->window_height * 0.1; // 10% from the top
+    int text_color = 0xFFFFFF; // Example color
+    int line_spacing = 15; // Tighter line spacing
 
-	// display window size and grid size
-	// display the arg[1]
-	mlx_string_put(data->mlx, data->win, 600, 580, 0x00FFFFFF, "File:");
-	// just the file name
-	mlx_string_put(data->mlx, data->win, 600, 600, 0x00FFFFFF, data->file);
-	mlx_string_put(data->mlx, data->win, 600, 620, 0x00FFFFFF, "window size:");
-/*	char *s1 = ft_itoa(data->window_width);
-	char *s2 = ft_itoa(data->window_height);
-	char *s4 = ft_itoa(data->grid->rows);
-	char *s5 = ft_itoa(data->grid->cols);
-	char *s3 = ft_strjoin(ft_strjoin(str, " X "), str2);
-	char *s6 = ft_strjoin(ft_strjoin(s4, " X "), s5);
-	mlx_string_put(data->mlx, data->win, 600, 640, 0x00FFFFFF, s3);
-	mlx_string_put(data->mlx, data->win, 600, 680, 0x00FFFFFF, "grid size:");
-	mlx_string_put(data->mlx, data->win, 600, 700, 0x00FFFFFF, s6);
+    // Display ASCII art
+    int ascii_art_x = data->window_width - 200; // Right aligned
+    int ascii_art_y = y;
+    mlx_string_put(data->mlx, data->win, ascii_art_x, ascii_art_y, text_color, "  _____  ____  _____ ");
+    mlx_string_put(data->mlx, data->win, ascii_art_x, ascii_art_y + line_spacing, text_color, " |  ___||  _ \\|  ___|");
+    mlx_string_put(data->mlx, data->win, ascii_art_x, ascii_art_y + 2 * line_spacing, text_color, " | |_   | | | | |_   ");
+    mlx_string_put(data->mlx, data->win, ascii_art_x, ascii_art_y + 3 * line_spacing, text_color, " |  _|  | |_| |  _|  ");
+    mlx_string_put(data->mlx, data->win, ascii_art_x, ascii_art_y + 4 * line_spacing, text_color, " |_|    |_____|_| ");
 
-	// free the strings
-    free(s1);
-    free(s2);
-    free(s3);
-    free(s4);
-    free(s5);
-    free(s6);
+    // Display the scale factor
+    char scale_factor[50];
+    sprintf(scale_factor, "%.2f", data->scale);
+    mlx_string_put(data->mlx, data->win, x_left, y, text_color, "Scale:");
+    mlx_string_put(data->mlx, data->win, x_left + 50, y, text_color, scale_factor);
 
-	//free_pointers(s3, s6, s1, s2, s4, s5, NULL);*/
+    // Display the highest z value
+    char highest_z[50];
+    sprintf(highest_z, "%d", data->max_z);
+    mlx_string_put(data->mlx, data->win, x_left, y + line_spacing, text_color, "Max Z:");
+    mlx_string_put(data->mlx, data->win, x_left + 50, y + line_spacing, text_color, highest_z);
+
+    // Display the lowest z value
+    char lowest_z[50];
+    sprintf(lowest_z, "%d", data->min_z);
+    mlx_string_put(data->mlx, data->win, x_left, y + 2 * line_spacing, text_color, "Min Z:");
+    mlx_string_put(data->mlx, data->win, x_left + 50, y + 2 * line_spacing, text_color, lowest_z);
+
+    // Display the zoom factor
+    char zoom_factor[50];
+    sprintf(zoom_factor, "%.2f", data->scale);
+    mlx_string_put(data->mlx, data->win, x_left, y + 3 * line_spacing, text_color, "Zoom:");
+    mlx_string_put(data->mlx, data->win, x_left + 50, y + 3 * line_spacing, text_color, zoom_factor);
+
+    // Display the color mode
+    char color_mode[50];
+    sprintf(color_mode, "%d", data->color_mode);
+    mlx_string_put(data->mlx, data->win, x_left, y + 4 * line_spacing, text_color, "Color:");
+    mlx_string_put(data->mlx, data->win, x_left + 50, y + 4 * line_spacing, text_color, color_mode);
+
+    // Display the file name
+    mlx_string_put(data->mlx, data->win, x_left, y + 5 * line_spacing, text_color, "File:");
+    mlx_string_put(data->mlx, data->win, x_left + 50, y + 5 * line_spacing, text_color, data->file);
+
+    // Display the window size
+    char window_size[50];
+    sprintf(window_size, "%dx%d", data->window_width, data->window_height);
+    mlx_string_put(data->mlx, data->win, x_left, y + 6 * line_spacing, text_color, "Window:");
+    mlx_string_put(data->mlx, data->win, x_left + 50, y + 6 * line_spacing, text_color, window_size);
+
+    // Display the grid size
+    char grid_size[50];
+    sprintf(grid_size, "%dx%d", data->grid->rows, data->grid->cols);
+    mlx_string_put(data->mlx, data->win, x_left, y + 7 * line_spacing, text_color, "Grid:");
+    mlx_string_put(data->mlx, data->win, x_left + 50, y + 7 * line_spacing, text_color, grid_size);
+
+    // Display the author's name
+    int author_x = data->window_width - 100; // Right aligned
+    int author_y = data->window_height - 20; // Bottom aligned
+    mlx_string_put(data->mlx, data->win, author_x, author_y, text_color, "joamiran");
 }
 
 void make_image(w_data *data)
@@ -166,10 +204,21 @@ void clear_image(w_data *data)
 void update_img(w_data *data)
 {
 	clear_image(data);
+	color_mode(data);
 	draw_poly(data);
 	make_image(data);
 }
 // Key functions
+
+void cycle_color_mode(int key, w_data *data)
+{
+	if (key == C)
+	{
+		data->color_mode++;
+		if (data->color_mode > 2)
+			data->color_mode = 0;
+	}
+}
 
 int key_handle(int key, w_data *data)
 {
@@ -183,8 +232,8 @@ int key_handle(int key, w_data *data)
 	}
 	if (key == C)
 	{
-		clear_image(data);
-		make_image(data);
+		cycle_color_mode(key, data);
+		update_img(data);
 		draw_gui(data);
 	}
 	if (key == R)
@@ -199,5 +248,14 @@ int key_handle(int key, w_data *data)
 		update_img(data);
 		draw_gui(data);
 	}
+	if (key == LEFT || key == RIGHT)
+	{
+		scale_z(key, data);
+		z_assign(data);
+		z_assign_backup(data);
+		update_img(data);
+		draw_gui(data);
+	}
 	return 0;
 }
+

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   point_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: joao <joao@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 19:31:12 by joamiran          #+#    #+#             */
-/*   Updated: 2024/08/29 18:59:30 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/08/30 02:56:36 by joao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ void z_assign(w_data *data)
     {
         while (j < data->grid->cols)
         {
-            data->points[i][j].y = (data->points[i][j].y - (data->points[i][j].z * SCALE_FACTOR_Z));
+            data->points[i][j].y -= (data->points[i][j].z * data->scale_z);
             j++;
         }
         j = 0;
@@ -165,6 +165,8 @@ void colorize_gradient(w_data *data)
     int green;
     int blue;
 
+    int z;
+
     double ratio;
 
     i = 0;
@@ -180,21 +182,87 @@ void colorize_gradient(w_data *data)
     {
         while (j < data->grid->cols)
         {
-            if (data->points[i][j].z == max)
+            z = data->points[i][j].z;
+            if (z == 0)
+                color = STD_COLOR;
+            else if (z == max)
                 color = MAX_COLOR;
-            else if (data->points[i][j].z == 0)
-                color = WHITE;
-            else if (data->points[i][j].z == min)
+            else if (z == min)
                 color = MIN_COLOR;
             else
             {
                 // the ratio will be the percentage of the height of the point
-                ratio = ((double)data->points[i][j].z - min) / range;
-                red = (int)((1 - ratio) * 255);
-                green = 0;
-                blue = (int)(ratio * 255);
+                ratio = ((double)z - min) / range;
+                
+                // if z > 0, interpolate between white and red
+                if (z > 0)
+                {
+                    red = (int)(ratio * 255);
+                    green = (int)((1 - ratio) * 255);
+                    blue = 255 * (1 - ratio);
+                }
+                // if z < 0, interpolate between white and blue
+                else
+                {
+                    red = (int)(255 * (1 + ratio));
+                    green = (int)((1 - ratio) * 255);
+                    blue = (int)(-ratio * 255);
+                }
+                
+                color = (red << 16) + (green << 8) + blue;
+            }
+            data->points[i][j].color = color;
+            j++;
+        }
+        j = 0;
+        i++;
+    }
+}
 
-                color = (red * 256 * 256) + (green * 256) + blue;
+// colorize but in grayscale
+void colorize_grayscale(w_data *data)
+{
+    int i;
+    int j;
+    int max;
+    int min;
+    int range;
+    int color;
+    int z;
+    int gray;
+
+    double ratio;
+
+    i = 0;
+    j = 0;
+    max = data->max_z;
+    min = data->min_z;
+    range = max - min;
+
+    if (range == 0)
+        range = 1;
+    
+    while (i < data->grid->rows)
+    {
+        while (j < data->grid->cols)
+        {
+            z = data->points[i][j].z;
+            if (z == 0)
+                color = MEDIUM_GRAY;
+            else if (z == max)
+                color = LIGHT_GRAY;
+            else if (z == min)
+                color = DARK_GRAY;
+            else
+            {
+                // the ratio will be the percentage of the height of the point
+                ratio = ((double)z - min) / range;
+                
+                // interpolate between black and white
+                gray = (int)(64 + ratio * (192 - 64));
+
+                // assign the color
+                color = (gray << 16) + (gray << 8) + gray;
             }
             data->points[i][j].color = color;
             j++;

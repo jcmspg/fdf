@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: joao <joao@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 20:19:20 by joamiran          #+#    #+#             */
-/*   Updated: 2024/08/29 20:28:49 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/08/30 03:59:08 by joao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,9 @@
 # define WHELL_UP 4
 # define WHELL_DOWN 5
 
-# define SCALE_FACTOR_Z 0.5
+# define SCALE_FACTOR_Z 1
 # define SCALE_FACTOR_IN 1.1
 # define SCALE_FACTOR_OUT 0.9
-# define SCALE_FACTOR 1.1
 
 // define colors
 # define RED 0xFF0000
@@ -57,10 +56,14 @@
 # define YELLOW 0xFFFF00
 # define CYAN 0x00FFFF
 # define WHITE 0xFFFFFF
+# define BLACK 0x000000
+# define DARK_GRAY 0x808080
+# define LIGHT_GRAY 0xC0C0C0
+# define MEDIUM_GRAY 0xA9A9A9
 
-# define STD_COLOR 0xFFFFFF
-# define MAX_COLOR 0xFF0000 
-# define MIN_COLOR 0x0000FF
+# define STD_COLOR WHITE
+# define MAX_COLOR RED 
+# define MIN_COLOR BLUE
 
 # define BACKGROUND 0x000000
 
@@ -147,7 +150,8 @@ typedef struct window_data
     float scale_z;
     int min_z;
     int max_z;
-    bool has_color;
+    int has_color;
+    int color_mode;
     char **z_values;
     t_point **points;
 	t_point **points_backup;
@@ -183,6 +187,7 @@ void assign_info(w_data *data);
 void check_color(const char *line, w_data *data);
 void color_mode(w_data *data);
 
+void colorize_grayscale(w_data *data);
 
 
 // draw functions
@@ -198,21 +203,23 @@ void draw_gui(w_data *data);
 void draw_line(w_data *data, t_point *p0, t_point *p1);
 void draw_poly(w_data *data);
 
+void cycle_color_mode(int key, w_data *data);
 
 // point arithmetics
 
+void find_min_max_z(w_data *data);
 int pointcalc (w_data *data);
 t_point *center_point(w_data *data);
 void center_points(w_data *data);
 
-void zoom(int keycode, w_data *data);
+void zoom(int key, w_data *data);
 
 void restore_origin(w_data *data);
 
 // point scaling
 void scale_grid(w_data *data);
 
-
+void z_assign_backup(w_data *data);
 
 // adding z to y to make the grid 3D
 void z_assign(w_data *data);
@@ -234,6 +241,8 @@ void reset_movement(w_data *data);
 void reset_position(w_data *data);
 
 void move(int key, w_data *data);
+
+void scale_z (int key, w_data *data);
 
 void clear_image(w_data *data);
 
@@ -262,7 +271,6 @@ void trig_table_sin(w_data *data);
 void trig_table_cos(w_data *data);
 int lookup_sin(w_data *data, int angle);
 int lookup_cos(w_data *data, int angle);
-
 
 
 

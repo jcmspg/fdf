@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   scale_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: joao <joao@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 17:16:25 by joamiran          #+#    #+#             */
-/*   Updated: 2024/08/29 20:18:39 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/08/30 03:35:51 by joao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void scale_grid(w_data *data)
 	data->scale = scale_factor;
 }
 
-void zoom(int keycode, w_data *data)
+void zoom(int key, w_data *data)
 {
 	int center_x;
 	int center_y;
@@ -66,10 +66,9 @@ void zoom(int keycode, w_data *data)
 	int i;
 	int j;
 
-	
-	if (keycode == UP)
+	if (key == UP)
 		data->scale *= SCALE_FACTOR_IN;
-	if (keycode == DOWN)
+	if (key == DOWN)
 		data->scale *= SCALE_FACTOR_OUT;
 
 	if (data->scale < 0.1f)
@@ -79,8 +78,7 @@ void zoom(int keycode, w_data *data)
 
 	center_x = data->window_height / 2;
 	center_y = data->window_width / 2;
-	
-		
+
 	i = 0;
 	while (i < data->grid->rows)
 	{
@@ -89,10 +87,10 @@ void zoom(int keycode, w_data *data)
 		{
 			origin_x = data->points_backup[i][j].x;
 			origin_y = data->points_backup[i][j].y;
-		
+
 			new_x = (int)((origin_x - center_x) * data->scale + center_x);
 			new_y = (int)((origin_y - center_y) * data->scale + center_y);
-			
+
 			data->points[i][j].x = new_x;
 			data->points[i][j].y = new_y;
 			j++;
@@ -101,3 +99,32 @@ void zoom(int keycode, w_data *data)
 	}
 }
 
+// function to scale the height of z values
+void scale_z(int key, w_data *data)
+{
+
+	if (key == LEFT)
+		data->scale_z -= SCALE_FACTOR_Z;
+	if (key == RIGHT)
+		data->scale_z += SCALE_FACTOR_Z;
+}
+
+void z_assign_backup(w_data *data)
+{
+	int i;
+	int j;
+
+	i = 0;
+	while (i < data->grid->rows)
+	{
+		j = 0;
+		while (j < data->grid->cols)
+		{
+			// Adjust y based on z and scale_z
+            data->points_backup[i][j].y -= (data->points_backup[i][j].z * data->scale_z);
+            j++;
+		}
+		i++;
+	}
+	data->scale_z = 0;
+}

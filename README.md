@@ -1,6 +1,7 @@
 # FDF Project
 ### (42 School Project | still in progress)
 ---
+![t2](t2.jpg)
 ---
 
 ## Overview
@@ -12,7 +13,7 @@ The FDF (Fil De Fer) project is a graphical program that reads a file containing
 
 - Reads 3D map data from a file in the form of coordinates.
 - Visualizes the 3D map in a 2D isometric projection.
-- Displays window size and points' coordinates on the screen.
+- Displays relevant info on the screen.
 - Supports basic interaction via keyboard and window events.
 
 ## Getting Started
@@ -26,31 +27,91 @@ The FDF (Fil De Fer) project is a graphical program that reads a file containing
 
 1. **Clone the repository:**
 
-    ```sh
-    git clone https://github.com/yourusername/fdf.git
-    cd fdf
-    ```
+```sh
+git clone https://github.com/jcmspg/fdf.git
+cd fdf
+```
 
 2. **Build the project:**
 
-    ```sh
-    make
-    ```
+```sh
+make
+```
 
-### Usage
+### Running it
 
 To run the program, use the following command:
 
 ```sh
 ./fdf <file>
-
-
-./fdf maps/test_maps/10-2.fdf
 ```
+### Fdf file format
+The `fdf` program reads .fdf files, which are text files representing 3D maps. Each line in the file corresponds to a row of points in the grid, and each number represents the height of a point. Points can also have optional color values specified in hexadecimal format.
+
+#### Example .fdf file
+```
+0  0  0  0  0
+0  1  1  1  0
+0  1  2  1  0
+0  1  1  1  0
+0  0  0  0  0
+```
+In this example, the grid is a 5x5 matrix where the numbers represent the height of each point. The center of the grid has higher values, creating a small hill.
+
+#### Example with colors
+```
+0  0  0  0  0
+0  1,0xFF0000  1,0x00FF00  1,0x0000FF  0
+0  1,0xFFFF00  2,0xFF00FF  1,0x00FFFF  0
+0  1,0xFFFFFF  1,0x000000  1,0x888888  0
+0  0  0  0  0
+```
+In this example, each height value is followed by a comma ',' and a hexadecimal color code, specifying the color of that point.
+
+#### Usage
+
+To run the program with an .fdf file:
+```
+./fdf path/to/your/file.fdf
+```
+Or just use some of the provided maps, for example:
+```
+./fdf maps/test_maps/42.fdf
+```
+In the previous case, the program should produce something like this
+![42.fdf](example.jpg)
+
+You can also generate a random map using the map_generator.oy script located in the maps/ directory:
+
+```sh
+python3 maps/map_generator.py
+```
+
+
+this will create a file name `height_map.fdf` in your `maps/` folder that you can use with the fdf executable:
+
+```sh
+./fdf maps/height_map.fdf
+```
+
+Feel free to modify tge values in the scrip to generate different grid patterns. 
+
+
+**there is some degree of interactivity, here are the controls you can press:**
+ - WASD to pan the grid around
+ - UP DOWN to zoom in and out
+ - LEFT RIGHT to increase or decrease the height values
+ - C to change colour scheme
+ - R to reset view
+ - ESC to close
 
 
 Functions Used
 
+    . *WIP*
+    ___
+    ___
+    
     . read_fdf(file, grid): Reads the 3D map data from the file and stores it in the grid structure.
     . init_mlx(): Initializes the MiniLibX library.
     . create_window(window): Creates a window with the specified dimensions.
@@ -77,5 +138,5 @@ Dependencies
 This project is licensed under the MIT License. See the LICENSE file for details.
 Acknowledgments
 
-    Thanks to the authors and maintainers of MiniLibX.
-    Special thanks to the 42 School for providing the project specifications and environment.
+Thanks to the authors and maintainers of MiniLibX.
+Special thanks to the 42 School for providing the project specifications and environment.

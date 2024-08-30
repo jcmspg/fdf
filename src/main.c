@@ -24,6 +24,7 @@ int main(int argc, char ** argv)
     window.grid->rows = 0;
     window.grid->cols = 0;
 	window.scale = 1.0;
+    window.scale_z = 1.0;
 
     window.file = argv[1];
 
@@ -46,8 +47,9 @@ int main(int argc, char ** argv)
 	make_image(&window);
 
 	reset_position(&window);
-   
-    
+    //print all points.z
+
+
     // key input handling
     mlx_key_hook(window.win, key_handle, &window);
     

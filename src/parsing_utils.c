@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: joao <joao@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 17:15:24 by joamiran          #+#    #+#             */
-/*   Updated: 2024/08/29 21:23:10 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/08/30 04:01:22 by joao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,15 +62,20 @@ static void count_grid(int fd, w_data *data)
 // if not, w_data->has_color = 0
 void check_color(const char *line, w_data *data)
 {
-    while (*line)
+    int i;
+
+    i = 0;
+    while (line[i])
     {
-        if (*line == ',')
+        if (line[i] == ',')
         {
-            data->has_color = true;
+            data->has_color = 1;
             return;
         }
-        line++;
+        i++;
     }
+    data->has_color = 0;
+    data->color_mode = 0;
 }
 
 char **info_parser(int fd, w_data *data)
@@ -117,7 +122,8 @@ char **info_parser(int fd, w_data *data)
 int ft_getcolor(const char *str)
 {
     char **color;
-    int color_value = 0; // Default color value is 0 (black)
+    //default color is white
+    int color_value = 0xFFFFFF;
     int i;
 
     // Split the string by ','
@@ -160,13 +166,19 @@ int ft_getcolor(const char *str)
 
     return color_value;
 }
+
 void color_mode(w_data *data)
 {
     if (data->has_color)
+        data->color_mode = 0;
+        
+    if (data->color_mode == 0)
         colorize(data);
-    else
+    else if (data->color_mode == 1)
+        colorize_grayscale(data);
+    else if (data->color_mode == 2)
         colorize_gradient(data);
-        //colorize(data);
+    
 }
 
 
@@ -186,26 +198,34 @@ void assign_info(w_data *data)
             fprintf(stderr, "Error: Could not allocate memory for split line\n");
             exit(1);
         }
+
         j = 0;
         while (j < data->grid->cols)
         {
-            // check if the value is a number
+            // Validate split_line[j] before accessing it
+            if (split_line[j] == NULL)
+            {
+                fprintf(stderr, "Error: split_line[%d] is NULL\n", j);
+                exit(1);
+            }
+
+            // Check if the value is a valid number
             if (!ft_isdigit(split_line[j][0]) && split_line[j][0] != '-')
             {
                 fprintf(stderr, "Error: Invalid character in file\n");
-                // the data is :
                 printf("data: %s\n in point[%d][%d]\n", split_line[j], i, j);
                 exit(1);
-                // if it is, set it to 0
-                data->points[i][j].z = 0;
             }
-            // assigning the z value to the points array
+
+            // Assigning the z value to the points array
             data->points[i][j].z = ft_atoi(split_line[j]);
-            data->points[i][j].color = ft_getcolor(split_line[j]);
+            // if the file has color info, we assign the color to the points
+            if (data->has_color)
+                data->points[i][j].color = ft_getcolor(split_line[j]);
             j++;
         }
 
-        // free the split line
+        // Free the split line
         j = 0;
         while (split_line[j])
         {
@@ -215,15 +235,43 @@ void assign_info(w_data *data)
         free(split_line);
         i++;
     }
-    // free z_values
+
+    // Free z_values
     i = 0;
-    while (data->z_values[i])
+    while (i < data->grid->rows)
     {
         free(data->z_values[i]);
         i++;
     }
-     free(data->z_values);
+    free(data->z_values);
 }
+
+void find_min_max_z(w_data *data)
+{
+    int i;
+    int j;
+
+    i = 0;
+    j = 0;
+
+    data->min_z = data->points[0][0].z;
+    data->max_z = data->points[0][0].z;
+
+    while (i < data->grid->rows)
+    {
+        j = 0;
+        while (j < data->grid->cols)
+        {
+            if (data->points[i][j].z < data->min_z)
+                data->min_z = data->points[i][j].z;
+            if (data->points[i][j].z > data->max_z)
+                data->max_z = data->points[i][j].z;
+            j++;
+        }
+        i++;
+    }
+}
+
 
 // reads the file and assigns important values to the data struct
 void read_fdf(w_data *data)
@@ -257,38 +305,16 @@ void read_fdf(w_data *data)
 	
     // assigning the Z and color values to the points array
     assign_info(data);
+    find_min_max_z(data);
+
 
 	//create backup points values
     
 	// printing the points coords and colors
     // print_data(data);
 
+
     // closing the file
     close(fd);
 }
 
-void find_min_max_z(w_data *data)
-{
-    int i;
-    int j;
-
-    i = 0;
-    j = 0;
-
-    data->min_z = data->points[0][0].z;
-    data->max_z = data->points[0][0].z;
-
-    while (i < data->grid->rows)
-    {
-        j = 0;
-        while (j < data->grid->cols)
-        {
-            if (data->points[i][j].z < data->min_z)
-                data->min_z = data->points[i][j].z;
-            if (data->points[i][j].z > data->max_z)
-                data->max_z = data->points[i][j].z;
-            j++;
-        }
-        i++;
-    }
-}

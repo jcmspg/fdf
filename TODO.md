@@ -6,14 +6,13 @@
 
 ==1. refactor the reset_movement so it wont read the file all over again.. make it faster and simpler.==
 
-2. need to implement zoom
-3. need to implement rotation
+2. need to implement rotation
 
-3. implement a way to raise or lower the points
+3. implement a way to raise or lower the points CHECK
 
-5. find out a way to cycle through several color schemes??
+5. find out a way to cycle through several color schemes?? CHECK
 
-6. need to make a decent gui
+6. need to make a decent gui CHECK
 
 7. also, adding a splash screen would be fun.
 
@@ -34,5 +33,5 @@
   - press Z
     : RESET
   - press C
-    : switch color scheme (grayscale, RGB, etc etc)
+    : switch color scheme (grayscale, RGB, etc etc)  CHECK
               
