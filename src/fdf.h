@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joao <joao@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 20:19:20 by joamiran          #+#    #+#             */
-/*   Updated: 2024/08/30 03:59:08 by joao             ###   ########.fr       */
+/*   Updated: 2024/08/31 20:47:47 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,9 @@
 # define D 100
 # define C 99
 # define R 114
+#define Q 113
+#define E 101
+
 # define UP 65362
 # define DOWN 65364
 # define LEFT 65361
@@ -71,6 +74,7 @@
 
 # define DEGREE_MAX 360
 # define SCALE_TRIG 1000
+# define ANGLE_VALUE 5
 
 typedef struct image_data
 {
@@ -126,37 +130,54 @@ typedef struct s_use
 
 typedef struct lookup_table
 {
-    int *sin_table;
-    int *cos_table;
+    float *sin_table;
+    float *cos_table;
 }   t_lookup;
 
 typedef struct window_data
 {
+	// mlx variables
     void    *mlx;
     void    *win;
 
+// window variables
     int     window_width;
     int     window_height;
     char    *title;
     char    *file;
 
+// lookup table for sin and cos
     t_lookup *lookup;
 
+// grid variables
     int mid_x;
     int mid_y;
 
+// image variables
     img_data img;
     float scale;
     float scale_z;
     int min_z;
     int max_z;
+	
+	// rotation variables
+	int angle_x;
+	int angle_y;
+	int angle_z;
+	
+	// color variables
     int has_color;
     int color_mode;
+	
+	// info variables
     char **z_values;
+
+	// point variables
     t_point **points;
 	t_point **points_backup;
 	t_point **points_restore;
     t_grid  *grid;
+	
 }               w_data;
 
 
@@ -271,7 +292,16 @@ void trig_table_sin(w_data *data);
 void trig_table_cos(w_data *data);
 int lookup_sin(w_data *data, int angle);
 int lookup_cos(w_data *data, int angle);
+void init_lookup(w_data *data);
 
+void free_lookup(w_data *data);
+
+// rotation functions
+void rotate_x(w_data *data);
+void rotate_x_key(int key, w_data *data);
+void apply_rotation(w_data *data);
+
+void init_angle(w_data *data);
 
 
 /*

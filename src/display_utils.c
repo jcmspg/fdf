@@ -3,16 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   display_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joao <joao@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 19:11:54 by joamiran          #+#    #+#             */
-/*   Updated: 2024/08/30 04:31:40 by joao             ###   ########.fr       */
+/*   Updated: 2024/08/31 20:13:45 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
 // Data functions
+
+// free lookup tables
+void free_lookup(w_data *data)
+{
+	if (data->lookup != NULL)
+	{
+		if (data->lookup->sin_table != NULL)
+			free(data->lookup->sin_table);
+		if (data->lookup->cos_table != NULL)
+			free(data->lookup->cos_table);
+		free(data->lookup);
+	}
+}
 
 // free t_points
 void free_points(t_point **points)
@@ -39,6 +52,8 @@ void free_all_points(w_data *data)
 void free_data(w_data *data)
 {
 	free_all_points(data);
+	
+	free_lookup(data);
 
 	if (data->grid != NULL)
 		free(data->grid);
@@ -253,6 +268,13 @@ int key_handle(int key, w_data *data)
 		scale_z(key, data);
 		z_assign(data);
 		z_assign_backup(data);
+		update_img(data);
+		draw_gui(data);
+	}
+	if (key == Q || key == E)
+	{
+		rotate_x_key(key, data);
+		rotate_x(data);
 		update_img(data);
 		draw_gui(data);
 	}

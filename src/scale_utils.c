@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   scale_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joao <joao@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 17:16:25 by joamiran          #+#    #+#             */
-/*   Updated: 2024/08/30 03:35:51 by joao             ###   ########.fr       */
+/*   Updated: 2024/08/31 20:33:49 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,9 @@ void zoom(int key, w_data *data)
 	int origin_x;
 	int origin_y;
 
+	int trans_x;
+	int trans_y;
+
 	int i;
 	int j;
 
@@ -88,11 +91,14 @@ void zoom(int key, w_data *data)
 			origin_x = data->points_backup[i][j].x;
 			origin_y = data->points_backup[i][j].y;
 
-			new_x = (int)((origin_x - center_x) * data->scale + center_x);
-			new_y = (int)((origin_y - center_y) * data->scale + center_y);
+			trans_x = origin_x - center_x;
+			trans_y = origin_y - center_y;
 
-			data->points[i][j].x = new_x;
-			data->points[i][j].y = new_y;
+			new_x = (int)(trans_x  * data->scale);
+			new_y = (int)(trans_y  * data->scale);
+
+			data->points[i][j].x = new_x + center_x;
+			data->points[i][j].y = new_y + center_y;
 			j++;
 		}
 		i++;
