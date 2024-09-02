@@ -1,1 +1,1 @@
-SRC_FILES = ./src/debug_utils.c ./src/draw_line.c ./src/grid_utils.c ./src/lookup_tables.c ./src/math_utils.c ./src/display_utils.c ./src/main.c ./src/move_utils.c ./src/parsing_utils.c ./src/point_utils.c ./src/scale_utils.c ./src/rotation_utils.c
+SRC_FILES = ./src/debug_utils.c ./src/draw_line.c ./src/grid_utils.c ./src/lookup_tables.c ./src/math_utils.c ./src/display_utils.c ./src/move_utils.c ./src/parsing_utils.c ./src/point_utils.c ./src/scale_utils.c ./src/rotation_utils.c ./src/main.c ./src/mode_utils.c
