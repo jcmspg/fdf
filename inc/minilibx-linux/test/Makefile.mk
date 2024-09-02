@@ -1,5 +1,5 @@
-INC=/usr/include
 
+INC=%%%%
 
 INCLIB=$(INC)/../lib
 
