@@ -94,15 +94,15 @@ this will create a file name `height_map.fdf` in your `maps/` folder that you ca
 ./fdf maps/height_map.fdf
 ```
 
-Feel free to modify tge values in the scrip to generate different grid patterns. 
+Feel free to modify the values in the scrip to generate different grid patterns. 
+
+(there's also a python script to sort out the src/ files in the makefile. feel free to take a gander at it)
 
 
 **there is some degree of interactivity, here are the controls you can press:**
- - WASD to pan the grid around
- - UP DOWN to zoom in and out
- - LEFT RIGHT to increase or decrease the height values
- - C to change colour scheme
- - R to reset view
+ - WASD is your main navigation / interaction controls
+ - Press H for Help
+ - P, C, Z, R, F, H, T to switch between modes (Pan, Color, Zoom, Rotate, Reset, Help and Height)
  - ESC to close
 
 
