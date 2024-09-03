@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   help_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joao <joao@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 02:50:42 by joao              #+#    #+#             */
-/*   Updated: 2024/09/03 03:28:05 by joao             ###   ########.fr       */
+/*   Updated: 2024/09/03 20:33:41 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void show_help (w_data *data)
 void intro_screen(w_data *data)
 {
     // clear the image
+	data->mode = idle;
     clear_image(data);
     make_image(data);
 

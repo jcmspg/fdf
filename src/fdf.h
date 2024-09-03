@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joao <joao@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 20:19:20 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/03 03:26:04 by joao             ###   ########.fr       */
+/*   Updated: 2024/09/03 20:54:15 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@
 # define H 104
 # define P 112
 # define T 116
+# define I 105
 
 # define SPACE 32
 
@@ -83,8 +84,13 @@
 # define SCALE_TRIG 1000
 # define ANGLE_VALUE 5
 
+#define ISO_TILT 5
+
+# define FOCAL_LENGTH 1000
+
 typedef enum prog_mode
 {
+	idle,
     Pan,
     Rotate,
     Zoom,
@@ -198,6 +204,8 @@ typedef struct window_data
     int angle_x;
 	int angle_y;
 	int angle_z;
+
+	float spread;
 	
 	// color variables
     int has_color;
@@ -208,6 +216,7 @@ typedef struct window_data
 
 	// point variables
     t_point **points;
+	f_point **iso_points;
 	f_point **points_backup;
 	f_point **points_restore;
     t_grid  *grid;
@@ -266,7 +275,7 @@ void draw_line(w_data *data, t_point *p0, t_point *p1);
 void draw_poly(w_data *data);
 
 void cycle_color_mode(int key, w_data *data);
-
+void pcoords_conic(w_data *data);
 // point arithmetics
 
 void find_min_max_z(w_data *data);
@@ -374,5 +383,17 @@ void intro_screen(w_data *data);
 void z_assign_r(w_data *data);
 
 void show_help(w_data *data);
+
+
+void pcoords_conic(w_data *data);
+void build_conic(w_data *data);
+
+void change_tilt(int key, w_data *data);
+void fly_conic(int key, w_data *data);
+void change_focus(int key, w_data *data);
+void change_focal_d(int key, w_data *data);
+
+
+
 
 #endif

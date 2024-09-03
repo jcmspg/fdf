@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joao <joao@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 17:15:24 by joamiran          #+#    #+#             */
-/*   Updated: 2024/08/30 04:01:22 by joao             ###   ########.fr       */
+/*   Updated: 2024/09/03 19:55:53 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -306,6 +306,9 @@ void read_fdf(w_data *data)
     // assigning the Z and color values to the points array
     assign_info(data);
     find_min_max_z(data);
+	
+	//backing up the points for iso
+	data->iso_points = backup_points(data);
 
 
 	//create backup points values

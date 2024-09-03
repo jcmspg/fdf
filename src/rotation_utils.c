@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rotation_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joao <joao@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 18:50:10 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/03 02:47:19 by joao             ###   ########.fr       */
+/*   Updated: 2024/09/03 19:08:17 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void init_angle(w_data *data)
 {
+	data->angle = ANGLE_VALUE; 
+
 	data->angle_x = 0;
 	data->angle_y = 0;
 	data->angle_z = 0;
@@ -37,11 +39,11 @@ void rotate_x(w_data *data)
 
 	float x;
 	float y;
-//	float z;
+	float z;
 	
 	//float new_x;
 	float new_y;
-	//float new_z;
+	float new_z;
 
 	// angle index
 	angle_index = data->angle % DEGREE_MAX;
@@ -53,8 +55,8 @@ void rotate_x(w_data *data)
 	center_y = data->window_height / 2;
 		
 	// trigonometric values	
-	cos_angle = data->lookup->cos_table[angle_index];
-	sin_angle = data->lookup->sin_table[angle_index];
+	cos_angle = data->lookup->cos_table[angle_index] / SCALE_TRIG;
+	sin_angle = data->lookup->sin_table[angle_index] / SCALE_TRIG;
 
 
 	i = 0;
@@ -68,12 +70,12 @@ void rotate_x(w_data *data)
 	
 			x = origin_x - center_x;
 			y = origin_y - center_y;
-
+			z = data->points_backup[i][j].z;
 			
 			// rotate
 
-			new_y = ((y * cos_angle) - (x * sin_angle)) / SCALE_TRIG;
-			//new_z = ((y * sin_angle) + (z * cos_angle)) / SCALE_TRIG;
+			new_y = ((y * cos_angle) - (z * sin_angle));
+			new_z = ((y * sin_angle) + (z * cos_angle));
 
 		
 			// translate back
@@ -82,6 +84,7 @@ void rotate_x(w_data *data)
 
 			data->points_backup[i][j].x = x + center_x;
 			data->points_backup[i][j].y = new_y + center_y;
+			data->points_backup[i][j].z = new_z;
 
 			j++;
 		}			
@@ -107,11 +110,11 @@ void rotate_y(w_data *data)
 
 	float x;
 	float y;
-	//float z;
+	float z;
 
 	float new_x;
-	// float new_y;
-	// float new_z;
+	//float new_y;
+	 float new_z;
 
 	// angle index
 	angle_index = data->angle % DEGREE_MAX;
@@ -123,8 +126,8 @@ void rotate_y(w_data *data)
 	center_y = data->window_height / 2;
 
 	// trigonometric values
-	cos_angle = data->lookup->cos_table[angle_index];
-	sin_angle = data->lookup->sin_table[angle_index];
+	cos_angle = data->lookup->cos_table[angle_index] / SCALE_TRIG;
+	sin_angle = data->lookup->sin_table[angle_index] / SCALE_TRIG;
 
 	i = 0;
 	while (i < data->grid->rows)
@@ -137,19 +140,21 @@ void rotate_y(w_data *data)
 
 			x = origin_x - center_x;
 			y = origin_y - center_y;
-			//z = data->points_backup[i][j].z;
+			z = data->points_backup[i][j].z;
 
 			// rotate
 
-			new_x = ((x * cos_angle) + (y * sin_angle)) / SCALE_TRIG;
-			// new_z = ((-x * sin_angle) + (z * cos_angle)) / SCALE_TRIG;
+			new_x = ((x * cos_angle) + (z * sin_angle));
+			new_z = ((-x * sin_angle) + (z * cos_angle));
+			//new_y = ((y * sin_angle) - (x * cos_angle)) / SCALE_TRIG;
 
 			// translate back
-			data->points[i][j].x = (int)(new_x + center_x);
+			data->points[i][j].x = (int)((new_x) + center_x);
 			data->points[i][j].y = (int)(y + center_y);
 
-			data->points_backup[i][j].x = new_x + center_x;
+			data->points_backup[i][j].x = (new_x) + center_x;
 			data->points_backup[i][j].y = y + center_y;
+			data->points_backup[i][j].z = new_z;
 			
 			j++;
 		}
@@ -191,8 +196,8 @@ void rotate_z(w_data *data)
 	center_y = data->window_height / 2;
 
 	// trigonometric values
-	cos_angle = data->lookup->cos_table[angle_index];
-	sin_angle = data->lookup->sin_table[angle_index];
+	cos_angle = data->lookup->cos_table[angle_index] / SCALE_TRIG;
+	sin_angle = data->lookup->sin_table[angle_index] / SCALE_TRIG;
 
 	i = 0;
 	while (i < data->grid->rows)
@@ -209,8 +214,8 @@ void rotate_z(w_data *data)
 
 			// rotate
 
-			new_x = ((x * cos_angle) - (y * sin_angle)) / SCALE_TRIG;
-			new_y = ((y * cos_angle) + (x * sin_angle)) / SCALE_TRIG;
+			new_x = ((x * cos_angle) - (y * sin_angle));
+			new_y = ((y * cos_angle) + (x * sin_angle));
 			// new_z = z;
 
 			// translate back
@@ -265,13 +270,13 @@ void rotate_x_key(int key, w_data *data)
 {
 	if (key == Q)
 	{
-		data->angle_x -= ANGLE_VALUE;
-		data->angle = -ANGLE_VALUE;
+		data->angle = ANGLE_VALUE;
+		data->angle_x += ANGLE_VALUE;
 	}
 	if (key == E)
 	{
-		data->angle_x += ANGLE_VALUE;
-		data->angle = ANGLE_VALUE;
+		data->angle = -ANGLE_VALUE;
+		data->angle_x -= ANGLE_VALUE;
 	}
 
 	data->angle_x %= DEGREE_MAX;
