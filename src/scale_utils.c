@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   scale_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: joao <joao@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 17:16:25 by joamiran          #+#    #+#             */
-/*   Updated: 2024/08/31 20:33:49 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/03 01:56:25 by joao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,9 @@ void zoom(int key, w_data *data)
 	int i;
 	int j;
 
-	if (key == UP)
+	if (key == W)
 		data->scale *= SCALE_FACTOR_IN;
-	if (key == DOWN)
+	if (key == S)
 		data->scale *= SCALE_FACTOR_OUT;
 
 	if (data->scale < 0.1f)
@@ -109,9 +109,9 @@ void zoom(int key, w_data *data)
 void scale_z(int key, w_data *data)
 {
 
-	if (key == LEFT)
+	if (key == S)
 		data->scale_z -= SCALE_FACTOR_Z;
-	if (key == RIGHT)
+	if (key == W)
 		data->scale_z += SCALE_FACTOR_Z;
 }
 

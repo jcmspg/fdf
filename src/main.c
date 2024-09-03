@@ -11,8 +11,8 @@ int main(int argc, char ** argv)
     w_data window;
   
     window.title = "FDF";
-    window.window_width = 1200; //ft_atoi(argv[1]);
-    window.window_height = 720; //ft_atoi(argv[2]);
+    window.window_width = 800; //ft_atoi(argv[1]);
+    window.window_height = 800; //ft_atoi(argv[2]);
 
 
     window.grid = (t_grid *)malloc(sizeof(t_grid));
@@ -39,10 +39,10 @@ int main(int argc, char ** argv)
 	} */
 
 	init_angle(&window);
-	// print the angle_x , y and z
+/* 	// print the angle_x , y and z
 	printf("angle_x = %d\n", window.angle_x);
 	printf("angle_y = %d\n", window.angle_y);
-	printf("angle_z = %d\n", window.angle_z);
+	printf("angle_z = %d\n", window.angle_z); */
 
 
     window.mlx = init_mlx();
@@ -56,11 +56,14 @@ int main(int argc, char ** argv)
     create_image(&window);
 
     read_fdf(&window);
-    build_model(&window);
-	backup_data(&window);
-	make_image(&window);
+    //build_model(&window);
+	//backup_data(&window);
+	//make_image(&window);
 
-	reset_position(&window);
+    //intro screen
+    intro_screen(&window);
+
+	//reset_position(&window);
     //print all points.z
 
 

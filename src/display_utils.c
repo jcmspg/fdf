@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   display_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: joao <joao@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 19:11:54 by joamiran          #+#    #+#             */
-/*   Updated: 2024/08/31 20:13:45 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/03 03:19:37 by joao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,26 @@ void free_points(t_point **points)
 	}
 	free(points);
 }
+
+void free_fpoints(f_point **points)
+{
+	int i = 0;
+	while (points[i] != NULL)
+	{
+		free(points[i]);
+		i++;
+	}
+	free(points);
+}
 //free all the points
 void free_all_points(w_data *data)
 {
 	if (data->points != NULL)
 		free_points(data->points);
 	if (data->points_backup != NULL)
-		free_points(data->points_backup);
+		free_fpoints(data->points_backup);
 	if (data->points_restore != NULL)
-		free_points(data->points_restore);
+		free_fpoints(data->points_restore);
 }
 
 void free_data(w_data *data)
@@ -137,51 +148,47 @@ void draw_gui(w_data *data)
     mlx_string_put(data->mlx, data->win, ascii_art_x, ascii_art_y + 3 * line_spacing, text_color, " |  _|  | |_| |  _|  ");
     mlx_string_put(data->mlx, data->win, ascii_art_x, ascii_art_y + 4 * line_spacing, text_color, " |_|    |_____|_| ");
 
-    // Display the scale factor
-    char scale_factor[50];
-    sprintf(scale_factor, "%.2f", data->scale);
-    mlx_string_put(data->mlx, data->win, x_left, y, text_color, "Scale:");
-    mlx_string_put(data->mlx, data->win, x_left + 50, y, text_color, scale_factor);
+	// display information related to the program
+	int info_x = x_left;
+	int info_y = y;
+	mlx_string_put(data->mlx, data->win, info_x, info_y, text_color, "Welcome to FDF");
 
-    // Display the highest z value
-    char highest_z[50];
-    sprintf(highest_z, "%d", data->max_z);
-    mlx_string_put(data->mlx, data->win, x_left, y + line_spacing, text_color, "Max Z:");
-    mlx_string_put(data->mlx, data->win, x_left + 50, y + line_spacing, text_color, highest_z);
+	// file path
+	mlx_string_put(data->mlx, data->win, info_x, info_y + line_spacing, text_color, "File: ");
+	mlx_string_put(data->mlx, data->win, info_x + 30, info_y + line_spacing, text_color, data->file);
 
-    // Display the lowest z value
-    char lowest_z[50];
-    sprintf(lowest_z, "%d", data->min_z);
-    mlx_string_put(data->mlx, data->win, x_left, y + 2 * line_spacing, text_color, "Min Z:");
-    mlx_string_put(data->mlx, data->win, x_left + 50, y + 2 * line_spacing, text_color, lowest_z);
+	// grid size rows and cols
+	mlx_string_put(data->mlx, data->win, info_x, info_y + 2 * line_spacing, text_color, "Rows: ");
+	mlx_string_put(data->mlx, data->win, info_x + 40, info_y + 2 * line_spacing, text_color, ft_itoa(data->grid->rows));
+	mlx_string_put(data->mlx, data->win, info_x, info_y + 3 * line_spacing, text_color, "Cols: ");
+	mlx_string_put(data->mlx, data->win, info_x + 40, info_y + 3 * line_spacing, text_color, ft_itoa(data->grid->cols));
+	
+	// mode
+	mlx_string_put(data->mlx, data->win, info_x, info_y + 4 * line_spacing, text_color, "Mode: ");
+	mlx_string_put(data->mlx, data->win, info_x + 50, info_y + 4 * line_spacing, text_color, ft_itoa(data->mode));
+	
+	// max and min z values
+	mlx_string_put(data->mlx, data->win, info_x, info_y + 5 * line_spacing, text_color, "Max Z: ");
+	mlx_string_put(data->mlx, data->win, info_x + 50, info_y + 5 * line_spacing, text_color, ft_itoa(data->max_z));
 
-    // Display the zoom factor
-    char zoom_factor[50];
-    sprintf(zoom_factor, "%.2f", data->scale);
-    mlx_string_put(data->mlx, data->win, x_left, y + 3 * line_spacing, text_color, "Zoom:");
-    mlx_string_put(data->mlx, data->win, x_left + 50, y + 3 * line_spacing, text_color, zoom_factor);
+	mlx_string_put(data->mlx, data->win, info_x, info_y + 6 * line_spacing, text_color, "Min Z: ");
+	mlx_string_put(data->mlx, data->win, info_x + 50, info_y + 6 * line_spacing, text_color, ft_itoa(data->min_z));
 
-    // Display the color mode
-    char color_mode[50];
-    sprintf(color_mode, "%d", data->color_mode);
-    mlx_string_put(data->mlx, data->win, x_left, y + 4 * line_spacing, text_color, "Color:");
-    mlx_string_put(data->mlx, data->win, x_left + 50, y + 4 * line_spacing, text_color, color_mode);
+	// zooooom
+	mlx_string_put(data->mlx, data->win, info_x, info_y + 7 * line_spacing, text_color, "Zoom: ");
+	mlx_string_put(data->mlx, data->win, info_x + 50, info_y + 7 * line_spacing, text_color, ft_itoa(data->scale));
+	
+	// rotation values
+	mlx_string_put(data->mlx, data->win, info_x, info_y + 8 * line_spacing, text_color, "Angle X: ");
+	mlx_string_put(data->mlx, data->win, info_x + 70, info_y + 8 * line_spacing, text_color, ft_itoa(data->angle_x));
+	mlx_string_put(data->mlx, data->win, info_x, info_y + 9 * line_spacing, text_color, "Angle Y: ");
+	mlx_string_put(data->mlx, data->win, info_x + 70, info_y + 9 * line_spacing, text_color, ft_itoa(data->angle_y));
+	mlx_string_put(data->mlx, data->win, info_x, info_y + 10 * line_spacing, text_color, "Angle Z: ");
+	mlx_string_put(data->mlx, data->win, info_x + 70, info_y + 10 * line_spacing, text_color, ft_itoa(data->angle_z));
+	
 
-    // Display the file name
-    mlx_string_put(data->mlx, data->win, x_left, y + 5 * line_spacing, text_color, "File:");
-    mlx_string_put(data->mlx, data->win, x_left + 50, y + 5 * line_spacing, text_color, data->file);
-
-    // Display the window size
-    char window_size[50];
-    sprintf(window_size, "%dx%d", data->window_width, data->window_height);
-    mlx_string_put(data->mlx, data->win, x_left, y + 6 * line_spacing, text_color, "Window:");
-    mlx_string_put(data->mlx, data->win, x_left + 50, y + 6 * line_spacing, text_color, window_size);
-
-    // Display the grid size
-    char grid_size[50];
-    sprintf(grid_size, "%dx%d", data->grid->rows, data->grid->cols);
-    mlx_string_put(data->mlx, data->win, x_left, y + 7 * line_spacing, text_color, "Grid:");
-    mlx_string_put(data->mlx, data->win, x_left + 50, y + 7 * line_spacing, text_color, grid_size);
+	mlx_string_put(data->mlx, data->win, info_x, info_y + 12 * line_spacing, text_color, "H - Help");
+	mlx_string_put(data->mlx, data->win, info_x, info_y + 13 * line_spacing, text_color, "ESC - Exit");
 
     // Display the author's name
     int author_x = data->window_width - 100; // Right aligned
@@ -192,7 +199,6 @@ void draw_gui(w_data *data)
 void make_image(w_data *data)
 {
 	mlx_put_image_to_window(data->mlx, data->win, data->img.img, 0, 0);
-	draw_gui(data);
 }
 
 // clear the image
@@ -235,7 +241,9 @@ void cycle_color_mode(int key, w_data *data)
 	}
 }
 
-int key_handle(int key, w_data *data)
+
+
+/* int key_handle(int key, w_data *data)
 {
 	if (key == ESC)
 		close_window(data);
@@ -279,5 +287,4 @@ int key_handle(int key, w_data *data)
 		draw_gui(data);
 	}
 	return 0;
-}
-
+} */

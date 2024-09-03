@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: joao <joao@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 20:19:20 by joamiran          #+#    #+#             */
-/*   Updated: 2024/08/31 20:47:47 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/03 03:26:04 by joao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,15 @@
 # define D 100
 # define C 99
 # define R 114
-#define Q 113
-#define E 101
+# define Q 113
+# define E 101
+# define Z 122
+# define F 102
+# define H 104
+# define P 112
+# define T 116
+
+# define SPACE 32
 
 # define UP 65362
 # define DOWN 65364
@@ -75,6 +82,22 @@
 # define DEGREE_MAX 360
 # define SCALE_TRIG 1000
 # define ANGLE_VALUE 5
+
+typedef enum prog_mode
+{
+    Pan,
+    Rotate,
+    Zoom,
+    Reset,
+    Height,
+    Color,
+    Help,
+    
+    Iso,
+    Cavaliere,
+    Conic,   
+    
+}   t_mode;
 
 typedef struct image_data
 {
@@ -114,6 +137,14 @@ typedef struct s_points
 
 }   t_point;
 
+typedef struct s_fpoints
+{
+    float x;
+    float y;
+    float z;
+    int color;
+
+}   f_point;
 
 typedef struct s_use 
 {
@@ -161,7 +192,10 @@ typedef struct window_data
     int max_z;
 	
 	// rotation variables
-	int angle_x;
+    
+    int angle;
+    
+    int angle_x;
 	int angle_y;
 	int angle_z;
 	
@@ -174,9 +208,12 @@ typedef struct window_data
 
 	// point variables
     t_point **points;
-	t_point **points_backup;
-	t_point **points_restore;
+	f_point **points_backup;
+	f_point **points_restore;
     t_grid  *grid;
+
+    // mode variables
+    t_mode mode;
 	
 }               w_data;
 
@@ -184,6 +221,10 @@ typedef struct window_data
 // data functions
 void free_data(w_data *data);
 void free_pointers(void *ptr, ...);
+
+void free_all_points(w_data *data);
+void free_points(t_point **points);
+void free_fpoints(f_point **points);
 
 // keybind functions
 int close_window(w_data *data);
@@ -278,7 +319,9 @@ void colorize(w_data *data);
 void colorize_gradient(w_data *data);
 
 t_point **make_points(w_data *data);
-t_point **backup_points(w_data *data);
+f_point **backup_points(w_data *data);
+
+
 
 // math aux functions
 int ft_abs(int n);
@@ -299,7 +342,12 @@ void free_lookup(w_data *data);
 // rotation functions
 void rotate_x(w_data *data);
 void rotate_x_key(int key, w_data *data);
-void apply_rotation(w_data *data);
+
+void rotate_y(w_data *data);
+void rotate_y_key(int key, w_data *data);
+
+void rotate_z(w_data *data);
+void rotate_z_key(int key, w_data *data);
 
 void init_angle(w_data *data);
 
@@ -311,5 +359,20 @@ void add_point(point **head, point *new);
 void free_points(point **head);
 */
 
+
+void change_mode(int key, w_data *data);
+void pan(int key, w_data *data);
+void rotate(int key, w_data *data);
+void zoom_in_out(int key, w_data *data);
+void reset(w_data *data);
+void height(int key, w_data *data);
+void color(int key, w_data *data);
+void display_help(int key, w_data *data);
+void intro_screen(w_data *data);
+
+
+void z_assign_r(w_data *data);
+
+void show_help(w_data *data);
 
 #endif

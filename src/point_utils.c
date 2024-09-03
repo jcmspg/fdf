@@ -6,7 +6,7 @@
 /*   By: joao <joao@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 19:31:12 by joamiran          #+#    #+#             */
-/*   Updated: 2024/08/30 02:56:36 by joao             ###   ########.fr       */
+/*   Updated: 2024/09/03 01:55:52 by joao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,18 +283,18 @@ void build_model(w_data *data)
 }
 
 
-t_point	**backup_points(w_data *data)
+f_point	**backup_points(w_data *data)
 {
 	int lines;
     int cols;
     int i;
     int j;
-    t_point **points;
+    f_point **points;
 
     lines = data->grid->rows;
     cols = data->grid->cols;
     
-    points = (t_point **)ft_calloc(sizeof(t_point *) , (cols * lines));
+    points = (f_point **)ft_calloc(sizeof(f_point *) , (cols * lines));
     if (!points)
     {
         fprintf(stderr, "Error: Could not allocate memory for points\n");
@@ -303,7 +303,7 @@ t_point	**backup_points(w_data *data)
     i = 0;
     while (i < lines)
     {
-        points[i] = (t_point *)ft_calloc(sizeof(t_point) , cols);
+        points[i] = (f_point *)ft_calloc(sizeof(f_point) , cols);
         if (!points[i])
         {
             fprintf(stderr, "Error: Could not allocate memory for points\n");
