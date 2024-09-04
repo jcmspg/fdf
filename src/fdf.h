@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 20:19:20 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/03 20:54:15 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/04 20:37:27 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@
 # define P 112
 # define T 116
 # define I 105
+# define G 103
+# define O 111
 
 # define SPACE 32
 
@@ -56,7 +58,7 @@
 # define WHELL_UP 4
 # define WHELL_DOWN 5
 
-# define SCALE_FACTOR_Z 1
+# define SCALE_FACTOR_Z 0.1
 # define SCALE_FACTOR_IN 1.1
 # define SCALE_FACTOR_OUT 0.9
 
@@ -84,9 +86,9 @@
 # define SCALE_TRIG 1000
 # define ANGLE_VALUE 5
 
-#define ISO_TILT 5
+#define ISO_TILT 2
 
-# define FOCAL_LENGTH 1000
+# define FOCAL_LENGTH 1000000
 
 typedef enum prog_mode
 {
@@ -99,8 +101,10 @@ typedef enum prog_mode
     Color,
     Help,
     
+	Orbit,
+
     Iso,
-    Cavaliere,
+    Spherical,
     Conic,   
     
 }   t_mode;
@@ -213,6 +217,9 @@ typedef struct window_data
 	
 	// info variables
     char **z_values;
+
+	// globe radius
+	float radius;
 
 	// point variables
     t_point **points;
@@ -338,6 +345,7 @@ int ft_max(int a, int b);
 int ft_min(int a, int b);
 int round_n(float n);
 int ft_atoi_base(const char *str, const char *base_str);
+float degree_to_radian(int angle);
 
 // lookup table functions
 void trig_table_sin(w_data *data);
@@ -388,11 +396,20 @@ void show_help(w_data *data);
 void pcoords_conic(w_data *data);
 void build_conic(w_data *data);
 
-void change_tilt(int key, w_data *data);
+void change_aero(int key, w_data *data);
 void fly_conic(int key, w_data *data);
 void change_focus(int key, w_data *data);
 void change_focal_d(int key, w_data *data);
 
+
+void pcoords_spherical(w_data *data);
+void build_sphere(w_data *data);
+
+void ro_sphere(int key, w_data *data);
+void orbit(w_data *data);
+void change_tilt(w_data *data);
+
+void project_to_2d(w_data *data);
 
 
 

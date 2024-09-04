@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 18:50:10 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/03 19:08:17 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/04 19:46:34 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void init_angle(w_data *data)
 	data->angle_x = 0;
 	data->angle_y = 0;
 	data->angle_z = 0;
+
+	data->radius = 100;
 }
 
 void rotate_x(w_data *data)
@@ -39,11 +41,11 @@ void rotate_x(w_data *data)
 
 	float x;
 	float y;
-	float z;
+//	float z;
 	
 	//float new_x;
 	float new_y;
-	float new_z;
+	//float new_z;
 
 	// angle index
 	angle_index = data->angle % DEGREE_MAX;
@@ -70,12 +72,12 @@ void rotate_x(w_data *data)
 	
 			x = origin_x - center_x;
 			y = origin_y - center_y;
-			z = data->points_backup[i][j].z;
+		//	z = data->points_backup[i][j].z;
 			
 			// rotate
 
-			new_y = ((y * cos_angle) - (z * sin_angle));
-			new_z = ((y * sin_angle) + (z * cos_angle));
+			new_y = ((y * cos_angle) - (/* z */ y * sin_angle));
+			//new_z = ((y * sin_angle) + (z * cos_angle));
 
 		
 			// translate back
@@ -84,7 +86,7 @@ void rotate_x(w_data *data)
 
 			data->points_backup[i][j].x = x + center_x;
 			data->points_backup[i][j].y = new_y + center_y;
-			data->points_backup[i][j].z = new_z;
+			//data->points_backup[i][j].z = new_z;
 
 			j++;
 		}			
@@ -110,11 +112,11 @@ void rotate_y(w_data *data)
 
 	float x;
 	float y;
-	float z;
+//	float z;
 
 	float new_x;
 	//float new_y;
-	 float new_z;
+	// float new_z;
 
 	// angle index
 	angle_index = data->angle % DEGREE_MAX;
@@ -140,12 +142,12 @@ void rotate_y(w_data *data)
 
 			x = origin_x - center_x;
 			y = origin_y - center_y;
-			z = data->points_backup[i][j].z;
+		//	z = data->points_backup[i][j].z;
 
 			// rotate
 
-			new_x = ((x * cos_angle) + (z * sin_angle));
-			new_z = ((-x * sin_angle) + (z * cos_angle));
+			new_x = ((x * cos_angle) + (y /*z */  * sin_angle));
+			//new_z = ((-x * sin_angle) + (z * cos_angle));
 			//new_y = ((y * sin_angle) - (x * cos_angle)) / SCALE_TRIG;
 
 			// translate back
@@ -154,7 +156,7 @@ void rotate_y(w_data *data)
 
 			data->points_backup[i][j].x = (new_x) + center_x;
 			data->points_backup[i][j].y = y + center_y;
-			data->points_backup[i][j].z = new_z;
+			//data->points_backup[i][j].z = new_z;
 			
 			j++;
 		}

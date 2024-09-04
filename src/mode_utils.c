@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 23:56:44 by joao              #+#    #+#             */
-/*   Updated: 2024/09/03 21:00:10 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/04 21:01:55 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void change_mode(int key, w_data *data)
 {
 	if (key == P)
 		data->mode = Pan;
-	if (key == R)
+	if (key == R && data->mode != Conic && data->mode != Spherical)
 		data->mode = Rotate;
 	if (key == Z)
 		data->mode = Zoom;
@@ -25,12 +25,16 @@ void change_mode(int key, w_data *data)
 		data->mode = Help;
 	if (key == C)
 		data->mode = Color;
-	if (key == T)
+	if (key == T && data->mode != Conic && data->mode != Spherical)
 		data->mode = Height;
 	if (key == F)
 		data->mode = Reset;
 	if (key == I)
 		data->mode = Conic;
+	if (key == G)
+		data->mode = Spherical;
+	if (key == O)
+		data->mode = Orbit;
 }
 
 void pan(int key, w_data *data)
@@ -72,7 +76,7 @@ void rotate(int key, w_data *data)
 void fly_conic(int key, w_data *data)
 {
 	if (key == W || key == S)
-		change_tilt(key, data);
+		change_aero(key, data);
 	if (key == A || key == D)
 		change_focal_d(key, data);
 }
@@ -118,6 +122,10 @@ void display_help(int key, w_data *data)
 	{
 		show_help(data);
 	}
+	if (key == SPACE)
+	{
+		intro_screen(data);
+	}
 }
 
 int key_handle(int key, w_data *data)
@@ -133,24 +141,34 @@ int key_handle(int key, w_data *data)
 		draw_gui(data);
 	}
 	change_mode(key, data);
-	if (data->mode == Pan)
+	if (data->mode == Pan && data->mode != idle)
 		pan(key, data);
-	if (data->mode == Rotate)
+	if (data->mode == Rotate && data->mode != idle)
 		rotate(key, data);
-	if (data->mode == Zoom)
+	if (data->mode == Zoom && data->mode != idle)
 		zoom_in_out(key, data);
-	if (data->mode == Reset)
+	if (data->mode == Reset && data->mode != idle)
 		reset(data);
-	if (data->mode == Height)
+	if (data->mode == Height && data->mode != idle)
 		height(key, data);
-	if (data->mode == Color)
+	if (data->mode == Color && data->mode != idle)
 		color(key, data);
-	if (data->mode == Help)
+	if (data->mode == Help && data->mode != idle)
 		display_help(key, data);
-	if (data->mode == Conic)
+	if (data->mode == Conic && data->mode != idle)
 	{
 		build_conic(data);
 		change_focus(key, data);
 	}
+	if (data->mode == Spherical && data->mode != idle)
+	{
+		pcoords_spherical(data);
+		build_sphere(data);
+		draw_gui(data);
+	}
+	if (data->mode == Orbit && data->mode != idle)
+		{
+			ro_sphere(key, data);
+		}
 	return (0);
 }

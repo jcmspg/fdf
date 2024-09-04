@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 19:27:47 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/03 21:04:26 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/04 19:31:44 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,6 @@ void pcoords_conic(w_data *data)
 			data->points_backup[i][j].x = x_conic;
 			data->points_backup[i][j].y = y_conic;
 
-			printf("x: %f, y: %f, z: %f\n", x, y, z);
-			printf("x_conic: %f, y_conic: %f\n", x_conic, y_conic);
-
 			j++;
 		}
 		j = 0;
@@ -64,7 +61,7 @@ void pcoords_conic(w_data *data)
 	}
 }
 
-void change_tilt(int key, w_data *data)
+void change_aero(int key, w_data *data)
 {
 	if (key == W)
 		data->spread += 5;
@@ -85,11 +82,11 @@ void change_focal_d(int key, w_data *data)
 	void build_conic(w_data *data)
 {
 	clear_image(data);
-	make_image(data);
 	pcoords_conic(data);
 	calc_sc_mid(data);
 	scale_center(data);
 	color_mode(data);
 	draw_poly(data);
+	make_image(data);
 }
 

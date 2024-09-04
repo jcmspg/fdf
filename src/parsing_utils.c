@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 17:15:24 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/03 19:55:53 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/04 18:41:12 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -301,6 +301,7 @@ void read_fdf(w_data *data)
     data->points = make_points(data);
     // getting the Z and color values from the file
     data->z_values = info_parser(fd, data);
+	data->scale = 0.1;
 	
 	
     // assigning the Z and color values to the points array

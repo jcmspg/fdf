@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   math_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joamiran <joamiran@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 16:54:07 by joamiran          #+#    #+#             */
-/*   Updated: 2024/08/27 17:06:36 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/04 19:24:23 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,4 +89,9 @@ int ft_atoi_base(const char *str, const char *base_str)
     }
 
     return (res * sign);
+}
+
+float degree_to_radian(int angle)
+{
+	return (angle * PI / 180);
 }
