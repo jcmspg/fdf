@@ -6,11 +6,22 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 16:54:07 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/04 19:24:23 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/05 20:42:23 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+float ft_fabs(float n)
+{
+    if (n < 0)
+        return (-n);
+    return (n);
+}
+
+
+
+
 
 int	ft_abs(int n)
 {

@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 19:31:12 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/04 19:06:16 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/05 21:45:44 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ void pcoords_iso(w_data *data)
 
             data->points[i][j].x = x_iso;
             data->points[i][j].y = y_iso;
+			data->points[i][j].z = data->points[i][j].z;
 
             j++;
         }
@@ -99,6 +100,7 @@ void pcoords_iso(w_data *data)
 
 // assigning the z value to the points
 
+//function to normalize the z values by changing the scale of the z axis
 
 
    
@@ -108,14 +110,23 @@ void z_assign(w_data *data)
     int i;
     int j;
 
+	float z;
+
     i = 0;
     j = 0;
+
+	data->scale_z = SCALE_FACTOR_Z;
 
     while (i < data->grid->rows)
     {
         while (j < data->grid->cols)
         {
-            data->points[i][j].y -= (data->points[i][j].z * data->scale_z) / 100;
+			//data->points_backup[i][j].z = normalize_z(data->points_backup[i][j].z, data);
+	    	z = data->points_backup[i][j].z;
+			
+			data->points_backup[i][j].z = z * data->scale_z;
+			data->points_backup[i][j].y -= z;
+			data->points[i][j].y = (int)data->points_backup[i][j].y;
             j++;
         }
         j = 0;
@@ -272,15 +283,7 @@ void colorize_grayscale(w_data *data)
     }
 }
 
-void build_model(w_data *data)
-{
-	pcoords_iso(data);
-	calc_sc_mid(data);
-	scale_center(data);
-	z_assign(data);
-	color_mode(data);
-	draw_poly(data);
-}
+
 
 
 f_point	**backup_points(w_data *data)

@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 18:28:26 by joao              #+#    #+#             */
-/*   Updated: 2024/09/04 19:00:34 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/05 20:36:39 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void    reset_position(w_data *data)
 		}
 	}
 	data->scale = 1.0;
-	data->scale_z = 1.0;
+	data->scale_z = SCALE_FACTOR_Z;
 }
 
 void restore_origin(w_data *data)
@@ -68,7 +68,7 @@ void restore_origin(w_data *data)
 }
 
 //function get the movement values from the keyboard
-void	move(int keycode, w_data *data)
+void move(int keycode, w_data *data)
 {
     int movement_x;
     int movement_y;

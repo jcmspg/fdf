@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 17:15:24 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/04 18:41:12 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/05 21:40:07 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,6 +218,7 @@ void assign_info(w_data *data)
             }
 
             // Assigning the z value to the points array
+			// make sure values are normalized to fit the window proportionally to the grid
             data->points[i][j].z = ft_atoi(split_line[j]);
             // if the file has color info, we assign the color to the points
             if (data->has_color)
@@ -301,7 +302,8 @@ void read_fdf(w_data *data)
     data->points = make_points(data);
     // getting the Z and color values from the file
     data->z_values = info_parser(fd, data);
-	data->scale = 0.1;
+	//print scale
+	printf("scale: %f\n", data->scale);
 	
 	
     // assigning the Z and color values to the points array

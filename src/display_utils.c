@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   display_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joao <joao@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 19:11:54 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/03 03:19:37 by joao             ###   ########.fr       */
+/*   Updated: 2024/09/05 21:32:30 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-// Data functions
+// Data functionsd
 
 // free lookup tables
 void free_lookup(w_data *data)
@@ -225,7 +225,6 @@ void clear_image(w_data *data)
 void update_img(w_data *data)
 {
 	clear_image(data);
-	color_mode(data);
 	draw_poly(data);
 	make_image(data);
 }
@@ -240,51 +239,3 @@ void cycle_color_mode(int key, w_data *data)
 			data->color_mode = 0;
 	}
 }
-
-
-
-/* int key_handle(int key, w_data *data)
-{
-	if (key == ESC)
-		close_window(data);
-	if (key == W || key == A || key == S || key == D)
-	{
-		move(key, data);
-		update_img(data);
-		draw_gui(data);
-	}
-	if (key == C)
-	{
-		cycle_color_mode(key, data);
-		update_img(data);
-		draw_gui(data);
-	}
-	if (key == R)
-	{
-		restore_origin(data);
-		update_img(data);
-		draw_gui(data);
-	}
-	if (key == UP || key == DOWN)
-	{
-		zoom(key, data);
-		update_img(data);
-		draw_gui(data);
-	}
-	if (key == LEFT || key == RIGHT)
-	{
-		scale_z(key, data);
-		z_assign(data);
-		z_assign_backup(data);
-		update_img(data);
-		draw_gui(data);
-	}
-	if (key == Q || key == E)
-	{
-		rotate_x_key(key, data);
-		rotate_x(data);
-		update_img(data);
-		draw_gui(data);
-	}
-	return 0;
-} */

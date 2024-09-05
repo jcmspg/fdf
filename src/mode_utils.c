@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 23:56:44 by joao              #+#    #+#             */
-/*   Updated: 2024/09/04 21:01:55 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/05 21:33:49 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,14 +63,6 @@ void rotate(int key, w_data *data)
 	}
 	update_img(data);
 	draw_gui(data);
-	// print the z coordinates of the points
-	for (int i = 0; i < data->grid->rows; i++)
-	{
-		for (int j = 0; j < data->grid->cols; j++)
-		{
-			printf("z: %d\n", data->points[i][j].z);
-		}
-	}
 }
 
 void fly_conic(int key, w_data *data)
@@ -96,6 +88,7 @@ void zoom_in_out(int key, w_data *data)
 
 void reset(w_data *data)
 {
+	init_angle(data);
 	restore_origin(data);
 	update_img(data);
 	draw_gui(data);
@@ -111,6 +104,7 @@ void height(int key, w_data *data)
 }
 void color(int key, w_data *data)
 {
+	color_mode(data);
 	cycle_color_mode(key, data);
 	update_img(data);
 	draw_gui(data);
@@ -136,7 +130,6 @@ int key_handle(int key, w_data *data)
 	{
 		data->mode = Iso;
 		build_model(data);
-		backup_data(data);
 		make_image(data);
 		draw_gui(data);
 	}

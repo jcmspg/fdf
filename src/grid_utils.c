@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:15:46 by joamiran          #+#    #+#             */
-/*   Updated: 2024/08/29 20:28:10 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/05 21:48:11 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,6 +181,7 @@ void scale_center(w_data *data)
         {
             data->points[i][j].x = (data->points[i][j].x - data->mid_x) * scale + data->grid->half_x;
             data->points[i][j].y = (data->points[i][j].y - data->mid_y) * scale + data->grid->half_y;
+			data->points[i][j].z = data->points[i][j].z;		
             j++;
         }
         i++;
@@ -191,4 +192,17 @@ void backup_data(w_data *data)
 {
 	data->points_backup = backup_points(data);
 	data->points_restore = backup_points(data);
+}
+
+
+void build_model(w_data *data)
+{
+	pcoords_iso(data);
+	calc_sc_mid(data);
+	scale_center(data);
+	backup_data(data);
+	z_assign(data);
+	color_mode(data);
+	backup_data(data);
+	draw_poly(data);
 }

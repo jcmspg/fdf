@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 20:19:20 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/04 20:37:27 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/05 21:38:58 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,9 @@
 # define WHELL_UP 4
 # define WHELL_DOWN 5
 
-# define SCALE_FACTOR_Z 0.1
+# define SCALE_FACTOR_Z 4
 # define SCALE_FACTOR_IN 1.1
-# define SCALE_FACTOR_OUT 0.9
+# define SCALE_FACTOR_OUT 0.90
 
 // define colors
 # define RED 0xFF0000
@@ -84,7 +84,7 @@
 
 # define DEGREE_MAX 360
 # define SCALE_TRIG 1000
-# define ANGLE_VALUE 5
+# define ANGLE_VALUE 2
 
 #define ISO_TILT 2
 
@@ -234,6 +234,7 @@ typedef struct window_data
 }               w_data;
 
 
+
 // data functions
 void free_data(w_data *data);
 void free_pointers(void *ptr, ...);
@@ -266,7 +267,6 @@ void check_color(const char *line, w_data *data);
 void color_mode(w_data *data);
 
 void colorize_grayscale(w_data *data);
-
 
 // draw functions
 
@@ -346,6 +346,8 @@ int ft_min(int a, int b);
 int round_n(float n);
 int ft_atoi_base(const char *str, const char *base_str);
 float degree_to_radian(int angle);
+float ft_fabs(float n);
+
 
 // lookup table functions
 void trig_table_sin(w_data *data);
@@ -411,6 +413,11 @@ void change_tilt(w_data *data);
 
 void project_to_2d(w_data *data);
 
+void transform_points(w_data *data);
+
+void normalize_z_log(w_data *data);
+
+float normalize_z(float z, w_data *data);
 
 
 #endif

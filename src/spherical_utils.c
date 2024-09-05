@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 17:55:09 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/04 21:03:36 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/05 19:56:06 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ void pcoords_spherical(w_data *data)
 	float z_spherical;
     float latitude;
 	float longitude;
-// float x;
-// float y;
+ 	float x;
+ 	float y;
 	float z;
 
     float radius;
@@ -47,57 +47,38 @@ void pcoords_spherical(w_data *data)
 
             // Get the elevation or height (z-value)
             
-		//	x = data->iso_points[i][j].x;
-		//	y = data->iso_points[i][j].y;
+			x = data->iso_points[i][j].x;
+			y = data->iso_points[i][j].y;
 			z = data->iso_points[i][j].z;
 
             // Compute the radius with elevation
-            radius_with_elevation = radius + z * (radius / maximum_z / 4);
+            radius_with_elevation = radius + z * (radius / maximum_z / 100);
 
             // Compute spherical coordinates
             x_spherical = radius_with_elevation * cos(latitude) * cos(longitude);
             y_spherical = radius_with_elevation * cos(latitude) * sin(longitude);
             z_spherical = (radius_with_elevation * sin(latitude));
 
-            // Convert to screen coordinates (center the globe)
-            data->points[i][j].x = (int)(x_spherical + data->window_width / 2);
-            data->points[i][j].y = (int)(y_spherical + data->window_height / 2);
-            data->points[i][j].z = (int)z_spherical;
-
             // Optionally, store backup
-            data->points_backup[i][j].x = x_spherical;
-            data->points_backup[i][j].y = y_spherical;
+            data->points_backup[i][j].x = x_spherical + data->window_width / 2;
+            data->points_backup[i][j].y = y_spherical + data->window_height / 2;
             data->points_backup[i][j].z = z_spherical;
+         
+		    // Convert to screen coordinates (center the globe)
+            data->points[i][j].x = (int)(data->points_backup[i][j].x);
+            data->points[i][j].y = (int)(data->points_backup[i][j].y);
+            data->points[i][j].z = (int)(data->points_backup[i][j].z);
+
 
             j++;
         }
         j = 0;
         i++;
     }
-}
-
-void project_to_2d(w_data *data) {
-	
-	int i;
-	float center_x = data->window_width / 2;
-	float center_y = data->window_height / 2;
-
-	for (i = 0; i < data->grid->rows; i++)
-	{
-		for (int j = 0; j < data->grid->cols; j++)
-		{
-			float x = data->points_backup[i][j].x;
-			float y = data->points_backup[i][j].y;
-
-			data->points_backup[i][j].x = x + center_x;
-			data->points_backup[i][j].y = y + center_y;
-			
-            // Convert 3D coordinates to 2D
-			
-			data->points[i][j].x = (int)data->points_backup[i][j].x;
-			data->points[i][j].y = (int)data->points_backup[i][j].y;
-        }
-    }
+	//print the data->angle x y and z
+	printf("angle_x: %d\n", data->angle_x);
+	printf("angle_y: %d\n", data->angle_y);
+	printf("angle_z: %d\n", data->angle_z);
 }
 
 void orbit(w_data *data)
@@ -109,11 +90,9 @@ void orbit(w_data *data)
 	float y;
 	float z;
 
-	float original_x;
-	float original_y;
-	float original_z;
-
+	
 	float new_x;
+	float new_y;
 	float new_z;
 
 	float center_y;
@@ -138,17 +117,15 @@ void orbit(w_data *data)
 		j = 0;
 		while (j < data->grid->cols)
 		{
-			original_x = data->points_backup[i][j].x;
-			original_y = data->points_backup[i][j].y;
-			original_z = data->points_backup[i][j].z;
+			x = data->points_backup[i][j].x;
+			y = data->points_backup[i][j].y;
+			z = data->points_backup[i][j].z;
 
 			// Apply rotation around the Y-axis
-			x = original_x - center_x;
-			y = original_y - center_y;
-			z = original_z;
-
-			new_x = (x * cos_angle - z * sin_angle) / SCALE_TRIG;
-			new_z = (x * sin_angle + z * cos_angle) / SCALE_TRIG;
+			new_x = x * cos_angle - z * sin_angle;
+			new_y = y;
+			new_z = x * sin_angle + z * cos_angle;
+			
 
 			data->points_backup[i][j].x = new_x + center_x;
 			data->points_backup[i][j].y = y + center_y;
@@ -161,6 +138,15 @@ void orbit(w_data *data)
 			j++;
 		}
 	}
+
+	data->angle_x = 0;
+	data->angle_y = 0;
+	data->angle_z = 0;
+	
+	// print data angles
+	printf("angle_x: %d\n", data->angle_x);
+	printf("angle_y: %d\n", data->angle_y);
+	printf("angle_z: %d\n", data->angle_z);
 }
 
 void change_tilt(w_data *data)
@@ -207,7 +193,6 @@ void ro_sphere(int key, w_data *data)
 		if (key == D)
 			data->angle_y += ANGLE_VALUE;
 		orbit(data);
-		project_to_2d(data);
 	}
 	if (key == Q || key == E)
 	{
@@ -216,7 +201,6 @@ void ro_sphere(int key, w_data *data)
 		if (key == E)
 			data->angle_x += ANGLE_VALUE;
 		change_tilt(data);
-		project_to_2d(data);
 	}
 update_img(data);
 }

@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 20:20:29 by joamiran          #+#    #+#             */
-/*   Updated: 2024/08/29 19:09:48 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/05 19:33:49 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,35 +87,12 @@ void draw_line(w_data *data, t_point *p0, t_point *p1)
 }
 
 
-/*
-void draw_line(w_data *data, t_point *p0, t_point *p1, int color)
-{
-    t_bres bresen;
-    bresen_calc(p0, p1, &bresen);
-
-    while (1)
-    {
-        my_mlx_pixel_put(data, bresen.x0, bresen.y0, color);
-        if (bresen.x0 == p1->x && bresen.y0 == p1->y)
-            break;
-        bresen.e2 = 2 * bresen.err;
-        if (bresen.e2 > -bresen.dy)
-        {
-            bresen.err -= bresen.dy;
-            bresen.x0 += increment(bresen.x0, p1->x);
-        }
-        if (bresen.e2 < bresen.dx)
-        {
-            bresen.err += bresen.dx;
-            bresen.y0 += increment(bresen.y0, p1->y);
-        }
-    }
-}
-*/
 void draw_poly(w_data *data)
 {
     int i;
     int j;
+
+	
 
     i = 0;
     // draw horizontal lines between points in the same row for each column

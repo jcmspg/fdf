@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   projection_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joao <joao@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 03:04:17 by joao              #+#    #+#             */
-/*   Updated: 2024/09/03 03:04:26 by joao             ###   ########.fr       */
+/*   Updated: 2024/09/05 19:07:10 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,3 +50,34 @@ void apply_perspective_projection(w_data *data)
         }
     }
 }
+
+void transform_points(w_data *data)
+{
+	int i;
+	int j;
+
+	float x;
+	float y;
+	float z;
+
+	i = 0;
+	while (i < data->grid->rows)
+	{
+		j = 0;
+		while (j < data->grid->cols)
+		{
+			x = data->points_backup[i][j].x;
+			y = data->points_backup[i][j].y;
+			z = data->points_backup[i][j].z;
+
+			// Apply the transformation
+			data->points[i][j].x = (int)(x);
+			data->points[i][j].y = (int)(y);
+			data->points[i][j].z = (int)z;
+
+			j++;
+		}
+		i++;
+	}
+}
+
