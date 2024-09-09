@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 17:16:25 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/05 21:21:04 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/09 17:06:24 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,9 +123,9 @@ void scale_z(int key, w_data *data)
 {
 
 	if (key == S)
-		data->scale_z -= SCALE_FACTOR_Z;
-	if (key == W)
 		data->scale_z += SCALE_FACTOR_Z;
+	if (key == W)
+		data->scale_z -= SCALE_FACTOR_Z;
 }
 
 void z_assign_backup(w_data *data)

@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 20:19:20 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/05 21:38:58 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/09 19:04:52 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@
 
 # define DEGREE_MAX 360
 # define SCALE_TRIG 1000
-# define ANGLE_VALUE 2
+# define ANGLE_VALUE 5
 
 #define ISO_TILT 2
 

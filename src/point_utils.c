@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 19:31:12 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/05 21:45:44 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/09 19:20:34 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ t_point *center_point(w_data *data)
 // y' = (x + y) / 2
 // this rotates the grid 45 degrees and scales the y axis by 0.5
 // in order to make the grid look like a 3d grid
-void pcoords_iso(w_data *data)
+/* void pcoords_iso(w_data *data)
 {
     int i;
     int j;
@@ -96,6 +96,33 @@ void pcoords_iso(w_data *data)
         j = 0;
         i++;
     }
+} */
+
+
+
+void pcoords_iso(w_data *data)
+{
+	float angle;
+	int i;
+	int j;
+	float x;
+	float y;
+
+	angle = degree_to_radian(30);
+	i = 0;
+	while(i < data->grid->rows)
+	{
+		j = 0;
+		while(j < data->grid->cols)
+		{
+			x = data->points[i][j].x;
+			y = data->points[i][j].y;
+			data->points[i][j].x =(int) (x - y) * cos(angle);
+			data->points[i][j].y =(int) (x + y) * sin(angle);
+			j++;
+		}
+		i++;
+	}
 }
 
 // assigning the z value to the points
@@ -125,8 +152,8 @@ void z_assign(w_data *data)
 	    	z = data->points_backup[i][j].z;
 			
 			data->points_backup[i][j].z = z * data->scale_z;
-			data->points_backup[i][j].y -= z;
-			data->points[i][j].y = (int)data->points_backup[i][j].y;
+		//	data->points_backup[i][j].y -= z;
+			data->points[i][j].y -= (int)data->points_backup[i][j].z;
             j++;
         }
         j = 0;
@@ -329,6 +356,7 @@ f_point	**backup_points(w_data *data)
             points[i][j].x = data->points[i][j].x;
             points[i][j].y = data->points[i][j].y;
             points[i][j].z = data->points[i][j].z;
+			points[i][j].color = data->points[i][j].color;
             j++;
 
         }
