@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 18:28:26 by joao              #+#    #+#             */
-/*   Updated: 2024/09/09 17:22:29 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/09 19:57:47 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void    reset_position(w_data *data)
 			i++;
 		}
 	}
-	data->scale = 1.0;
 	data->scale_z = SCALE_FACTOR_Z;
 }
 

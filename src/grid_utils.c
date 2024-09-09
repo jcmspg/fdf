@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:15:46 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/05 21:48:11 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/09 20:22:47 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,15 +194,21 @@ void backup_data(w_data *data)
 	data->points_restore = backup_points(data);
 }
 
+static void set_origin(w_data *data)
+{
+	calc_sc_mid(data);
+	scale_center(data);
+	data->points_backup = backup_points(data);
+}
 
 void build_model(w_data *data)
 {
+	backup_data(data);
 	pcoords_iso(data);
-	calc_sc_mid(data);
-	scale_center(data);
-	backup_data(data);
-	z_assign(data);
+	set_origin(data);
+//	z_assign(data);
 	color_mode(data);
-	backup_data(data);
+//	backup_data(data);
 	draw_poly(data);
 }
+

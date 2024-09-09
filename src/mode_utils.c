@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 23:56:44 by joao              #+#    #+#             */
-/*   Updated: 2024/09/09 18:02:46 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/09 21:14:02 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void rotate(int key, w_data *data)
 		rotate_z_key(key, data);
 		rotate_z(data);
 	}
+//	pcoords_iso(data);
 	update_img(data);
 	draw_gui(data);
 }
@@ -82,6 +83,7 @@ void change_focus(int key, w_data *data)
 void zoom_in_out(int key, w_data *data)
 {
 	zoom(key, data);
+//	pcoords_iso(data);
 	update_img(data);
 	draw_gui(data);
 }
@@ -90,18 +92,19 @@ void reset(w_data *data)
 {
 	init_angle(data);
 	restore_origin(data);
+	build_model(data);
 	update_img(data);
 	draw_gui(data);
 }
 
-void height(int key, w_data *data)
+/* void height(int key, w_data *data)
 {
 	scale_z(key, data);
 	z_assign(data);
 	z_assign_backup(data);
 	update_img(data);
 	draw_gui(data);
-}
+} */
 void color(int key, w_data *data)
 {
 	color_mode(data);
@@ -142,8 +145,8 @@ int key_handle(int key, w_data *data)
 		zoom_in_out(key, data);
 	if (data->mode == Reset && data->mode != idle)
 		reset(data);
-	if (data->mode == Height && data->mode != idle)
-		height(key, data);
+/* 	if (data->mode == Height && data->mode != idle)
+		height(key, data); */
 	if (data->mode == Color && data->mode != idle)
 		color(key, data);
 	if (data->mode == Help && data->mode != idle)

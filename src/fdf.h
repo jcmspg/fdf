@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 20:19:20 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/09 19:04:52 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/09 19:46:21 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@
 # define WHELL_UP 4
 # define WHELL_DOWN 5
 
-# define SCALE_FACTOR_Z 4
+# define SCALE_FACTOR_Z 0
 # define SCALE_FACTOR_IN 1.1
 # define SCALE_FACTOR_OUT 0.90
 

@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 19:31:12 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/09 19:20:34 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/09 21:07:29 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ void pcoords_iso(w_data *data)
 	int j;
 	float x;
 	float y;
-
+	
 	angle = degree_to_radian(30);
 	i = 0;
 	while(i < data->grid->rows)
@@ -115,10 +115,13 @@ void pcoords_iso(w_data *data)
 		j = 0;
 		while(j < data->grid->cols)
 		{
+			// normalize Z values
+			data->points[i][j].z = (int)normalize_z(data->points_backup[i][j].z, data);
 			x = data->points[i][j].x;
 			y = data->points[i][j].y;
 			data->points[i][j].x =(int) (x - y) * cos(angle);
-			data->points[i][j].y =(int) (x + y) * sin(angle);
+			data->points[i][j].y =(int) (x + y) * sin(angle) - data->points[i][j].z;
+
 			j++;
 		}
 		i++;
@@ -132,7 +135,7 @@ void pcoords_iso(w_data *data)
 
    
 // function to add the Z value to the Y to simulate the 3d view
-void z_assign(w_data *data)
+/* void z_assign(w_data *data)
 {
     int i;
     int j;
@@ -159,7 +162,7 @@ void z_assign(w_data *data)
         j = 0;
         i++;
     }
-}
+} */
 
 // colorize the points. if the color is not assigned, it will be assigned the default color
 // if theres no color data in the whole map, we set colors for the various heights

@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 17:16:25 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/09 17:06:24 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/09 21:08:37 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,8 @@ void zoom(int key, w_data *data)
 	if (data->scale > 10.0f)
 		data->scale = 10.0f;
 
-	center_x = data->window_height / 2;
-	center_y = data->window_width / 2;
+	center_x = (float)data->window_height / 2.0f;
+	center_y = (float)data->window_width / 2.0f;
 
 	i = 0;
 	while (i < data->grid->rows)
@@ -119,16 +119,16 @@ void zoom(int key, w_data *data)
 }
 
 // function to scale the height of z values
-void scale_z(int key, w_data *data)
+/* void scale_z(int key, w_data *data)
 {
 
 	if (key == S)
 		data->scale_z += SCALE_FACTOR_Z;
 	if (key == W)
 		data->scale_z -= SCALE_FACTOR_Z;
-}
+} */
 
-void z_assign_backup(w_data *data)
+/* void z_assign_backup(w_data *data)
 {
 	int i;
 	int j;
@@ -146,7 +146,7 @@ void z_assign_backup(w_data *data)
 		i++;
 	}
 	data->scale_z = 0;
-}
+} */
 
 // funciton to normalize a Z value of a f_point
 float normalize_z(float z, w_data *data)
@@ -155,7 +155,7 @@ float normalize_z(float z, w_data *data)
 
 	float normalization_factor;
 
-	normalization_factor = 100 / logf(data->max_z + 1.0);
+	normalization_factor = 20 / logf(data->max_z + 1.0);
 
 	if (z >= 0)
 		z2 = logf(z + 1.0f) * normalization_factor;
