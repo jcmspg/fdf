@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 20:19:20 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/09 19:46:21 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/10 21:17:14 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,21 +93,29 @@
 typedef enum prog_mode
 {
 	idle,
-    Pan,
-    Rotate,
-    Zoom,
+//    Pan,
+//    Rotate,
+//    Zoom,
     Reset,
-    Height,
+//    Height,
     Color,
     Help,
     
-	Orbit,
+//	Orbit,
 
     Iso,
     Spherical,
     Conic,   
     
 }   t_mode;
+
+typedef enum interact_mode
+{
+	Pan,
+	Zoom,
+	Rotate,
+	Orbit,
+}	t_interact;
 
 typedef struct image_data
 {
@@ -230,6 +238,7 @@ typedef struct window_data
 
     // mode variables
     t_mode mode;
+	t_interact interact;
 	
 }               w_data;
 
@@ -246,7 +255,9 @@ void free_fpoints(f_point **points);
 // keybind functions
 int close_window(w_data *data);
 
+
 int key_handle(int key, w_data *data);
+int key_handle_mode(int key, w_data *data);
 
 // mlx functions
 void *init_mlx(void);
@@ -378,7 +389,7 @@ void add_point(point **head, point *new);
 void free_points(point **head);
 */
 
-
+void change_interaction(int key, w_data *data);
 void change_mode(int key, w_data *data);
 void pan(int key, w_data *data);
 void rotate(int key, w_data *data);
@@ -419,5 +430,10 @@ void normalize_z_log(w_data *data);
 
 float normalize_z(float z, w_data *data);
 
+int key_handle_interact(int key, w_data *data);
+
+
+
+void draw_poly_spherical(w_data *data);
 
 #endif

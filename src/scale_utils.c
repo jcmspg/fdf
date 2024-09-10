@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 17:16:25 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/09 21:08:37 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/10 19:24:22 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@
 	data->scale = scale_factor;
 } */
 
-void zoom(int key, w_data *data)
+/* void zoom(int key, w_data *data)
 {
 	float center_x;
 	float center_y;
@@ -116,17 +116,84 @@ void zoom(int key, w_data *data)
 		}
 		i++;
 	}
+} */
+
+void zoom(int key, w_data *data)
+{
+	float center_x;
+	float center_y;
+
+	float new_x;
+	float new_y;
+
+	float origin_x;
+	float origin_y;
+
+	float trans_x;
+	float trans_y;
+	float trans_z;
+
+	int i;
+	int j;
+
+	if (key == W)
+		data->scale *= SCALE_FACTOR_IN;
+	if (key == S)
+		data->scale *= SCALE_FACTOR_OUT;
+
+	if (data->scale < 0.1f)
+		data->scale = 0.1f;
+	if (data->scale > 10.0f)
+		data->scale = 10.0f;
+	
+	center_x = (float)data->window_height / 2.0f;
+	center_y = (float)data->window_width / 2.0f;
+
+	i = 0;
+	while (i < data->grid->rows)
+	{
+		j = 0;
+		while (j < data->grid->cols)
+		{
+			origin_x = data->points_backup[i][j].x;
+			origin_y = data->points_backup[i][j].y;
+
+			trans_x = origin_x - center_x;
+			trans_y = origin_y - center_y;
+			trans_z = data->points_backup[i][j].z;
+			
+			new_x = trans_x * data->scale;
+			new_y =trans_y * data->scale;
+			
+			data->points[i][j].x = (int) (new_x + center_x);
+			data->points[i][j].y = (int)(new_y + center_y);
+
+			j++;
+		}
+		i++;
+	}
 }
 
+
+		
+
+
+
+
+
+
+
+
+
 // function to scale the height of z values
-/* void scale_z(int key, w_data *data)
+void scale_z(int key, w_data *data)
 {
 
 	if (key == S)
 		data->scale_z += SCALE_FACTOR_Z;
 	if (key == W)
 		data->scale_z -= SCALE_FACTOR_Z;
-} */
+}
 
 /* void z_assign_backup(w_data *data)
 {

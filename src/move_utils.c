@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 18:28:26 by joao              #+#    #+#             */
-/*   Updated: 2024/09/09 19:57:47 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/10 20:59:56 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,13 @@ void move(int keycode, w_data *data)
     movement_y = 0;
 
     if (keycode == W)
-        movement_y = -(data->window_height / MOVE_FACTOR);
-    if (keycode == A)
-        movement_x = -(data->window_width / MOVE_FACTOR);
-    if (keycode == S)
         movement_y = (data->window_height / MOVE_FACTOR);
-    if (keycode == D)
+    if (keycode == A)
         movement_x = (data->window_width / MOVE_FACTOR);
+    if (keycode == S)
+        movement_y = -(data->window_height / MOVE_FACTOR);
+    if (keycode == D)
+        movement_x = -(data->window_width / MOVE_FACTOR);
     
     i = 0;
     while(i < data->grid->rows)

@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 17:55:09 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/09 17:16:45 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/10 20:16:52 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void pcoords_spherical(w_data *data)
 			z = data->iso_points[i][j].z;
 
             // Compute the radius with elevation
-            radius_with_elevation = radius + z * (radius / maximum_z / 100);
+            radius_with_elevation = radius + z * (radius / maximum_z / 50);
 
             // Compute spherical coordinates
             x_spherical = radius_with_elevation * cos(latitude) * cos(longitude);
@@ -69,16 +69,11 @@ void pcoords_spherical(w_data *data)
             data->points[i][j].y = (int)(data->points_backup[i][j].y);
             data->points[i][j].z = (int)(data->points_backup[i][j].z);
 
-
             j++;
         }
         j = 0;
         i++;
     }
-	//print the data->angle x y and z
-	printf("angle_x: %d\n", data->angle_x);
-	printf("angle_y: %d\n", data->angle_y);
-	printf("angle_z: %d\n", data->angle_z);
 }
 
 void orbit(w_data *data)
@@ -86,30 +81,20 @@ void orbit(w_data *data)
 	int i;
 	int j;
 
-	float x;
-	float y;
-	float z;
-
-	
-	float new_x;
-	float new_y;
-	float new_z;
-
-	float center_y;
-	float center_x;
-
 	float cos_angle;
 	float sin_angle;
+	float angle_x;
 
-	data->angle_y %= DEGREE_MAX;
-	if (data->angle_y < 0)
-		data->angle_y += DEGREE_MAX;
+	float x;
+//	float y;
+	float z;
 
-	cos_angle = data->lookup->cos_table[data->angle_y];
-	sin_angle = data->lookup->sin_table[data->angle_y];
+	float x_new;
+	float z_new;
 
-	center_y = data->window_height / 2;
-	center_x = data->window_width / 2;
+	angle_x = degree_to_radian(data->angle);
+	cos_angle = cos(angle_x);
+	sin_angle = sin(angle_x);
 
 	i = 0;
 	while (i < data->grid->rows)
@@ -117,19 +102,63 @@ void orbit(w_data *data)
 		j = 0;
 		while (j < data->grid->cols)
 		{
-			x = data->points_backup[i][j].x;
-			y = data->points_backup[i][j].y;
+			x = data->points_backup[i][j].x - data->window_width / 2;
+		//	y = data->points_backup[i][j].y - data->window_height / 2;
 			z = data->points_backup[i][j].z;
 
-			// Apply rotation around the Y-axis
-			new_x = x * cos_angle - z * sin_angle;
-			new_y = y;
-			new_z = x * sin_angle + z * cos_angle;
-			
+			x_new = x * cos_angle + z * sin_angle;
+			z_new = -x * sin_angle + z * cos_angle;
 
-			data->points_backup[i][j].x = new_x + center_x;
-			data->points_backup[i][j].y = y + center_y;
-			data->points_backup[i][j].z = new_z;
+			data->points_backup[i][j].x = x_new + data->window_width / 2;
+			data->points_backup[i][j].z = z_new;
+
+			data->points[i][j].x = (int)data->points_backup[i][j].x;
+			data->points[i][j].z = (int)data->points_backup[i][j].z;
+
+			j++;
+		}
+		i++;
+	}
+}
+
+void change_tilt(w_data *data)
+{
+	int i;
+	int j;
+
+	float cos_angle;
+	float sin_angle;
+	float angle_y;
+
+	float x;
+	float y;
+	float z;
+
+	float y_new;
+	float z_new;
+//	float x_new;
+
+	angle_y = degree_to_radian(data->angle);
+	cos_angle = cos(angle_y);
+	sin_angle = sin(angle_y);
+
+	i = 0;
+	while (i < data->grid->rows)
+	{
+		j = 0;
+		while (j < data->grid->cols)
+		{
+			x = data->points_backup[i][j].x - data->window_width / 2;
+			y = data->points_backup[i][j].y - data->window_height / 2;
+			z = data->points_backup[i][j].z;
+
+			y_new = y * cos_angle - z * sin_angle;
+			z_new = y * sin_angle + z * cos_angle;
+		//	x_new = x;
+
+			data->points_backup[i][j].x = x + data->window_width / 2;
+			data->points_backup[i][j].y = y_new + data->window_height / 2;
+			data->points_backup[i][j].z = z_new;
 
 			data->points[i][j].x = (int)data->points_backup[i][j].x;
 			data->points[i][j].y = (int)data->points_backup[i][j].y;
@@ -137,51 +166,8 @@ void orbit(w_data *data)
 
 			j++;
 		}
+		i++;
 	}
-
-	data->angle_x = 0;
-	data->angle_y = 0;
-	data->angle_z = 0;
-	
-	// print data angles
-	printf("angle_x: %d\n", data->angle_x);
-	printf("angle_y: %d\n", data->angle_y);
-	printf("angle_z: %d\n", data->angle_z);
-}
-
-void change_tilt(w_data *data)
-{
-	int i;
-	int j;
-    float x;
-	float y;
-	float z;
-	
-    float y_rot;
-	float z_rot;
-    float angle_x;
-
-    angle_x = degree_to_radian(data->angle_x);
-
-    float cos_x = cos(angle_x);
-    float sin_x = sin(angle_x);
-
-    for (i = 0; i < data->grid->rows; i++) {
-        for (j = 0; j < data->grid->cols; j++) {
-            x = data->points_backup[i][j].x;
-            y = data->points_backup[i][j].y;
-			z = data->points_backup[i][j].z;
-
-            // Apply rotation around the X-axis
-            y_rot = y * cos_x - z * sin_x;
-			z_rot = y * sin_x + z * cos_x;
-
-            // Save rotated point
-            data->points_backup[i][j].x = x;
-            data->points_backup[i][j].y = y_rot;
-            data->points_backup[i][j].z = z_rot;
-        }
-    }
 }
 
 void ro_sphere(int key, w_data *data)
@@ -189,20 +175,49 @@ void ro_sphere(int key, w_data *data)
 	if (key == A || key == D)
 	{
 		if (key == A)
-			data->angle_y -= ANGLE_VALUE;
+		{
+			if (data->angle_x >= 360)
+				data->angle_x = 0;
+			if (data->angle_x < 0)
+				data->angle_x = 360;
+			data->angle = -ANGLE_VALUE;
+			data->angle_x -= ANGLE_VALUE;
+		}
 		if (key == D)
-			data->angle_y += ANGLE_VALUE;
+		{
+			if (data->angle_x >= 360)
+				data->angle_x = 0;
+			if (data->angle_x < 0)
+				data->angle_x = 360;
+			data->angle = ANGLE_VALUE;
+			data->angle_x += ANGLE_VALUE;
+		}
 		orbit(data);
 	}
 	if (key == Q || key == E)
 	{
 		if (key == Q)
-			data->angle_x -= ANGLE_VALUE;
+		{
+			if (data->angle_y >= 360)
+				data->angle_y = 0;
+			if (data->angle_y < 0)
+				data->angle_y = 360;
+			data->angle = -ANGLE_VALUE;
+			data->angle_y -= ANGLE_VALUE;
+		}
 		if (key == E)
-			data->angle_x += ANGLE_VALUE;
+		{
+			if (data->angle_y >= 360)
+				data->angle_y = 0;
+			if (data->angle_y < 0)
+				data->angle_y = 360;
+			data->angle = ANGLE_VALUE;
+			data->angle_y += ANGLE_VALUE;
+		}
 		change_tilt(data);
 	}
-update_img(data);
+	update_img(data);
+	draw_gui(data);
 }
 
 void build_sphere(w_data *data)

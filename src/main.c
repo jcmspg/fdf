@@ -27,7 +27,7 @@ int main(int argc, char ** argv)
 
     window.file = argv[1];
 
-	init_lookup(&window);   
+	//init_lookup(&window);   
 	// print the sin and cos tables
 /* 	int i = 0;
 	while (i < DEGREE_MAX)
@@ -63,7 +63,7 @@ int main(int argc, char ** argv)
     intro_screen(&window);
 
 	// print scale
-	printf("scale: %f\n", window.scale_z);
+	//printf("scale: %f\n", window.scale_z);
 
 	//reset_position(&window);
     //print all points.z
@@ -71,6 +71,7 @@ int main(int argc, char ** argv)
 
     // key input handling
     mlx_key_hook(window.win, key_handle, &window);
+
     
     // click upper X to close 
     mlx_hook(window.win, 17, 0, close_window, &window);
