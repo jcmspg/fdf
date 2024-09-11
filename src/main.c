@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/11 18:36:42 by joamiran          #+#    #+#             */
+/*   Updated: 2024/09/11 19:41:51 by joamiran         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
 int main(int argc, char ** argv)
@@ -11,8 +23,8 @@ int main(int argc, char ** argv)
     w_data window;
   
     window.title = "FDF";
-    window.window_width = 800; //ft_atoi(argv[1]);
-    window.window_height = 800; //ft_atoi(argv[2]);
+/*     window.window_width = 800; //ft_atoi(argv[1]);
+    window.window_height = 800; //ft_atoi(argv[2]); */
 
 
     window.grid = (t_grid *)malloc(sizeof(t_grid));
@@ -23,7 +35,6 @@ int main(int argc, char ** argv)
     }
     window.grid->rows = 0;
     window.grid->cols = 0;
-	window.scale = 1.0;
 
     window.file = argv[1];
 
@@ -37,7 +48,7 @@ int main(int argc, char ** argv)
 		i++;
 	} */
 
-	init_angle(&window);
+	init_data_w(&window);
 /* 	// print the angle_x , y and z
 	printf("angle_x = %d\n", window.angle_x);
 	printf("angle_y = %d\n", window.angle_y);

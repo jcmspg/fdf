@@ -5,10 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/06 20:19:20 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/10 21:17:14 by joamiran         ###   ########.fr       */
+/*   Created: 2024/09/11 18:40:13 by joamiran          #+#    #+#             */
+/*   Updated: 2024/09/11 20:43:14 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+
 
 #ifndef FDF_H
 # define FDF_H
@@ -90,32 +92,16 @@
 
 # define FOCAL_LENGTH 1000000
 
-typedef enum prog_mode
-{
-	idle,
-//    Pan,
-//    Rotate,
-//    Zoom,
-    Reset,
-//    Height,
-    Color,
-    Help,
-    
-//	Orbit,
+# define WINDOW_H 800
+# define WINDOW_W 800
 
-    Iso,
-    Spherical,
-    Conic,   
-    
-}   t_mode;
 
-typedef enum interact_mode
-{
-	Pan,
-	Zoom,
-	Rotate,
-	Orbit,
-}	t_interact;
+typedef struct window_data w_data;
+
+
+// define function pointer types
+typedef void (*actionfunction) (int key, w_data *data);
+
 
 typedef struct image_data
 {
@@ -183,6 +169,24 @@ typedef struct lookup_table
     float *cos_table;
 }   t_lookup;
 
+
+
+typedef struct s_mode
+{
+	const char *name;
+	actionfunction rotate;
+	actionfunction pan;
+	actionfunction zoom;
+	actionfunction orbit;
+}	t_mode;
+
+typedef struct s_function
+{
+	void	*(*interact) (int keycode, w_data *data);
+	/* data */
+}		t_function;
+
+
 typedef struct window_data
 {
 	// mlx variables
@@ -237,12 +241,10 @@ typedef struct window_data
     t_grid  *grid;
 
     // mode variables
-    t_mode mode;
-	t_interact interact;
-	
+	t_mode modes[3];
+    t_mode *current_mode;
+	t_function *fun;
 }               w_data;
-
-
 
 // data functions
 void free_data(w_data *data);
@@ -380,6 +382,7 @@ void rotate_z(w_data *data);
 void rotate_z_key(int key, w_data *data);
 
 void init_angle(w_data *data);
+void init_data_w(w_data *data);
 
 
 /*
@@ -432,7 +435,7 @@ float normalize_z(float z, w_data *data);
 
 int key_handle_interact(int key, w_data *data);
 
-
+void handle_interaction(int key, w_data *data);
 
 void draw_poly_spherical(w_data *data);
 

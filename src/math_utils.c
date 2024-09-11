@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 16:54:07 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/05 20:42:23 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/11 17:12:55 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int	ft_abs(int n)
         return (-n);
     return (n);
 }
+
 
 int ft_max(int a, int b)
 {

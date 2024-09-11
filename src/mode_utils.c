@@ -6,48 +6,11 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 23:56:44 by joao              #+#    #+#             */
-/*   Updated: 2024/09/10 21:25:06 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/11 20:38:41 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-
-void change_interaction(int key, w_data *data)
-{
-	if (key == P)
-		data->interact = Pan;
-	if (data->mode != Spherical && data->mode != Conic)
-	{
-		if (key == R)
-			data->interact = Rotate;
-	}
-	if (key == Z)
-		data->interact = Zoom;
-	if (data->mode == Spherical)
-	{
-		if (key == O)
-			data->interact = Orbit;
-	}
-}
-
-
-
-// function to to assign mode to the program
-void change_mode(int key, w_data *data)
-{
-	if (key == H)
-		data->mode = Help;
-	if (key == C)
-		data->mode = Color;
-/* 	if (key == T && data->mode != Conic && data->mode != Spherical)
-		data->mode = Height; */
-	if (key == F)
-		data->mode = Reset;
-	if (key == I)
-		data->mode = Conic;
-	if (key == G)
-		data->mode = Spherical;
-}
 
 void pan(int key, w_data *data)
 {
@@ -73,7 +36,7 @@ void rotate(int key, w_data *data)
 		rotate_z_key(key, data);
 		rotate_z(data);
 	}
-//	pcoords_iso(data);
+	//	pcoords_iso(data);
 	update_img(data);
 	draw_gui(data);
 }
@@ -95,7 +58,6 @@ void change_focus(int key, w_data *data)
 void zoom_in_out(int key, w_data *data)
 {
 	zoom(key, data);
-//	pcoords_iso(data);
 	update_img(data);
 	draw_gui(data);
 }
@@ -107,16 +69,10 @@ void reset(w_data *data)
 	build_model(data);
 	update_img(data);
 	draw_gui(data);
+	data->current_mode = &data->modes[0];
 }
 
-/* void height(int key, w_data *data)
-{
-	scale_z(key, data);
-	z_assign(data);
-	z_assign_backup(data);
-	update_img(data);
-	draw_gui(data);
-} */
+
 void color(int key, w_data *data)
 {
 	color_mode(data);
@@ -137,66 +93,87 @@ void display_help(int key, w_data *data)
 	}
 }
 
-int key_handle_mode(int key, w_data *data)
+void change_mode(int key, w_data *data)
 {
-	if (key == ESC)
-		close_window(data);
-		
-	if (key == SPACE && data->mode == idle)
+	if (key == SPACE)
 	{
-		data->mode = Iso;
+		data->current_mode = &data->modes[0];
+		clear_image(data);
 		build_model(data);
+		backup_data(data);
 		make_image(data);
 		draw_gui(data);
 	}
-	
-	change_mode(key, data);
-	
-	
-	
-	if (data->mode == Reset && data->mode != idle)
-		reset(data);
-
-	if (data->mode == Color && data->mode != idle)
-		color(key, data);
-		
-	if (data->mode == Help && data->mode != idle)
+	else if(key == H)
+	{
 		display_help(key, data);
-		
-	if (data->mode == Conic && data->mode != idle)
-	{
-		build_conic(data);
-		change_focus(key, data);
 	}
-	
-	if (data->mode == Spherical && data->mode != idle)
+	else if (key == I)
 	{
+		data->current_mode = &data->modes[0];
+		clear_image(data);
+		build_model(data);
+		backup_data(data);
+		make_image(data);
+		draw_gui(data);
+	}
+	else if (key == G)
+	{
+		data->current_mode = &data->modes[1];
 		pcoords_spherical(data);
 		build_sphere(data);
 		draw_gui(data);
 	}
-
-	return (0);
+	else if (key ==C)
+	{
+		data->current_mode = &data->modes[2];
+		build_conic(data);
+		change_focus(key, data);
+	}
+	else if (key == ESC)
+		close_window(data);
+	else if(key == F)
+		reset(data);
+	else if (key == C)
+		color(key, data);
 }
 
-int key_handle_interact(int key, w_data *data)
+void handle_interaction(int key, w_data *data)
 {
-	change_interaction(key, data);
+	//call the appropriate function based on mode
+	if (key == P && data->current_mode->pan != NULL)
+	{
+		data->current_mode = pan;
+		printf ("CALLING PAN \n");
+		data->current_mode->pan(key, data);
+	}
+	if (key == R && data->current_mode->rotate != NULL)
+		{
+			data->current_mode = rotate;
+			printf("CALLING ROTATE \n");
+			data->current_mode->rotate(key, data);
+		}
+	if (key == Z && data->current_mode->zoom != NULL)
+	{
+		printf("calling ZOOM");
+		data->current_mode->zoom(key, data);
+	}
 	
-	if (data->interact == Pan )
-		pan(key, data);
-	if (data->interact == Rotate)
-		rotate(key, data);
-	if (data->interact == Zoom)
-		zoom_in_out(key, data);
-	if (data->interact == Orbit)
-		ro_sphere(key, data);
-	return (0);
+	if (key == O && data->current_mode->orbit != NULL)
+		data->current_mode->orbit(key, data);
+
+	if (key == W )
+		data->current_mode->fun(key, data);
 }
 
 int key_handle(int key, w_data *data)
 {
-	key_handle_mode(key, data);
-	key_handle_interact(key, data);
-	return (0);
+	// handle the mode switch
+	change_mode(key, data);
+
+	// handle mode specific interactions
+	handle_interaction(key, data);
+
+	return 0;
 }
+

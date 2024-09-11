@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 18:50:10 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/09 21:10:16 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/11 17:15:25 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void rotate_x(w_data *data)
 
 			// Apply rotation around the X-axis
 			new_y = y * cos_angle - z * sin_angle;
-			new_z = y * sin_angle + z * cos_angle;
+			new_z =(y * sin_angle + z * cos_angle);
 
 			// Store the result
 			data->points_backup[i][j].y = new_y + center_y;
@@ -112,7 +112,7 @@ void rotate_y(w_data *data)
 
 			// Apply rotation around the X-axis
 			new_x = x * cos_angle + z * sin_angle;
-			new_z = -x * sin_angle + z * cos_angle;
+			new_z = (-x * sin_angle + z * cos_angle);
 
 			// Store the result
 			data->points_backup[i][j].x = new_x + center_x;
@@ -219,6 +219,8 @@ void rotate_y_key(int key, w_data *data)
 		{
 			if(data->angle_y >= 360)
 				data->angle_y = 0;
+			if(data->angle_y < 0)
+				data->angle_y = 360;
 			data->angle = ANGLE_VALUE;
 			data->angle_y += ANGLE_VALUE;
 		}
@@ -232,6 +234,8 @@ void rotate_x_key(int key, w_data *data)
 	{
 		if(data->angle_x >= 360)
 			data->angle_x = 0;
+		if(data->angle_x < 0)
+			data->angle_x = 360;
 		data->angle = -ANGLE_VALUE;
 		data->angle_x -= ANGLE_VALUE;
 	}
@@ -239,6 +243,8 @@ void rotate_x_key(int key, w_data *data)
 	{
 		if(data->angle_x >= 360)
 			data->angle_x = 0;
+		if(data->angle_x < 0)
+			data->angle_x = 360;
 		data->angle = ANGLE_VALUE;
 		data->angle_x += ANGLE_VALUE;
 	}

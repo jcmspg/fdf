@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 19:11:54 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/05 21:32:30 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/11 20:44:36 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,9 +163,6 @@ void draw_gui(w_data *data)
 	mlx_string_put(data->mlx, data->win, info_x, info_y + 3 * line_spacing, text_color, "Cols: ");
 	mlx_string_put(data->mlx, data->win, info_x + 40, info_y + 3 * line_spacing, text_color, ft_itoa(data->grid->cols));
 	
-	// mode
-	mlx_string_put(data->mlx, data->win, info_x, info_y + 4 * line_spacing, text_color, "Mode: ");
-	mlx_string_put(data->mlx, data->win, info_x + 50, info_y + 4 * line_spacing, text_color, ft_itoa(data->mode));
 	
 	// max and min z values
 	mlx_string_put(data->mlx, data->win, info_x, info_y + 5 * line_spacing, text_color, "Max Z: ");

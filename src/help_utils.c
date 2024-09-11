@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 02:50:42 by joao              #+#    #+#             */
-/*   Updated: 2024/09/03 20:33:41 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/11 19:36:28 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ void show_help (w_data *data)
 void intro_screen(w_data *data)
 {
     // clear the image
-	data->mode = idle;
     clear_image(data);
     make_image(data);
 

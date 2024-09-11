@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 18:28:26 by joao              #+#    #+#             */
-/*   Updated: 2024/09/10 20:59:56 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/11 20:46:02 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,3 +107,4 @@ void move(int keycode, w_data *data)
         i++;
     }
 }
+
