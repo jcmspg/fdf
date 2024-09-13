@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 23:56:44 by joao              #+#    #+#             */
-/*   Updated: 2024/09/11 20:38:41 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/13 20:25:14 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,10 @@ void reset(w_data *data)
 {
 	init_angle(data);
 	restore_origin(data);
-	build_model(data);
+	//build_model(data);
 	update_img(data);
 	draw_gui(data);
-	data->current_mode = &data->modes[0];
+	data->mode = 'i';
 }
 
 
@@ -95,9 +95,10 @@ void display_help(int key, w_data *data)
 
 void change_mode(int key, w_data *data)
 {
-	if (key == SPACE)
+	if (key == SPACE && !data->mode)
 	{
-		data->current_mode = &data->modes[0];
+		data->mode = 'i';
+		backup_data(data);
 		clear_image(data);
 		build_model(data);
 		backup_data(data);
@@ -108,25 +109,25 @@ void change_mode(int key, w_data *data)
 	{
 		display_help(key, data);
 	}
-	else if (key == I)
+	else if (key == I && data->mode != 'i')
 	{
-		data->current_mode = &data->modes[0];
+		data->mode = 'i';
 		clear_image(data);
 		build_model(data);
-		backup_data(data);
+	//	backup_data(data);
 		make_image(data);
 		draw_gui(data);
 	}
 	else if (key == G)
 	{
-		data->current_mode = &data->modes[1];
+		data->mode = 'g';
 		pcoords_spherical(data);
 		build_sphere(data);
 		draw_gui(data);
 	}
-	else if (key ==C)
+	else if (key == UP)
 	{
-		data->current_mode = &data->modes[2];
+		data->mode = 'c';
 		build_conic(data);
 		change_focus(key, data);
 	}
@@ -141,38 +142,63 @@ void change_mode(int key, w_data *data)
 void handle_interaction(int key, w_data *data)
 {
 	//call the appropriate function based on mode
-	if (key == P && data->current_mode->pan != NULL)
+	if (key == P)
 	{
-		data->current_mode = pan;
+		data->interaction = 'p';
 		printf ("CALLING PAN \n");
-		data->current_mode->pan(key, data);
-	}
-	if (key == R && data->current_mode->rotate != NULL)
-		{
-			data->current_mode = rotate;
-			printf("CALLING ROTATE \n");
-			data->current_mode->rotate(key, data);
-		}
-	if (key == Z && data->current_mode->zoom != NULL)
-	{
-		printf("calling ZOOM");
-		data->current_mode->zoom(key, data);
+		//data->current_mode->pan;
 	}
 	
-	if (key == O && data->current_mode->orbit != NULL)
-		data->current_mode->orbit(key, data);
+	if (key == R && data->mode != 'g')
+		{
+			data->interaction = 'r';
+			printf("CALLING ROTATE \n");
+			//data->current_mode->rotate(key, data);
+		}
+	if (key == Z)
+	{
+		printf("calling ZOOM \n");
+		data->interaction = 'z';
+	}
+	
+	if (key == O && data->mode == 'g')
+	{
+		printf("calling orbit \n");
+		data->interaction = 'o';
+	}
 
-	if (key == W )
-		data->current_mode->fun(key, data);
 }
+
+void interaction_functions(int key, w_data *data)
+{
+	if (key == W || key == S || key == A || key == D || key == Q || key == E)
+	{
+		if (data->interaction == 'p')
+			pan(key, data);
+		if (data->interaction == 'r')
+			rotate(key, data);
+		if (data->interaction == 'z')
+			zoom_in_out(key, data);
+		if (data->interaction == 'o' && data->mode == 'g')
+			ro_sphere(key, data);
+		if (data->interaction == 'o' && data->mode == 'c')
+			change_focus(key, data);
+	}
+}
+
+
 
 int key_handle(int key, w_data *data)
 {
+	if (key == UP || key == I || key == C || key == G || key == ESC || key == F || key == SPACE || key == H)
 	// handle the mode switch
-	change_mode(key, data);
-
+		change_mode(key, data);
+	if (key == P || key == O || key == Z || key == R)
 	// handle mode specific interactions
-	handle_interaction(key, data);
+		handle_interaction(key, data);
+	if (key == W || key == S || key == A || key == D || key == Q || key == E)
+	// functions to IMPLEMENT interaction
+		interaction_functions(key, data);
 
 	return 0;
 }

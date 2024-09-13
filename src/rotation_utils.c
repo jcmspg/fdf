@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 18:50:10 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/11 17:15:25 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/13 18:59:45 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,14 @@ void rotate_x(w_data *data)
 
 	float angle_z;
 
-	int center_x;
+//	int center_x;
 	int center_y;
 	
 	angle_z = degree_to_radian(data->angle);
 	cos_angle = cos(angle_z);
 	sin_angle = sin(angle_z);
 
-	center_x = data->window_width / 2;
+//	center_x = data->window_width / 2;
 	center_y = data->window_height / 2;
 	
 	i = 0;
@@ -92,14 +92,14 @@ void rotate_y(w_data *data)
 	float angle_z;
 
 	int center_x;
-	int center_y;
+//	int center_y;
 	
 	angle_z = degree_to_radian(data->angle);
 	cos_angle = cos(angle_z);
 	sin_angle = sin(angle_z);
 
 	center_x = data->window_width / 2;
-	center_y = data->window_height / 2;
+//	center_y = data->window_height / 2;
 	
 	i = 0;
 	while(i < data->grid->rows)

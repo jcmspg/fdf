@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 17:16:25 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/10 19:24:22 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/13 19:00:19 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ void zoom(int key, w_data *data)
 
 	float trans_x;
 	float trans_y;
-	float trans_z;
+//	float trans_z;
 
 	int i;
 	int j;
@@ -160,7 +160,7 @@ void zoom(int key, w_data *data)
 
 			trans_x = origin_x - center_x;
 			trans_y = origin_y - center_y;
-			trans_z = data->points_backup[i][j].z;
+		//	trans_z = data->points_backup[i][j].z;
 			
 			new_x = trans_x * data->scale;
 			new_y =trans_y * data->scale;

@@ -102,7 +102,7 @@ Feel free to modify the values in the scrip to generate different grid patterns.
 **there is some degree of interactivity, here are the controls you can press:**
  - WASD is your main navigation / interaction controls
  - Press H for Help
- - P, C, Z, R, F, H, T to switch between modes (Pan, Color, Zoom, Rotate, Reset, Help and Height)
+ - P, C, Z, R, F, H, G, UP to switch between modes (Pan, Color, Zoom, Rotate, Reset, Help, Spherical and CONIC)
  - ESC to close
 
 
@@ -111,12 +111,18 @@ Functions Used
     . *WIP*
     ___
     ___
-    
+    from 42 syllabus />
+    . some libft functions.
+    . get_next_line(fd).
+
+	fdf.c />
     . read_fdf(file, grid): Reads the 3D map data from the file and stores it in the grid structure.
     . init_mlx(): Initializes the MiniLibX library.
-    . create_window(window): Creates a window with the specified dimensions.
     . create_image(window): Creates an image buffer to draw on.
     . draw_line(window, p1, p2, color): Draws a line between points p1 and p2 with the specified color.
+    
+    MLX library /> 
+        . create_window(window): Creates a window with the specified dimensions.
     . mlx_put_image_to_window(mlx, win, img, x, y): Displays the image in the window.
     . mlx_string_put(mlx, win, x, y, color, string): Displays a string in the window at the specified coordinates.
     . mlx_key_hook(win, key_handle, param): Sets up a key hook to handle keyboard events.
@@ -126,8 +132,8 @@ Functions Used
 File Structure
 
     . src/: Contains the source code files.
-    . inc/: Contains the header files.
-    . maps/: Contains sample 3D map data files.
+    . inc/: Contains the header files and libraries such as libft and mlx.
+    . maps/: Contains sample 3D map data files and map generator.
     . Makefile: Script to build the project.
 
 Dependencies

@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 17:55:09 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/10 20:16:52 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/13 19:01:54 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ void pcoords_spherical(w_data *data)
 	float z_spherical;
     float latitude;
 	float longitude;
- 	float x;
- 	float y;
+ //	float x;
+ //	float y;
 	float z;
 
     float radius;
@@ -47,8 +47,8 @@ void pcoords_spherical(w_data *data)
 
             // Get the elevation or height (z-value)
             
-			x = data->iso_points[i][j].x;
-			y = data->iso_points[i][j].y;
+		//	x = data->iso_points[i][j].x;
+		//	y = data->iso_points[i][j].y;
 			z = data->iso_points[i][j].z;
 
             // Compute the radius with elevation

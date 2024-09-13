@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:15:46 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/11 20:21:38 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/13 20:05:18 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,7 +203,7 @@ static void set_origin(w_data *data)
 
 void build_model(w_data *data)
 {
-	backup_data(data);
+	//backup_data(data);
 	pcoords_iso(data);
 	set_origin(data);
 //	z_assign(data);

@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 18:40:13 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/11 20:43:14 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/13 19:45:24 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,8 @@
 
 # define FOCAL_LENGTH 1000000
 
-# define WINDOW_H 800
-# define WINDOW_W 800
+# define WINDOW_H 680
+# define WINDOW_W 680
 
 
 typedef struct window_data w_data;
@@ -169,22 +169,21 @@ typedef struct lookup_table
     float *cos_table;
 }   t_lookup;
 
-
-
-typedef struct s_mode
-{
-	const char *name;
-	actionfunction rotate;
-	actionfunction pan;
-	actionfunction zoom;
-	actionfunction orbit;
-}	t_mode;
-
-typedef struct s_function
-{
-	void	*(*interact) (int keycode, w_data *data);
-	/* data */
+/*typedef struct s_function
+ {
+	void	*(*function) (int key, w_data *data);
 }		t_function;
+
+typedef struct mode
+{
+	char mode;
+}	m_mode;
+
+typedef struct main_function
+{
+	t_function *current;
+}	m_function; */
+
 
 
 typedef struct window_data
@@ -241,9 +240,9 @@ typedef struct window_data
     t_grid  *grid;
 
     // mode variables
-	t_mode modes[3];
-    t_mode *current_mode;
-	t_function *fun;
+	char mode;
+	char interaction;
+
 }               w_data;
 
 // data functions
@@ -436,6 +435,7 @@ float normalize_z(float z, w_data *data);
 int key_handle_interact(int key, w_data *data);
 
 void handle_interaction(int key, w_data *data);
+void interaction_functions(int key, w_data *data);
 
 void draw_poly_spherical(w_data *data);
 

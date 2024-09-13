@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 20:20:29 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/11 19:35:07 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/13 19:47:00 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ void draw_poly(w_data *data)
 	i = 0;
 
 //check if the mode is not spherical
-	if (ft_strncmp(data->current_mode->name, "Spherical", 9) != 0)
+	if (data->mode != 'g')
 	{
 	// draw horizontal lines between points in the same row for each column
 		while (i < data->grid->rows)
@@ -161,7 +161,7 @@ void draw_poly(w_data *data)
 			i++;
 		}
 	}
-	if (ft_strncmp(data->current_mode->name, "Spherical", 9) == 0)
+	if (data->mode == 'g')
 		draw_poly_spherical(data);
 }
 

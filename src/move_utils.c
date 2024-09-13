@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 18:28:26 by joao              #+#    #+#             */
-/*   Updated: 2024/09/11 20:46:02 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/13 20:12:12 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,14 +53,14 @@ void restore_origin(w_data *data)
 			j = 0;
 			while( j < data->grid->cols)
 			{
-				data->points[i][j].x = data->points_restore[i][j].x;
-				data->points[i][j].y = data->points_restore[i][j].y;
-				data->points[i][j].z = data->points_restore[i][j].z;
-				data->points[i][j].color = data->points_restore[i][j].color;
 				data->points_backup[i][j].x = data->points_restore[i][j].x;
 				data->points_backup[i][j].y = data->points_restore[i][j].y;
 				data->points_backup[i][j].z = data->points_restore[i][j].z;
 				data->points_backup[i][j].color = data->points_restore[i][j].color;
+				data->points[i][j].x = (int)data->points_backup[i][j].x;
+				data->points[i][j].y = (int)data->points_backup[i][j].y;
+				data->points[i][j].z = (int)data->points_backup[i][j].z;
+				data->points[i][j].color = data->points_backup[i][j].color;
 				j++;
 			}
 			i++;
