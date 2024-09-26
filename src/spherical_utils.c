@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 17:55:09 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/13 19:01:54 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/26 19:56:23 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void pcoords_spherical(w_data *data)
 	float maximum_z;
 
     // Use a constant radius for the globe
-    radius = data->radius; 
+    radius = data->radius;
 
 	maximum_z = data->max_z;
 
@@ -46,13 +46,13 @@ void pcoords_spherical(w_data *data)
             longitude = ((float)j / (data->grid->cols - 1)) * 2 * PI - PI;    // Longitude: -π to π
 
             // Get the elevation or height (z-value)
-            
+
 		//	x = data->iso_points[i][j].x;
 		//	y = data->iso_points[i][j].y;
 			z = data->iso_points[i][j].z;
 
             // Compute the radius with elevation
-            radius_with_elevation = radius + z * (radius / maximum_z / 50);
+            radius_with_elevation = radius + z * (radius / maximum_z / 10);
 
             // Compute spherical coordinates
             x_spherical = radius_with_elevation * cos(latitude) * cos(longitude);
@@ -60,10 +60,10 @@ void pcoords_spherical(w_data *data)
             z_spherical = (radius_with_elevation * sin(latitude));
 
             // Optionally, store backup
-            data->points_backup[i][j].x = x_spherical + data->window_width / 2;
-            data->points_backup[i][j].y = y_spherical + data->window_height / 2;
+            data->points_backup[i][j].x = x_spherical + data->window_width / 2.0f;
+            data->points_backup[i][j].y = y_spherical + data->window_height / 2.0f;
             data->points_backup[i][j].z = z_spherical;
-         
+
 		    // Convert to screen coordinates (center the globe)
             data->points[i][j].x = (int)(data->points_backup[i][j].x);
             data->points[i][j].y = (int)(data->points_backup[i][j].y);
@@ -86,7 +86,7 @@ void orbit(w_data *data)
 	float angle_x;
 
 	float x;
-//	float y;
+	float y;
 	float z;
 
 	float x_new;
@@ -102,17 +102,20 @@ void orbit(w_data *data)
 		j = 0;
 		while (j < data->grid->cols)
 		{
-			x = data->points_backup[i][j].x - data->window_width / 2;
-		//	y = data->points_backup[i][j].y - data->window_height / 2;
+			x = data->points_backup[i][j].x - data->window_width / 2.0f;
+			y = data->points_backup[i][j].y - data->window_height / 2.0f;
 			z = data->points_backup[i][j].z;
+
 
 			x_new = x * cos_angle + z * sin_angle;
 			z_new = -x * sin_angle + z * cos_angle;
 
-			data->points_backup[i][j].x = x_new + data->window_width / 2;
+			data->points_backup[i][j].x = x_new + data->window_width / 2.0f;
+			data->points_backup[i][j].y = y + data->window_height / 2.0f;
 			data->points_backup[i][j].z = z_new;
 
 			data->points[i][j].x = (int)data->points_backup[i][j].x;
+			data->points[i][j].y = (int)data->points_backup[i][j].y;
 			data->points[i][j].z = (int)data->points_backup[i][j].z;
 
 			j++;
@@ -136,6 +139,7 @@ void change_tilt(w_data *data)
 
 	float y_new;
 	float z_new;
+
 //	float x_new;
 
 	angle_y = degree_to_radian(data->angle);
@@ -148,16 +152,16 @@ void change_tilt(w_data *data)
 		j = 0;
 		while (j < data->grid->cols)
 		{
-			x = data->points_backup[i][j].x - data->window_width / 2;
-			y = data->points_backup[i][j].y - data->window_height / 2;
+			x = data->points_backup[i][j].x - data->window_width / 2.0f;
+			y = data->points_backup[i][j].y - data->window_height / 2.0f;
 			z = data->points_backup[i][j].z;
 
 			y_new = y * cos_angle - z * sin_angle;
 			z_new = y * sin_angle + z * cos_angle;
-		//	x_new = x;
 
-			data->points_backup[i][j].x = x + data->window_width / 2;
-			data->points_backup[i][j].y = y_new + data->window_height / 2;
+
+			data->points_backup[i][j].x = x + data->window_width / 2.0f;
+			data->points_backup[i][j].y = y_new + data->window_height / 2.0f;
 			data->points_backup[i][j].z = z_new;
 
 			data->points[i][j].x = (int)data->points_backup[i][j].x;

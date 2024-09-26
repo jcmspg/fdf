@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:15:46 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/13 20:05:18 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/26 18:43:25 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ t_point **make_points(w_data *data)
     lines = data->grid->rows;
     cols = data->grid->cols;
     
-    points = (t_point **)ft_calloc(sizeof(t_point *) , (cols * lines));
+    points = (t_point **)ft_calloc(sizeof(t_point *) , (lines+1));
     if (!points)
     {
         fprintf(stderr, "Error: Could not allocate memory for points\n");
@@ -76,6 +76,7 @@ t_point **make_points(w_data *data)
         }
         i++;
     }
+	points[lines] = NULL;
     i = 0;
     while (i < lines)
     {
@@ -191,6 +192,7 @@ void scale_center(w_data *data)
 void backup_data(w_data *data)
 {
 	data->points_backup = backup_points(data);
+
 	data->points_restore = backup_points(data);
 }
 
@@ -198,7 +200,8 @@ static void set_origin(w_data *data)
 {
 	calc_sc_mid(data);
 	scale_center(data);
-	data->points_backup = backup_points(data);
+	change_backup(data);
+	//data->points_backup = backup_points(data);
 }
 
 void build_model(w_data *data)

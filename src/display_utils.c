@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 19:11:54 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/11 20:44:36 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/26 17:31:55 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,15 @@ void free_all_points(w_data *data)
 		free_fpoints(data->points_backup);
 	if (data->points_restore != NULL)
 		free_fpoints(data->points_restore);
+	if (data->iso_points != NULL)
+		free_fpoints(data->iso_points);
 }
 
 void free_data(w_data *data)
 {
 	free_all_points(data);
 	
-	free_lookup(data);
+	//free_lookup(data);
 
 	if (data->grid != NULL)
 		free(data->grid);

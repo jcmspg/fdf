@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 19:31:12 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/09 21:07:29 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/26 18:43:26 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -327,7 +327,7 @@ f_point	**backup_points(w_data *data)
     lines = data->grid->rows;
     cols = data->grid->cols;
     
-    points = (f_point **)ft_calloc(sizeof(f_point *) , (cols * lines));
+    points = (f_point **)ft_calloc(sizeof(f_point *) , (lines +1));
     if (!points)
     {
         fprintf(stderr, "Error: Could not allocate memory for points\n");
@@ -350,6 +350,7 @@ f_point	**backup_points(w_data *data)
         }
         i++;
     }
+	points[lines] = NULL;
     i = 0;
     while (i < lines)
     {
@@ -361,9 +362,37 @@ f_point	**backup_points(w_data *data)
             points[i][j].z = data->points[i][j].z;
 			points[i][j].color = data->points[i][j].color;
             j++;
-
+			
         }
         i++;
     }
 	return (points);
+}
+
+void change_backup (w_data *data)
+{
+	int lines;
+    int cols;
+    int i;
+    int j;
+
+	lines = data->grid->rows;
+    cols = data->grid->cols;
+	
+	i = 0;
+
+	 while (i < lines)
+    {
+        j = 0;
+        while (j < cols)
+        {
+            data->points_backup[i][j].x = data->points[i][j].x;
+            data->points_backup[i][j].z = data->points[i][j].z;
+			data->points_backup[i][j].color = data->points[i][j].color;
+            data->points_backup[i][j].y = data->points[i][j].y;
+            j++;
+			
+        }
+        i++;
+    }
 }

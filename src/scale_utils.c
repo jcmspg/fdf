@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   scale_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: joamiran <joamiran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 17:16:25 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/13 19:00:19 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/26 20:18:24 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@
 			data->points[i][j].x = (int)data->points_backup[i][j].x;
 			data->points[i][j].y = (int)data->points_backup[i][j].y;
 			data->points[i][j].z = (int)data->points_backup[i][j].z;
-			
+
 			j++;
 		}
 		i++;
@@ -104,14 +104,14 @@
 
 			new_y = (trans_y  * data->scale);
 			new_x = (trans_x  * data->scale);
-			
+
 			data->points_backup[i][j].x = new_x + center_x;
 			data->points_backup[i][j].y = new_y + center_y;
-			
-			
+
+
 			data->points[i][j].x = (int)data->points_backup[i][j].x;
 			data->points[i][j].y = (int)data->points_backup[i][j].y;
-			
+
 			j++;
 		}
 		i++;
@@ -137,17 +137,12 @@ void zoom(int key, w_data *data)
 	int j;
 
 	if (key == W)
-		data->scale *= SCALE_FACTOR_IN;
+		data->scale_zoom = SCALE_FACTOR_IN;
 	if (key == S)
-		data->scale *= SCALE_FACTOR_OUT;
+		data->scale_zoom = SCALE_FACTOR_OUT;
 
-	if (data->scale < 0.1f)
-		data->scale = 0.1f;
-	if (data->scale > 10.0f)
-		data->scale = 10.0f;
-	
-	center_x = (float)data->window_height / 2.0f;
-	center_y = (float)data->window_width / 2.0f;
+	center_x = (float)data->window_width / 2.0f;
+	center_y = (float)data->window_height / 2.0f;
 
 	i = 0;
 	while (i < data->grid->rows)
@@ -155,18 +150,24 @@ void zoom(int key, w_data *data)
 		j = 0;
 		while (j < data->grid->cols)
 		{
-			origin_x = data->points_backup[i][j].x;
 			origin_y = data->points_backup[i][j].y;
+			origin_x = data->points_backup[i][j].x;
 
 			trans_x = origin_x - center_x;
 			trans_y = origin_y - center_y;
 		//	trans_z = data->points_backup[i][j].z;
-			
-			new_x = trans_x * data->scale;
-			new_y =trans_y * data->scale;
-			
-			data->points[i][j].x = (int) (new_x + center_x);
-			data->points[i][j].y = (int)(new_y + center_y);
+
+
+			new_x = trans_x * data->scale_zoom;
+			new_y =trans_y * data->scale_zoom;
+
+			data->points_backup[i][j].x = new_x + center_x;
+			data->points_backup[i][j].y = new_y + center_y;
+
+
+			data->points[i][j].x = (int)data->points_backup[i][j].x;
+			data->points[i][j].y = (int)data->points_backup[i][j].y;
+
 
 			j++;
 		}
@@ -175,7 +176,7 @@ void zoom(int key, w_data *data)
 }
 
 
-		
+
 
 
 
@@ -230,7 +231,7 @@ float normalize_z(float z, w_data *data)
 	else
 		z2 = -logf(-z + 1.0f) * normalization_factor;
 
-	
+
 	return (z2);
 }
 

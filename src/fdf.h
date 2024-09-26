@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 18:40:13 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/13 19:45:24 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/26 19:23:42 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@
 # define I 105
 # define G 103
 # define O 111
+# define N 110
 
 # define SPACE 32
 
@@ -61,8 +62,8 @@
 # define WHELL_DOWN 5
 
 # define SCALE_FACTOR_Z 0
-# define SCALE_FACTOR_IN 1.1
-# define SCALE_FACTOR_OUT 0.90
+# define SCALE_FACTOR_IN 1.1f
+# define SCALE_FACTOR_OUT 0.90f
 
 // define colors
 # define RED 0xFF0000
@@ -208,6 +209,7 @@ typedef struct window_data
 // image variables
     img_data img;
     float scale;
+	float scale_zoom;
     float scale_z;
     int min_z;
     int max_z;
@@ -380,6 +382,7 @@ void rotate_y_key(int key, w_data *data);
 void rotate_z(w_data *data);
 void rotate_z_key(int key, w_data *data);
 
+void init_grid(w_data *data);
 void init_angle(w_data *data);
 void init_data_w(w_data *data);
 
@@ -438,5 +441,8 @@ void handle_interaction(int key, w_data *data);
 void interaction_functions(int key, w_data *data);
 
 void draw_poly_spherical(w_data *data);
+
+
+void change_backup(w_data *data);
 
 #endif

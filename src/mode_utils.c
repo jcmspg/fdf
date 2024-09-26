@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 23:56:44 by joao              #+#    #+#             */
-/*   Updated: 2024/09/13 20:25:14 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/26 19:35:44 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void reset(w_data *data)
 {
 	init_angle(data);
 	restore_origin(data);
-	//build_model(data);
+	build_model(data);
 	update_img(data);
 	draw_gui(data);
 	data->mode = 'i';
@@ -101,7 +101,7 @@ void change_mode(int key, w_data *data)
 		backup_data(data);
 		clear_image(data);
 		build_model(data);
-		backup_data(data);
+		change_backup(data);
 		make_image(data);
 		draw_gui(data);
 	}
@@ -114,22 +114,22 @@ void change_mode(int key, w_data *data)
 		data->mode = 'i';
 		clear_image(data);
 		build_model(data);
-	//	backup_data(data);
+		change_backup(data);
 		make_image(data);
 		draw_gui(data);
 	}
 	else if (key == G)
 	{
 		data->mode = 'g';
-		pcoords_spherical(data);
+		//pcoords_spherical(data);
 		build_sphere(data);
 		draw_gui(data);
 	}
-	else if (key == UP)
+	else if (key == N)
 	{
 		data->mode = 'c';
 		build_conic(data);
-		change_focus(key, data);
+		draw_gui(data);
 	}
 	else if (key == ESC)
 		close_window(data);
@@ -145,25 +145,21 @@ void handle_interaction(int key, w_data *data)
 	if (key == P)
 	{
 		data->interaction = 'p';
-		printf ("CALLING PAN \n");
-		//data->current_mode->pan;
+
 	}
 	
 	if (key == R && data->mode != 'g')
 		{
 			data->interaction = 'r';
-			printf("CALLING ROTATE \n");
-			//data->current_mode->rotate(key, data);
+
 		}
 	if (key == Z)
 	{
-		printf("calling ZOOM \n");
 		data->interaction = 'z';
 	}
 	
 	if (key == O && data->mode == 'g')
 	{
-		printf("calling orbit \n");
 		data->interaction = 'o';
 	}
 
@@ -190,7 +186,7 @@ void interaction_functions(int key, w_data *data)
 
 int key_handle(int key, w_data *data)
 {
-	if (key == UP || key == I || key == C || key == G || key == ESC || key == F || key == SPACE || key == H)
+	if (key == N || key == I || key == C || key == G || key == ESC || key == F || key == SPACE || key == H)
 	// handle the mode switch
 		change_mode(key, data);
 	if (key == P || key == O || key == Z || key == R)
@@ -202,4 +198,3 @@ int key_handle(int key, w_data *data)
 
 	return 0;
 }
-

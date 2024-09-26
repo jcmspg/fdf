@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 17:15:24 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/05 21:40:07 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/26 16:59:22 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static void count_grid(int fd, w_data *data)
                 free(tmp[num_cols]);
                 num_cols++;
             }
-			draw_poly(data);
+			//draw_poly(data);
             free(tmp);
         }
         free(line);
