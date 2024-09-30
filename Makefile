@@ -1,7 +1,10 @@
 NAME = fdf
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
-POSTCC = -I $(INC_DIR) -I $(SRC_DIR) -L $(INC_DIR)/minilibx-linux -lmlx -lX11 -lXext -lm -L $(INC_DIR)/lib_ft -lft
+POSTCC = -I $(INC_DIR) -I $(SRC_DIR) \
+         -L $(INC_DIR)/minilibx-linux -lmlx -lX11 -lXext -lm \
+         -L $(INC_DIR)/lib_ft -lft \
+
 
 SRC_DIR = ./src
 OBJ_DIR = ./obj
@@ -22,7 +25,9 @@ $(NAME): $(OBJ_FILES)
 	@echo "Building $(NAME)..."
 	@make -C $(INC_DIR)/lib_ft > /dev/null 2>&1 || { echo "Failed to build lib_ft"; exit 1; }
 	@make -C $(INC_DIR)/minilibx-linux > /dev/null 2>&1 || { echo "Failed to build minilibx-linux"; exit 1; }
-	@$(CC) $(CFLAGS) $(OBJ_FILES) $(POSTCC) -o $(NAME) || { echo "Linking failed."; exit 1; }
+	@$(CC) $(CFLAGS) $(OBJ_FILES) \
+		$(INC_DIR)/lib_ft/libft.a \
+		$(POSTCC) -o $(NAME) || { echo "Linking failed."; exit 1; }
 	@echo "Compilation complete. Executable: $(NAME)"
 
 all: sources.mk $(NAME)

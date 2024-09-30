@@ -8,7 +8,7 @@
 
 2. need to implement rotation   CHECK
 
-3. implement a way to raise or lower the points CHECK
+3. implement a way to raise or lower the p CHECK
 
 5. find out a way to cycle through several color schemes?? CHECK
 
@@ -48,7 +48,7 @@ need to fix the heights, the height scaling as well when pressing T... its not w
 
 
 
-need to fix rotation, so it can rotate in 360º it now rotates in any direction. PROBLEM IS I CANT ORBIT AND ZOOM.. IT SQUASHES>>> 
+need to fix rotation, so it can rotate in 360º it now rotates in any direction. PROBLEM IS I CANT ORBIT AND ZOOM.. IT SQUASHES>>>
 GOTTA LOOK INTO IT
 
 NEED TO FIX 3d ORBIT AND zoom ---> SORTA FIXED (SEE ABOVE)

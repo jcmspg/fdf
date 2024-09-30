@@ -46,7 +46,7 @@ To run the program, use the following command:
 ./fdf <file>
 ```
 ### Fdf file format
-The `fdf` program reads .fdf files, which are text files representing 3D maps. Each line in the file corresponds to a row of points in the grid, and each number represents the height of a point. Points can also have optional color values specified in hexadecimal format.
+The `fdf` program reads .fdf files, which are text files representing 3D maps. Each line in the file corresponds to a row of p in the grid, and each number represents the height of a point. p can also have optional color values specified in hexadecimal format.
 
 #### Example .fdf file
 ```
@@ -94,7 +94,7 @@ this will create a file name `height_map.fdf` in your `maps/` folder that you ca
 ./fdf maps/height_map.fdf
 ```
 
-Feel free to modify the values in the scrip to generate different grid patterns. 
+Feel free to modify the values in the scrip to generate different grid patterns.
 
 (there's also a python script to sort out the src/ files in the makefile. feel free to take a gander at it)
 
@@ -119,9 +119,9 @@ Functions Used
     . read_fdf(file, grid): Reads the 3D map data from the file and stores it in the grid structure.
     . init_mlx(): Initializes the MiniLibX library.
     . create_image(window): Creates an image buffer to draw on.
-    . draw_line(window, p1, p2, color): Draws a line between points p1 and p2 with the specified color.
-    
-    MLX library /> 
+    . draw_line(window, p1, p2, color): Draws a line between p p1 and p2 with the specified color.
+
+    MLX library />
         . create_window(window): Creates a window with the specified dimensions.
     . mlx_put_image_to_window(mlx, win, img, x, y): Displays the image in the window.
     . mlx_string_put(mlx, win, x, y, color, string): Displays a string in the window at the specified coordinates.

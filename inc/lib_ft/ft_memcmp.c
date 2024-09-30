@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 13:13:22 by joamiran          #+#    #+#             */
-/*   Updated: 2024/04/12 16:48:16 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/30 18:26:40 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ specified mememory addresses up to a certain number of bytes.
 this function is often used to compare arrays, strings,
 or any other data structure.
 
-s1 s2 points to mem blocks
+s1 s2 p to mem blocks
 returns 0 if mem is equal
 		-value if s1<s2
 		+value if s1>s2
