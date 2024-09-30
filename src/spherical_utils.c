@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   spherical_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: joamiran <joamiran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 17:55:09 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/26 19:56:23 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/30 16:30:07 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,28 @@ void pcoords_spherical(w_data *data)
     }
 }
 
+void apply_zoom(w_data *data)
+{
+    float center_x = (float)data->window_width / 2.0f;
+    float center_y = (float)data->window_height / 2.0f;
+    float scale = data->scale_zoom; // Zoom factor
+
+    for (int i = 0; i < data->grid->rows; i++)
+    {
+        for (int j = 0; j < data->grid->cols; j++)
+        {
+            // Apply zoom on the updated backup points
+            float trans_x = data->points_backup[i][j].x - center_x;
+            float trans_y = data->points_backup[i][j].y - center_y;
+
+            // Scale based on zoom factor
+            data->points[i][j].x = (int)(trans_x * scale + center_x);
+            data->points[i][j].y = (int)(trans_y * scale + center_y);
+            data->points[i][j].z = (int)(data->points_backup[i][j].z); // Z doesn't need scaling
+        }
+    }
+}
+
 void orbit(w_data *data)
 {
 	int i;
@@ -114,14 +136,15 @@ void orbit(w_data *data)
 			data->points_backup[i][j].y = y + data->window_height / 2.0f;
 			data->points_backup[i][j].z = z_new;
 
-			data->points[i][j].x = (int)data->points_backup[i][j].x;
+			/* data->points[i][j].x = (int)data->points_backup[i][j].x;
 			data->points[i][j].y = (int)data->points_backup[i][j].y;
 			data->points[i][j].z = (int)data->points_backup[i][j].z;
-
+ */
 			j++;
 		}
 		i++;
 	}
+	apply_zoom(data);
 }
 
 void change_tilt(w_data *data)
@@ -164,14 +187,15 @@ void change_tilt(w_data *data)
 			data->points_backup[i][j].y = y_new + data->window_height / 2.0f;
 			data->points_backup[i][j].z = z_new;
 
-			data->points[i][j].x = (int)data->points_backup[i][j].x;
+			/* data->points[i][j].x = (int)data->points_backup[i][j].x;
 			data->points[i][j].y = (int)data->points_backup[i][j].y;
 			data->points[i][j].z = (int)data->points_backup[i][j].z;
-
+ */
 			j++;
 		}
 		i++;
 	}
+	apply_zoom(data);
 }
 
 void ro_sphere(int key, w_data *data)
