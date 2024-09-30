@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   display_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: joamiran <joamiran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 19:11:54 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/26 17:31:55 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/30 21:08:08 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,45 +27,45 @@ void free_lookup(w_data *data)
 	}
 }
 
-// free t_points
-void free_points(t_point **points)
+// free t_p
+void free_p(t_point **p)
 {
 	int i = 0;
-	while (points[i] != NULL)
+	while (p[i] != NULL)
 	{
-		free(points[i]);
+		free(p[i]);
 		i++;
 	}
-	free(points);
+	free(p);
 }
 
-void free_fpoints(f_point **points)
+void free_fp(f_point **p)
 {
 	int i = 0;
-	while (points[i] != NULL)
+	while (p[i] != NULL)
 	{
-		free(points[i]);
+		free(p[i]);
 		i++;
 	}
-	free(points);
+	free(p);
 }
-//free all the points
-void free_all_points(w_data *data)
+//free all the p
+void free_all_p(w_data *data)
 {
-	if (data->points != NULL)
-		free_points(data->points);
-	if (data->points_backup != NULL)
-		free_fpoints(data->points_backup);
-	if (data->points_restore != NULL)
-		free_fpoints(data->points_restore);
-	if (data->iso_points != NULL)
-		free_fpoints(data->iso_points);
+	if (data->p != NULL)
+		free_p(data->p);
+	if (data->p_b != NULL)
+		free_fp(data->p_b);
+	if (data->p_restore != NULL)
+		free_fp(data->p_restore);
+	if (data->i_p != NULL)
+		free_fp(data->i_p);
 }
 
 void free_data(w_data *data)
 {
-	free_all_points(data);
-	
+	free_all_p(data);
+
 	//free_lookup(data);
 
 	if (data->grid != NULL)
@@ -109,7 +109,7 @@ void *init_mlx(void)
 // create a new Window
 void create_window(w_data *data)
 {
-	data->win = mlx_new_window(data->mlx, data->window_width, data->window_height, data->title);
+	data->win = mlx_new_window(data->mlx, data->window_w, data->window_h, data->title);
 	if (!data)
 	{
 		fprintf(stderr, "Error creating window\n");
@@ -120,7 +120,7 @@ void create_window(w_data *data)
 // Create a new image
 void create_image(w_data *data)
 {
-	data->img.img = mlx_new_image(data->mlx, data->window_width, data->window_height);
+	data->img.img = mlx_new_image(data->mlx, data->window_w, data->window_h);
 	if (!data->img.img)
 	{
 		fprintf(stderr, "Error creating image\n");
@@ -136,13 +136,13 @@ void create_image(w_data *data)
 
 void draw_gui(w_data *data)
 {
-    int x_left = data->window_width * 0.05; // 5% from the left
-    int y = data->window_height * 0.1; // 10% from the top
+    int x_left = data->window_w * 0.05; // 5% from the left
+    int y = data->window_h * 0.1; // 10% from the top
     int text_color = 0xFFFFFF; // Example color
     int line_spacing = 15; // Tighter line spacing
 
     // Display ASCII art
-    int ascii_art_x = data->window_width - 200; // Right aligned
+    int ascii_art_x = data->window_w - 200; // Right aligned
     int ascii_art_y = y;
     mlx_string_put(data->mlx, data->win, ascii_art_x, ascii_art_y, text_color, "  _____  ____  _____ ");
     mlx_string_put(data->mlx, data->win, ascii_art_x, ascii_art_y + line_spacing, text_color, " |  ___||  _ \\|  ___|");
@@ -164,8 +164,8 @@ void draw_gui(w_data *data)
 	mlx_string_put(data->mlx, data->win, info_x + 40, info_y + 2 * line_spacing, text_color, ft_itoa(data->grid->rows));
 	mlx_string_put(data->mlx, data->win, info_x, info_y + 3 * line_spacing, text_color, "Cols: ");
 	mlx_string_put(data->mlx, data->win, info_x + 40, info_y + 3 * line_spacing, text_color, ft_itoa(data->grid->cols));
-	
-	
+
+
 	// max and min z values
 	mlx_string_put(data->mlx, data->win, info_x, info_y + 5 * line_spacing, text_color, "Max Z: ");
 	mlx_string_put(data->mlx, data->win, info_x + 50, info_y + 5 * line_spacing, text_color, ft_itoa(data->max_z));
@@ -176,7 +176,7 @@ void draw_gui(w_data *data)
 	// zooooom
 	mlx_string_put(data->mlx, data->win, info_x, info_y + 7 * line_spacing, text_color, "Zoom: ");
 	mlx_string_put(data->mlx, data->win, info_x + 50, info_y + 7 * line_spacing, text_color, ft_itoa(data->scale));
-	
+
 	// rotation values
 	mlx_string_put(data->mlx, data->win, info_x, info_y + 8 * line_spacing, text_color, "Angle X: ");
 	mlx_string_put(data->mlx, data->win, info_x + 70, info_y + 8 * line_spacing, text_color, ft_itoa(data->angle_x));
@@ -184,14 +184,14 @@ void draw_gui(w_data *data)
 	mlx_string_put(data->mlx, data->win, info_x + 70, info_y + 9 * line_spacing, text_color, ft_itoa(data->angle_y));
 	mlx_string_put(data->mlx, data->win, info_x, info_y + 10 * line_spacing, text_color, "Angle Z: ");
 	mlx_string_put(data->mlx, data->win, info_x + 70, info_y + 10 * line_spacing, text_color, ft_itoa(data->angle_z));
-	
+
 
 	mlx_string_put(data->mlx, data->win, info_x, info_y + 12 * line_spacing, text_color, "H - Help");
 	mlx_string_put(data->mlx, data->win, info_x, info_y + 13 * line_spacing, text_color, "ESC - Exit");
 
     // Display the author's name
-    int author_x = data->window_width - 100; // Right aligned
-    int author_y = data->window_height - 20; // Bottom aligned
+    int author_x = data->window_w - 100; // Right aligned
+    int author_y = data->window_h - 20; // Bottom aligned
     mlx_string_put(data->mlx, data->win, author_x, author_y, text_color, "joamiran");
 }
 
@@ -208,10 +208,10 @@ void clear_image(w_data *data)
 
 	y = 0;
 
-	while (y < data->window_height)
+	while (y < data->window_h)
 	{
 		x = 0;
-		while (x < data->window_width)
+		while (x < data->window_w)
 		{
 			my_mlx_pixel_put(data, x, y, BACKGROUND);
 			x++;

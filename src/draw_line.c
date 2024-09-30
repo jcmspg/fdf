@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_line.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: joamiran <joamiran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 20:20:29 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/13 19:47:00 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/30 18:26:40 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int height_to_color(int height, int min_height, int max_height)
 void my_mlx_pixel_put(w_data *data, int x, int y, int color)
 {
     char    *distance;
-    if (x < 0 || x >= data->window_width || y < 0 || y >= data->window_height)
+    if (x < 0 || x >= data->window_w || y < 0 || y >= data->window_h)
         return;
     distance = data->img.address + (y * data->img.line_length + x * (data->img.bits_per_pixel / 8));
     *(unsigned int *)distance = color;
@@ -91,18 +91,18 @@ void draw_poly_spherical(w_data *data)
 	int i;
 	int j;
 
-	//draw lines in between the points, except when Z is negative
+	//draw lines in between the p, except when Z is negative
 	i = 0;
 	while (i < data->grid->rows)
 	{
 		j = 0;
 		while (j < data->grid->cols - 1)
 		{
-			if (data->points[i][j].z >= 0 && data->points[i][j + 1].z >= 0)
+			if (data->p[i][j].z >= 0 && data->p[i][j + 1].z >= 0)
 			{
-/* 				data->points[i][j].color = 0x000000;
-				data->points[i][j + 1].color = 0x000000; */
-				draw_line(data, &data->points[i][j], &data->points[i][j + 1]);
+/* 				data->p[i][j].color = 0x000000;
+				data->p[i][j + 1].color = 0x000000; */
+				draw_line(data, &data->p[i][j], &data->p[i][j + 1]);
 			}
 			j++;
 		}
@@ -114,11 +114,11 @@ void draw_poly_spherical(w_data *data)
 		j = 0;
 		while (j < data->grid->rows - 1)
 		{
-			if (data->points[j][i].z >= 0 &&  data->points[j + 1][i].z >= 0)
+			if (data->p[j][i].z >= 0 &&  data->p[j + 1][i].z >= 0)
 			{
-/* 				data->points[i][j].color = 0x000000;
-				data->points[j + 1][i].color = 0x000000; */
-				draw_line(data, &data->points[j][i], &data->points[j + 1][i]);
+/* 				data->p[i][j].color = 0x000000;
+				data->p[j + 1][i].color = 0x000000; */
+				draw_line(data, &data->p[j][i], &data->p[j + 1][i]);
 			}
 			j++;
 		}
@@ -137,25 +137,25 @@ void draw_poly(w_data *data)
 //check if the mode is not spherical
 	if (data->mode != 'g')
 	{
-	// draw horizontal lines between points in the same row for each column
+	// draw horizontal lines between p in the same row for each column
 		while (i < data->grid->rows)
 		{
 			j = 0;
 			while (j < data->grid->cols - 1)
 			{
-				draw_line(data, &data->points[i][j], &data->points[i][j + 1]);
+				draw_line(data, &data->p[i][j], &data->p[i][j + 1]);
 				j++;
 			}
 			i++;
 		}
-		// draw vertical lines between points in the same column for each row
+		// draw vertical lines between p in the same column for each row
 		i = 0;
 		while (i < data->grid->cols)
 		{
 			j = 0;
 			while (j < data->grid->rows - 1)
 			{
-				draw_line(data, &data->points[j][i], &data->points[j + 1][i]);
+				draw_line(data, &data->p[j][i], &data->p[j + 1][i]);
 				j++;
 			}
 			i++;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: joamiran <joamiran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 18:36:42 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/11 19:41:51 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/30 18:26:40 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@ int main(int argc, char ** argv)
         fprintf(stderr, "Usage: %s <width> <height>\n", argv[0]);
         return 1;
     }
-    
+
     w_data window;
-  
+
     window.title = "FDF";
-/*     window.window_width = 800; //ft_atoi(argv[1]);
-    window.window_height = 800; //ft_atoi(argv[2]); */
+/*     window.window_w = 800; //ft_atoi(argv[1]);
+    window.window_h = 800; //ft_atoi(argv[2]); */
 
 
     window.grid = (t_grid *)malloc(sizeof(t_grid));
@@ -38,7 +38,7 @@ int main(int argc, char ** argv)
 
     window.file = argv[1];
 
-	//init_lookup(&window);   
+	//init_lookup(&window);
 	// print the sin and cos tables
 /* 	int i = 0;
 	while (i < DEGREE_MAX)
@@ -77,21 +77,21 @@ int main(int argc, char ** argv)
 	//printf("scale: %f\n", window.scale_z);
 
 	//reset_position(&window);
-    //print all points.z
+    //print all p.z
 
 
     // key input handling
     mlx_key_hook(window.win, key_handle, &window);
 
-    
-    // click upper X to close 
+
+    // click upper X to close
     mlx_hook(window.win, 17, 0, close_window, &window);
 
     mlx_loop(window.mlx);
 
     // Free the allocated memory
 
-    
+
 
 
     return 0;

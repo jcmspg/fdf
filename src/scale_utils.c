@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 17:16:25 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/30 16:35:17 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/30 18:26:40 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ void zoom(int key, w_data *data)
     if (data->scale_zoom > 10.0f)
 		data->scale_zoom = 10.0f;
 
-	center_x = (float)data->window_width / 2.0f;
-	center_y = (float)data->window_height / 2.0f;
+	center_x = (float)data->window_w / 2.0f;
+	center_y = (float)data->window_h / 2.0f;
 
 	i = 0;
 	while (i < data->grid->rows)
@@ -49,23 +49,23 @@ void zoom(int key, w_data *data)
 		j = 0;
 		while (j < data->grid->cols)
 		{
-			origin_y = data->points_backup[i][j].y;
-			origin_x = data->points_backup[i][j].x;
+			origin_y = data->p_b[i][j].y;
+			origin_x = data->p_b[i][j].x;
 
 			trans_x = origin_x - center_x;
 			trans_y = origin_y - center_y;
-		//	trans_z = data->points_backup[i][j].z;
+		//	trans_z = data->p_b[i][j].z;
 
 
 			new_x = trans_x * data->scale_zoom;
 			new_y =trans_y * data->scale_zoom;
 
-			data->points[i][j].x = new_x + center_x;
-			data->points[i][j].y = new_y + center_y;
+			data->p[i][j].x = new_x + center_x;
+			data->p[i][j].y = new_y + center_y;
 
 
-			/* data->points[i][j].x = (int)data->points_backup[i][j].x;
-			data->points[i][j].y = (int)data->points_backup[i][j].y;
+			/* data->p[i][j].x = (int)data->p_b[i][j].x;
+			data->p[i][j].y = (int)data->p_b[i][j].y;
  */
 
 			j++;
@@ -141,7 +141,7 @@ void normalize_z_log(w_data *data)
 		j = 0;
 		while (j < data->grid->cols)
 		{
-			z = data->points_backup[i][j].z;
+			z = data->p_b[i][j].z;
 
 			if (z < 0)
 				z2 = log(z + 1) * normalization_factor * -1;
@@ -149,10 +149,33 @@ void normalize_z_log(w_data *data)
 			else
 				z2 = log(z + 1) * normalization_factor * 1;
 
-			data->points_backup[i][j].z = z2;
+			data->p_b[i][j].z = z2;
 
 			j++;
 		}
 		i++;
 	}
+}
+
+
+void apply_zoom(w_data *data)
+{
+    float center_x = (float)data->window_w / 2.0f;
+    float center_y = (float)data->window_h / 2.0f;
+    float scale = data->scale_zoom; // Zoom factor
+
+    for (int i = 0; i < data->grid->rows; i++)
+    {
+        for (int j = 0; j < data->grid->cols; j++)
+        {
+            // Apply zoom on the updated backup p
+            float trans_x = data->p_b[i][j].x - center_x;
+            float trans_y = data->p_b[i][j].y - center_y;
+
+            // Scale based on zoom factor
+            data->p[i][j].x = (int)(trans_x * scale + center_x);
+            data->p[i][j].y = (int)(trans_y * scale + center_y);
+            data->p[i][j].z = (int)(data->p_b[i][j].z); // Z doesn't need scaling
+        }
+    }
 }

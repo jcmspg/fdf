@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: joamiran <joamiran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 18:40:13 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/26 19:23:42 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/30 20:55:16 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@
 # define MEDIUM_GRAY 0xA9A9A9
 
 # define STD_COLOR WHITE
-# define MAX_COLOR RED 
+# define MAX_COLOR RED
 # define MIN_COLOR BLUE
 
 # define BACKGROUND 0x000000
@@ -91,17 +91,13 @@
 
 #define ISO_TILT 2
 
-# define FOCAL_LENGTH 1000000
+# define F_L 1000000
 
-# define WINDOW_H 680
-# define WINDOW_W 680
+# define WINDOW_H 800
+# define WINDOW_W 800
 
 
 typedef struct window_data w_data;
-
-
-// define function pointer types
-typedef void (*actionfunction) (int key, w_data *data);
 
 
 typedef struct image_data
@@ -133,7 +129,7 @@ typedef struct s_grid
 }   t_grid;
 
 
-typedef struct s_points
+typedef struct s_p
 {
     int x;
     int y;
@@ -142,7 +138,7 @@ typedef struct s_points
 
 }   t_point;
 
-typedef struct s_fpoints
+typedef struct s_fp
 {
     float x;
     float y;
@@ -151,7 +147,7 @@ typedef struct s_fpoints
 
 }   f_point;
 
-typedef struct s_use 
+typedef struct s_use
 {
     int x0;
     int y0;
@@ -170,22 +166,6 @@ typedef struct lookup_table
     float *cos_table;
 }   t_lookup;
 
-/*typedef struct s_function
- {
-	void	*(*function) (int key, w_data *data);
-}		t_function;
-
-typedef struct mode
-{
-	char mode;
-}	m_mode;
-
-typedef struct main_function
-{
-	t_function *current;
-}	m_function; */
-
-
 
 typedef struct window_data
 {
@@ -194,8 +174,8 @@ typedef struct window_data
     void    *win;
 
 // window variables
-    int     window_width;
-    int     window_height;
+    int     window_w;
+    int     window_h;
     char    *title;
     char    *file;
 
@@ -213,21 +193,21 @@ typedef struct window_data
     float scale_z;
     int min_z;
     int max_z;
-	
+
 	// rotation variables
-    
+
     int angle;
-    
+
     int angle_x;
 	int angle_y;
 	int angle_z;
 
-	float spread;
-	
+	float spr;
+
 	// color variables
     int has_color;
     int color_mode;
-	
+
 	// info variables
     char **z_values;
 
@@ -235,15 +215,19 @@ typedef struct window_data
 	float radius;
 
 	// point variables
-    t_point **points;
-	f_point **iso_points;
-	f_point **points_backup;
-	f_point **points_restore;
+    t_point **p;
+	f_point **i_p;
+	f_point **p_b;
+	f_point **p_restore;
     t_grid  *grid;
 
     // mode variables
 	char mode;
 	char interaction;
+
+    // iterators
+    int i;
+    int j;
 
 }               w_data;
 
@@ -251,9 +235,9 @@ typedef struct window_data
 void free_data(w_data *data);
 void free_pointers(void *ptr, ...);
 
-void free_all_points(w_data *data);
-void free_points(t_point **points);
-void free_fpoints(f_point **points);
+void free_all_p(w_data *data);
+void free_p(t_point **p);
+void free_fp(f_point **p);
 
 // keybind functions
 int close_window(w_data *data);
@@ -302,7 +286,7 @@ void pcoords_conic(w_data *data);
 void find_min_max_z(w_data *data);
 int pointcalc (w_data *data);
 t_point *center_point(w_data *data);
-void center_points(w_data *data);
+void center_p(w_data *data);
 
 void zoom(int key, w_data *data);
 
@@ -340,16 +324,16 @@ void clear_image(w_data *data);
 
 void update_img(w_data *data);
 
-t_point **new_points(w_data *data);
+t_point **new_p(w_data *data);
 
 void backup_data(w_data *data);
 
-//function to colorize points
+//function to colorize p
 void colorize(w_data *data);
 void colorize_gradient(w_data *data);
 
-t_point **make_points(w_data *data);
-f_point **backup_points(w_data *data);
+t_point **make_p(w_data *data);
+f_point **backup_p(w_data *data);
 
 
 
@@ -391,7 +375,7 @@ void init_data_w(w_data *data);
 // point functions
 point *create_point(int x, int y, int z);
 void add_point(point **head, point *new);
-void free_points(point **head);
+void free_p(point **head);
 */
 
 void change_interaction(int key, w_data *data);
@@ -429,7 +413,7 @@ void change_tilt(w_data *data);
 
 void project_to_2d(w_data *data);
 
-void transform_points(w_data *data);
+void transform_p(w_data *data);
 
 void normalize_z_log(w_data *data);
 
@@ -444,5 +428,7 @@ void draw_poly_spherical(w_data *data);
 
 
 void change_backup(w_data *data);
+
+void apply_zoom(w_data *data);
 
 #endif

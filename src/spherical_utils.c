@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 17:55:09 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/30 16:30:07 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/30 18:26:40 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ void pcoords_spherical(w_data *data)
 
             // Get the elevation or height (z-value)
 
-		//	x = data->iso_points[i][j].x;
-		//	y = data->iso_points[i][j].y;
-			z = data->iso_points[i][j].z;
+		//	x = data->i_p[i][j].x;
+		//	y = data->i_p[i][j].y;
+			z = data->i_p[i][j].z;
 
             // Compute the radius with elevation
             radius_with_elevation = radius + z * (radius / maximum_z / 10);
@@ -60,43 +60,24 @@ void pcoords_spherical(w_data *data)
             z_spherical = (radius_with_elevation * sin(latitude));
 
             // Optionally, store backup
-            data->points_backup[i][j].x = x_spherical + data->window_width / 2.0f;
-            data->points_backup[i][j].y = y_spherical + data->window_height / 2.0f;
-            data->points_backup[i][j].z = z_spherical;
+            data->p_b[i][j].x = x_spherical + data->window_w / 2.0f;
+            data->p_b[i][j].y = y_spherical + data->window_h / 2.0f;
+            data->p_b[i][j].z = z_spherical;
 
 		    // Convert to screen coordinates (center the globe)
-            data->points[i][j].x = (int)(data->points_backup[i][j].x);
-            data->points[i][j].y = (int)(data->points_backup[i][j].y);
-            data->points[i][j].z = (int)(data->points_backup[i][j].z);
+            data->p[i][j].x = (int)(data->p_b[i][j].x);
+            data->p[i][j].y = (int)(data->p_b[i][j].y);
+            data->p[i][j].z = (int)(data->p_b[i][j].z);
 
             j++;
         }
         j = 0;
         i++;
     }
+	data->scale = 1;
 }
 
-void apply_zoom(w_data *data)
-{
-    float center_x = (float)data->window_width / 2.0f;
-    float center_y = (float)data->window_height / 2.0f;
-    float scale = data->scale_zoom; // Zoom factor
 
-    for (int i = 0; i < data->grid->rows; i++)
-    {
-        for (int j = 0; j < data->grid->cols; j++)
-        {
-            // Apply zoom on the updated backup points
-            float trans_x = data->points_backup[i][j].x - center_x;
-            float trans_y = data->points_backup[i][j].y - center_y;
-
-            // Scale based on zoom factor
-            data->points[i][j].x = (int)(trans_x * scale + center_x);
-            data->points[i][j].y = (int)(trans_y * scale + center_y);
-            data->points[i][j].z = (int)(data->points_backup[i][j].z); // Z doesn't need scaling
-        }
-    }
-}
 
 void orbit(w_data *data)
 {
@@ -124,21 +105,21 @@ void orbit(w_data *data)
 		j = 0;
 		while (j < data->grid->cols)
 		{
-			x = data->points_backup[i][j].x - data->window_width / 2.0f;
-			y = data->points_backup[i][j].y - data->window_height / 2.0f;
-			z = data->points_backup[i][j].z;
+			x = data->p_b[i][j].x - data->window_w / 2.0f;
+			y = data->p_b[i][j].y - data->window_h / 2.0f;
+			z = data->p_b[i][j].z;
 
 
 			x_new = x * cos_angle + z * sin_angle;
 			z_new = -x * sin_angle + z * cos_angle;
 
-			data->points_backup[i][j].x = x_new + data->window_width / 2.0f;
-			data->points_backup[i][j].y = y + data->window_height / 2.0f;
-			data->points_backup[i][j].z = z_new;
+			data->p_b[i][j].x = x_new + data->window_w / 2.0f;
+			data->p_b[i][j].y = y + data->window_h / 2.0f;
+			data->p_b[i][j].z = z_new;
 
-			/* data->points[i][j].x = (int)data->points_backup[i][j].x;
-			data->points[i][j].y = (int)data->points_backup[i][j].y;
-			data->points[i][j].z = (int)data->points_backup[i][j].z;
+			/* data->p[i][j].x = (int)data->p_b[i][j].x;
+			data->p[i][j].y = (int)data->p_b[i][j].y;
+			data->p[i][j].z = (int)data->p_b[i][j].z;
  */
 			j++;
 		}
@@ -175,21 +156,21 @@ void change_tilt(w_data *data)
 		j = 0;
 		while (j < data->grid->cols)
 		{
-			x = data->points_backup[i][j].x - data->window_width / 2.0f;
-			y = data->points_backup[i][j].y - data->window_height / 2.0f;
-			z = data->points_backup[i][j].z;
+			x = data->p_b[i][j].x - data->window_w / 2.0f;
+			y = data->p_b[i][j].y - data->window_h / 2.0f;
+			z = data->p_b[i][j].z;
 
 			y_new = y * cos_angle - z * sin_angle;
 			z_new = y * sin_angle + z * cos_angle;
 
 
-			data->points_backup[i][j].x = x + data->window_width / 2.0f;
-			data->points_backup[i][j].y = y_new + data->window_height / 2.0f;
-			data->points_backup[i][j].z = z_new;
+			data->p_b[i][j].x = x + data->window_w / 2.0f;
+			data->p_b[i][j].y = y_new + data->window_h / 2.0f;
+			data->p_b[i][j].z = z_new;
 
-			/* data->points[i][j].x = (int)data->points_backup[i][j].x;
-			data->points[i][j].y = (int)data->points_backup[i][j].y;
-			data->points[i][j].z = (int)data->points_backup[i][j].z;
+			/* data->p[i][j].x = (int)data->p_b[i][j].x;
+			data->p[i][j].y = (int)data->p_b[i][j].y;
+			data->p[i][j].z = (int)data->p_b[i][j].z;
  */
 			j++;
 		}

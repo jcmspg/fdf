@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: joamiran <joamiran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 17:15:24 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/26 16:59:22 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/09/30 18:26:40 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,14 +171,14 @@ void color_mode(w_data *data)
 {
     if (data->has_color)
         data->color_mode = 0;
-        
+
     if (data->color_mode == 0)
         colorize(data);
     else if (data->color_mode == 1)
         colorize_grayscale(data);
     else if (data->color_mode == 2)
         colorize_gradient(data);
-    
+
 }
 
 
@@ -217,12 +217,12 @@ void assign_info(w_data *data)
                 exit(1);
             }
 
-            // Assigning the z value to the points array
+            // Assigning the z value to the p array
 			// make sure values are normalized to fit the window proportionally to the grid
-            data->points[i][j].z = ft_atoi(split_line[j]);
-            // if the file has color info, we assign the color to the points
+            data->p[i][j].z = ft_atoi(split_line[j]);
+            // if the file has color info, we assign the color to the p
             if (data->has_color)
-                data->points[i][j].color = ft_getcolor(split_line[j]);
+                data->p[i][j].color = ft_getcolor(split_line[j]);
             j++;
         }
 
@@ -255,18 +255,18 @@ void find_min_max_z(w_data *data)
     i = 0;
     j = 0;
 
-    data->min_z = data->points[0][0].z;
-    data->max_z = data->points[0][0].z;
+    data->min_z = data->p[0][0].z;
+    data->max_z = data->p[0][0].z;
 
     while (i < data->grid->rows)
     {
         j = 0;
         while (j < data->grid->cols)
         {
-            if (data->points[i][j].z < data->min_z)
-                data->min_z = data->points[i][j].z;
-            if (data->points[i][j].z > data->max_z)
-                data->max_z = data->points[i][j].z;
+            if (data->p[i][j].z < data->min_z)
+                data->min_z = data->p[i][j].z;
+            if (data->p[i][j].z > data->max_z)
+                data->max_z = data->p[i][j].z;
             j++;
         }
         i++;
@@ -298,25 +298,25 @@ void read_fdf(w_data *data)
 
     // reopening the file to read the values
     fd = open(data->file, O_RDONLY);
-    // making the points array
-    data->points = make_points(data);
+    // making the p array
+    data->p = make_p(data);
     // getting the Z and color values from the file
     data->z_values = info_parser(fd, data);
 	//print scale
 	printf("scale: %f\n", data->scale);
-	
-	
-    // assigning the Z and color values to the points array
+
+
+    // assigning the Z and color values to the p array
     assign_info(data);
     find_min_max_z(data);
-	
-	//backing up the points for iso
-	data->iso_points = backup_points(data);
+
+	//backing up the p for iso
+	data->i_p = backup_p(data);
 
 
-	//create backup points values
-    
-	// printing the points coords and colors
+	//create backup p values
+
+	// printing the p coords and colors
     // print_data(data);
 
 
