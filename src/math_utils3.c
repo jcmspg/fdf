@@ -1,19 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fdf_types.h                                        :+:      :+:    :+:   */
+/*   math_utils3.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: joamiran <joamiran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/11 19:00:58 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/11 19:12:22 by joamiran         ###   ########.fr       */
+/*   Created: 2024/10/01 20:26:00 by joamiran          #+#    #+#             */
+/*   Updated: 2024/10/01 20:26:06 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FDF_TYPES_H
-# define FDF_TYPES_H
+#include "fdf.h"
 
-
-
-
-#endif
+float	degree_to_radian(int angle)
+{
+	return (angle * PI / 180);
+}

@@ -6,13 +6,13 @@
 /*   By: joamiran <joamiran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 17:16:25 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/30 18:26:40 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/10/01 17:13:38 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void zoom(int key, w_data *data)
+void zoom(int key, t_w_data *data)
 {
 	float center_x;
 	float center_y;
@@ -86,7 +86,7 @@ void zoom(int key, w_data *data)
 
 
 // function to scale the height of z values
-void scale_z(int key, w_data *data)
+void scale_z(int key, t_w_data *data)
 {
 
 	if (key == S)
@@ -96,8 +96,8 @@ void scale_z(int key, w_data *data)
 }
 
 
-// funciton to normalize a Z value of a f_point
-float normalize_z(float z, w_data *data)
+// funciton to normalize a Z value of a t_f_point
+float normalize_z(float z, t_w_data *data)
 {
 	float z2;
 
@@ -117,7 +117,7 @@ float normalize_z(float z, w_data *data)
 
 
 
-void normalize_z_log(w_data *data)
+void normalize_z_log(t_w_data *data)
 {
 	int i;
 	int j;
@@ -158,7 +158,7 @@ void normalize_z_log(w_data *data)
 }
 
 
-void apply_zoom(w_data *data)
+void apply_zoom(t_w_data *data)
 {
     float center_x = (float)data->window_w / 2.0f;
     float center_y = (float)data->window_h / 2.0f;

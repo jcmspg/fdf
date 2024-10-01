@@ -6,13 +6,13 @@
 /*   By: joamiran <joamiran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 03:04:17 by joao              #+#    #+#             */
-/*   Updated: 2024/09/30 18:26:40 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/10/01 17:13:38 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void apply_perspective_projection(w_data *data)
+void apply_perspective_projection(t_w_data *data)
 {
     int i, j;
 
@@ -51,7 +51,7 @@ void apply_perspective_projection(w_data *data)
     }
 }
 
-void transform_p(w_data *data)
+void transform_p(t_w_data *data)
 {
 	int i;
 	int j;

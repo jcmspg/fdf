@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 19:31:12 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/30 18:26:40 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/10/01 17:28:36 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 // the function will return the size of the square
 // that will be used to draw the p
 // the size will be the minimum between the height and the width of the window
-int pointcalc (w_data *data)
+int pointcalc (t_w_data *data)
 {
     int height;
     int width;
@@ -47,7 +47,7 @@ int pointcalc (w_data *data)
 
 
 // function to calculate the center of the window
-t_point *center_point(w_data *data)
+t_point *center_point(t_w_data *data)
 {
     t_point *center;
 
@@ -70,7 +70,7 @@ t_point *center_point(w_data *data)
 // y' = (x + y) / 2
 // this rotates the grid 45 degrees and scales the y axis by 0.5
 // in order to make the grid look like a 3d grid
-/* void pcoords_iso(w_data *data)
+/* void pcoords_iso(t_w_data *data)
 {
     int i;
     int j;
@@ -100,7 +100,7 @@ t_point *center_point(w_data *data)
 
 
 
-void pcoords_iso(w_data *data)
+void pcoords_iso(t_w_data *data)
 {
 	float angle;
 	int i;
@@ -135,7 +135,7 @@ void pcoords_iso(w_data *data)
 
 
 // function to add the Z value to the Y to simulate the 3d view
-/* void z_assign(w_data *data)
+/* void z_assign(t_w_data *data)
 {
     int i;
     int j;
@@ -173,161 +173,23 @@ void pcoords_iso(w_data *data)
 // the middle will be white; the p in between will be a gradient between the two colors
 // the p in between will be a gradient between the two colors
 //
-void colorize(w_data *data)
-{
-    int i;
-    int j;
-
-    i = 0;
-    j = 0;
-
-    while (i < data->grid->rows)
-    {
-        while (j < data->grid->cols)
-        {
-            if (!data->p[i][j].color)
-                data->p[i][j].color = STD_COLOR;
-            j++;
-        }
-        j = 0;
-        i++;
-    }
-}
-
-void colorize_gradient(w_data *data)
-{
-    int i;
-    int j;
-    int max;
-    int min;
-    int range;
-    int color;
-    int red;
-    int green;
-    int blue;
-
-    int z;
-
-    double ratio;
-
-    i = 0;
-    j = 0;
-    max = data->max_z;
-    min = data->min_z;
-    range = max - min;
-
-    if (range == 0)
-        range = 1;
-
-    while (i < data->grid->rows)
-    {
-        while (j < data->grid->cols)
-        {
-            z = data->p[i][j].z;
-            if (z == 0)
-                color = STD_COLOR;
-            else if (z == max)
-                color = MAX_COLOR;
-            else if (z == min)
-                color = MIN_COLOR;
-            else
-            {
-                // the ratio will be the percentage of the height of the point
-                ratio = ((double)z - min) / range;
-
-                // if z > 0, interpolate between white and red
-                if (z > 0)
-                {
-                    red = (int)(ratio * 255);
-                    green = (int)((1 - ratio) * 255);
-                    blue = 255 * (1 - ratio);
-                }
-                // if z < 0, interpolate between white and blue
-                else
-                {
-                    red = (int)(255 * (1 + ratio));
-                    green = (int)((1 - ratio) * 255);
-                    blue = (int)(-ratio * 255);
-                }
-
-                color = (red << 16) + (green << 8) + blue;
-            }
-            data->p[i][j].color = color;
-            j++;
-        }
-        j = 0;
-        i++;
-    }
-}
-
-// colorize but in grayscale
-void colorize_grayscale(w_data *data)
-{
-    int i;
-    int j;
-    int max;
-    int min;
-    int range;
-    int color;
-    int z;
-    int gray;
-
-    double ratio;
-
-    i = 0;
-    j = 0;
-    max = data->max_z;
-    min = data->min_z;
-    range = max - min;
-
-    if (range == 0)
-        range = 1;
-
-    while (i < data->grid->rows)
-    {
-        while (j < data->grid->cols)
-        {
-            z = data->p[i][j].z;
-            if (z == 0)
-                color = MEDIUM_GRAY;
-            else if (z == max)
-                color = LIGHT_GRAY;
-            else if (z == min)
-                color = DARK_GRAY;
-            else
-            {
-                // the ratio will be the percentage of the height of the point
-                ratio = ((double)z - min) / range;
-
-                // interpolate between black and white
-                gray = (int)(64 + ratio * (192 - 64));
-
-                // assign the color
-                color = (gray << 16) + (gray << 8) + gray;
-            }
-            data->p[i][j].color = color;
-            j++;
-        }
-        j = 0;
-        i++;
-    }
-}
 
 
 
 
-f_point	**backup_p(w_data *data)
+
+t_f_point	**backup_p(t_w_data *data)
 {
 	int lines;
     int cols;
     int i;
     int j;
-    f_point **p;
+    t_f_point **p;
 
     lines = data->grid->rows;
     cols = data->grid->cols;
 
-    p = (f_point **)ft_calloc(sizeof(f_point *) , (lines +1));
+    p = (t_f_point **)ft_calloc(sizeof(t_f_point *) , (lines +1));
     if (!p)
     {
         fprintf(stderr, "Error: Could not allocate memory for p\n");
@@ -336,7 +198,7 @@ f_point	**backup_p(w_data *data)
     i = 0;
     while (i < lines)
     {
-        p[i] = (f_point *)ft_calloc(sizeof(f_point) , cols);
+        p[i] = (t_f_point *)ft_calloc(sizeof(t_f_point) , cols);
         if (!p[i])
         {
             fprintf(stderr, "Error: Could not allocate memory for p\n");
@@ -369,7 +231,7 @@ f_point	**backup_p(w_data *data)
 	return (p);
 }
 
-void change_backup (w_data *data)
+void change_backup (t_w_data *data)
 {
 	int lines;
     int cols;

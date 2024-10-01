@@ -6,14 +6,14 @@
 /*   By: joamiran <joamiran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 18:28:26 by joao              #+#    #+#             */
-/*   Updated: 2024/09/30 18:26:40 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/10/01 17:13:38 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
 // function to reset the position of the p
-void    reset_position(w_data *data)
+void    reset_position(t_w_data *data)
 {
     int i;
 	int j;
@@ -39,7 +39,7 @@ void    reset_position(w_data *data)
 	data->scale_z = SCALE_FACTOR_Z;
 }
 
-void restore_origin(w_data *data)
+void restore_origin(t_w_data *data)
 {
 	int i;
 	int j;
@@ -70,7 +70,7 @@ void restore_origin(w_data *data)
 }
 
 //function get the movement values from the keyboard
-void move(int keycode, w_data *data)
+void move(int keycode, t_w_data *data)
 {
     int movement_x;
     int movement_y;

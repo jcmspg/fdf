@@ -6,11 +6,9 @@
 /*   By: joamiran <joamiran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 18:40:13 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/30 20:55:16 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/10/01 20:43:30 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
 
 #ifndef FDF_H
 # define FDF_H
@@ -26,6 +24,7 @@
 # include <stdbool.h>
 # include <fcntl.h>
 # include <stdarg.h>
+# include <errno.h>
 
 # define PI 3.14159265358979323846
 
@@ -54,15 +53,15 @@
 
 # define UP 65362
 # define DOWN 65364
-# define LEFT 65361
 # define RIGHT 65363
+# define LEFT 65361
 # define PLUS 65451
 # define MINUS 65453
 # define WHELL_UP 4
 # define WHELL_DOWN 5
 
-# define SCALE_FACTOR_Z 0
 # define SCALE_FACTOR_IN 1.1f
+# define SCALE_FACTOR_Z 0
 # define SCALE_FACTOR_OUT 0.90f
 
 // define colors
@@ -89,346 +88,311 @@
 # define SCALE_TRIG 1000
 # define ANGLE_VALUE 5
 
-#define ISO_TILT 2
+# define ISO_TILT 2
 
 # define F_L 1000000
 
 # define WINDOW_H 800
 # define WINDOW_W 800
 
-
-typedef struct window_data w_data;
-
-
 typedef struct image_data
 {
-    void    *img;
-    void    *address;
-    int     bits_per_pixel;
-    int     line_length;
-    int     endian;
-}               img_data;
-
+	void	*img;
+	void	*address;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}	t_img_data;
 
 typedef struct s_grid
 {
-    int rows;
-    int cols;
-
-    int half_x;
-    int half_y;
-
-    int max_x;
-    int max_y;
-    int min_x;
-    int min_y;
-
-    int width;
-    int height;
-
-}   t_grid;
-
+	int	rows;
+	int	cols;
+	int	half_x;
+	int	half_y;
+	int	max_x;
+	int	max_y;
+	int	min_x;
+	int	min_y;
+	int	width;
+	int	height;
+}	t_grid;
 
 typedef struct s_p
 {
-    int x;
-    int y;
-    int z;
-    int color;
-
-}   t_point;
+	int	x;
+	int	y;
+	int	z;
+	int	color;
+}	t_point;
 
 typedef struct s_fp
 {
-    float x;
-    float y;
-    float z;
-    int color;
-
-}   f_point;
+	float	x;
+	float	y;
+	float	z;
+	int		color;
+}	t_f_point;
 
 typedef struct s_use
 {
-    int x0;
-    int y0;
-    int z0;
-    int dx;
-    int dy;
-    int dz;
-    int err;
-    int e2;
-}   t_bres;
-
+	int	x0;
+	int	y0;
+	int	z0;
+	int	dx;
+	int	dy;
+	int	dz;
+	int	err;
+	int	e2;
+}	t_bres;
 
 typedef struct lookup_table
 {
-    float *sin_table;
-    float *cos_table;
-}   t_lookup;
-
+	float	*sin_table;
+	float	*cos_table;
+}	t_lookup;
 
 typedef struct window_data
 {
+	// lookup table for sin and cos
+	t_lookup	*lookup;
+
 	// mlx variables
-    void    *mlx;
-    void    *win;
+	void		*mlx;
+	void		*win;
+	t_img_data	img;
 
-// window variables
-    int     window_w;
-    int     window_h;
-    char    *title;
-    char    *file;
-
-// lookup table for sin and cos
-    t_lookup *lookup;
-
-// grid variables
-    int mid_x;
-    int mid_y;
-
-// image variables
-    img_data img;
-    float scale;
-	float scale_zoom;
-    float scale_z;
-    int min_z;
-    int max_z;
-
-	// rotation variables
-
-    int angle;
-
-    int angle_x;
-	int angle_y;
-	int angle_z;
-
-	float spr;
-
-	// color variables
-    int has_color;
-    int color_mode;
-
-	// info variables
-    char **z_values;
-
-	// globe radius
-	float radius;
+	// gui text variables
+	int			text_color;
 
 	// point variables
-    t_point **p;
-	f_point **i_p;
-	f_point **p_b;
-	f_point **p_restore;
-    t_grid  *grid;
+	t_point		**p;
+	t_f_point	**i_p;
+	t_f_point	**p_b;
+	t_f_point	**p_restore;
+	t_grid		*grid;
 
-    // mode variables
-	char mode;
-	char interaction;
+	// window variables
+	int			window_w;
+	int			window_h;
+	char		*title;
+	char		*file;
 
-    // iterators
-    int i;
-    int j;
+	// grid variables
+	int			mid_x;
+	int			mid_y;
 
-}               w_data;
+	// image variables
+	float		scale;
+	float		scale_zoom;
+	float		scale_z;
+	int			min_z;
+	int			max_z;
+
+	// rotation variables
+	int			angle;
+	int			angle_x;
+	int			angle_y;
+	int			angle_z;
+	float		spr;
+
+	// color variables
+	int			has_color;
+	int			color_mode;
+
+	// info variables
+	char		**z_values;
+
+	// globe radius
+	float		radius;
+
+	// mode variables
+	char		mode;
+	char		interaction;
+
+	// iterators
+	int			i;
+	int			j;
+
+}	t_w_data;
 
 // data functions
-void free_data(w_data *data);
-void free_pointers(void *ptr, ...);
-
-void free_all_p(w_data *data);
-void free_p(t_point **p);
-void free_fp(f_point **p);
+void		free_data(t_w_data *data);
+void		free_pointers(void *ptr, ...);
+void		free_all_p(t_w_data *data);
+void		free_p(t_point **p);
+void		free_fp(t_f_point **p);
 
 // keybind functions
-int close_window(w_data *data);
-
-
-int key_handle(int key, w_data *data);
-int key_handle_mode(int key, w_data *data);
+int			close_window(t_w_data *data);
+int			key_handle(int key, t_w_data *data);
+int			key_handle_mode(int key, t_w_data *data);
 
 // mlx functions
-void *init_mlx(void);
-void create_window(w_data *data);
-void create_image(w_data *data);
-
-void my_mlx_pixel_put(w_data *data, int x, int y, int color);
-
+void		*init_mlx(void);
+void		create_window(t_w_data *data);
+void		create_image(t_w_data *data);
+void		my_mlx_pixel_put(t_w_data *data, int x, int y, int color);
 
 // read functions
-bool format_checker(const char *file);
-char **info_parser(int fd, w_data *data);
-int ft_getcolor(const char *str);
-void read_fdf(w_data *data);
-void assign_info(w_data *data);
-
-void check_color(const char *line, w_data *data);
-void color_mode(w_data *data);
-
-void colorize_grayscale(w_data *data);
+bool		format_checker(const char *file);
+char		**info_parser(int fd, t_w_data *data);
+int			ft_getcolor(const char *str);
+void		read_fdf(t_w_data *data);
+void		assign_info(t_w_data *data);
+void		check_color(const char *line, t_w_data *data);
+void		color_mode(t_w_data *data);
+void		colorize_grayscale(t_w_data *data);
 
 // draw functions
+void		build_model(t_w_data *data);
+void		make_image(t_w_data *data);
+void		recreate_model(t_w_data *data);
+void		draw_gui(t_w_data *data);
+void		draw_line(t_w_data *data, t_point *p0, t_point *p1);
+void		draw_poly(t_w_data *data);
+void		cycle_color_mode(int key, t_w_data *data);
+void		pcoords_conic(t_w_data *data);
 
-void build_model(w_data *data);
-
-void make_image(w_data *data);
-
-void recreate_model(w_data *data);
-
-void draw_gui(w_data *data);
-
-void draw_line(w_data *data, t_point *p0, t_point *p1);
-void draw_poly(w_data *data);
-
-void cycle_color_mode(int key, w_data *data);
-void pcoords_conic(w_data *data);
 // point arithmetics
+t_point		*center_point(t_w_data *data);
+void		find_min_max_z(t_w_data *data);
+int			pointcalc(t_w_data *data);
+void		center_p(t_w_data *data);
 
-void find_min_max_z(w_data *data);
-int pointcalc (w_data *data);
-t_point *center_point(w_data *data);
-void center_p(w_data *data);
-
-void zoom(int key, w_data *data);
-
-void restore_origin(w_data *data);
+void		restore_origin(t_w_data *data);
 
 // point scaling
-void scale_grid(w_data *data);
+void		zoom(int key, t_w_data *data);
+void		center_grid(t_w_data *data);
 
-void z_assign_backup(w_data *data);
+// point coordinates
+void		pcoords_iso(t_w_data *data);
 
-// adding z to y to make the grid 3D
-void z_assign(w_data *data);
-
-void center_grid(w_data *data);
-
-void pcoords_iso(w_data *data);
-
-//adjusting the grid to the window
-void calc_boundaries(w_data *data);
-void calc_sc_mid(w_data *data);
-void scale_center(w_data *data);
+// adjusting the grid to the window
+void		calc_boundaries(t_w_data *data);
+void		calc_sc_mid(t_w_data *data);
+void		scale_center(t_w_data *data);
 
 // moving and rotating the grid functions
-void init_move(w_data *data);
+void		pan(int key, t_w_data *data);
+void		reset_position(t_w_data *data);
+void		move(int key, t_w_data *data);
 
-void reset_movement(w_data *data);
+void		scale_z(int key, t_w_data *data);
 
-void reset_position(w_data *data);
+void		clear_image(t_w_data *data);
 
-void move(int key, w_data *data);
+void		update_img(t_w_data *data);
 
-void scale_z (int key, w_data *data);
+t_point		**new_p(t_w_data *data);
 
-void clear_image(w_data *data);
+void		backup_data(t_w_data *data);
 
-void update_img(w_data *data);
+// function to colorize p
+void		colorize(t_w_data *data);
 
-t_point **new_p(w_data *data);
-
-void backup_data(w_data *data);
-
-//function to colorize p
-void colorize(w_data *data);
-void colorize_gradient(w_data *data);
-
-t_point **make_p(w_data *data);
-f_point **backup_p(w_data *data);
-
-
+t_point		**make_p(t_w_data *data);
+t_f_point	**backup_p(t_w_data *data);
 
 // math aux functions
-int ft_abs(int n);
-int ft_max(int a, int b);
-int ft_min(int a, int b);
-int round_n(float n);
-int ft_atoi_base(const char *str, const char *base_str);
-float degree_to_radian(int angle);
-float ft_fabs(float n);
-
+int			ft_abs(int n);
+int			ft_max(int a, int b);
+int			ft_min(int a, int b);
+int			round_n(float n);
+int			ft_atoi_base(const char *str, const char *base_str);
+float		degree_to_radian(int angle);
+float		ft_fabs(float n);
 
 // lookup table functions
-void trig_table_sin(w_data *data);
-void trig_table_cos(w_data *data);
-int lookup_sin(w_data *data, int angle);
-int lookup_cos(w_data *data, int angle);
-void init_lookup(w_data *data);
+void		trig_table_sin(t_w_data *data);
+void		trig_table_cos(t_w_data *data);
+int			lookup_sin(t_w_data *data, int angle);
+int			lookup_cos(t_w_data *data, int angle);
+void		init_lookup(t_w_data *data);
 
-void free_lookup(w_data *data);
+void		free_lookup(t_w_data *data);
 
 // rotation functions
-void rotate_x(w_data *data);
-void rotate_x_key(int key, w_data *data);
+void		rotate_x(t_w_data *data);
+void		rotate_x_key(int key, t_w_data *data);
 
-void rotate_y(w_data *data);
-void rotate_y_key(int key, w_data *data);
+void		rotate_y(t_w_data *data);
+void		rotate_y_key(int key, t_w_data *data);
 
-void rotate_z(w_data *data);
-void rotate_z_key(int key, w_data *data);
+void		rotate_z(t_w_data *data);
+void		rotate_z_key(int key, t_w_data *data);
 
-void init_grid(w_data *data);
-void init_angle(w_data *data);
-void init_data_w(w_data *data);
+void		init_grid(t_w_data *data);
+void		init_angle(t_w_data *data);
+void		init_data_w(t_w_data *data);
 
+void		change_mode(int key, t_w_data *data);
+void		pan(int key, t_w_data *data);
+void		rotate(int key, t_w_data *data);
+void		zoom_in_out(int key, t_w_data *data);
+void		reset(t_w_data *data);
+void		color(int key, t_w_data *data);
+void		display_help(int key, t_w_data *data);
+void		intro_screen(t_w_data *data);
 
-/*
-// point functions
-point *create_point(int x, int y, int z);
-void add_point(point **head, point *new);
-void free_p(point **head);
-*/
+void		show_help(t_w_data *data);
+void 		show_help2(t_w_data *data, int pos);
+void		show_help3(t_w_data *data, int author_x, int author_y, int pos);
 
-void change_interaction(int key, w_data *data);
-void change_mode(int key, w_data *data);
-void pan(int key, w_data *data);
-void rotate(int key, w_data *data);
-void zoom_in_out(int key, w_data *data);
-void reset(w_data *data);
-void height(int key, w_data *data);
-void color(int key, w_data *data);
-void display_help(int key, w_data *data);
-void intro_screen(w_data *data);
+void		pcoords_conic(t_w_data *data);
+void		build_conic(t_w_data *data);
 
+void		change_aero(int key, t_w_data *data);
+void		fly_conic(int key, t_w_data *data);
+void		change_focus(int key, t_w_data *data);
+void		change_focal_d(int key, t_w_data *data);
 
-void z_assign_r(w_data *data);
+void		pcoords_spherical(t_w_data *data);
+void		build_sphere(t_w_data *data);
 
-void show_help(w_data *data);
+void		ro_sphere(int key, t_w_data *data);
+void		orbit(t_w_data *data);
+void		change_tilt(t_w_data *data);
 
+void		transform_p(t_w_data *data);
 
-void pcoords_conic(w_data *data);
-void build_conic(w_data *data);
+void		normalize_z_log(t_w_data *data);
 
-void change_aero(int key, w_data *data);
-void fly_conic(int key, w_data *data);
-void change_focus(int key, w_data *data);
-void change_focal_d(int key, w_data *data);
+float		normalize_z(float z, t_w_data *data);
 
+void		handle_interaction(int key, t_w_data *data);
+void		interaction_functions(int key, t_w_data *data);
 
-void pcoords_spherical(w_data *data);
-void build_sphere(w_data *data);
+void		draw_poly_spherical(t_w_data *data);
 
-void ro_sphere(int key, w_data *data);
-void orbit(w_data *data);
-void change_tilt(w_data *data);
+void		change_backup(t_w_data *data);
 
-void project_to_2d(w_data *data);
+void		apply_zoom(t_w_data *data);
 
-void transform_p(w_data *data);
+int			increment(int start, int end);
+void		bresen_calc(t_point *p0, t_point *p1, t_bres *bresen);
 
-void normalize_z_log(w_data *data);
+void		draw_horizontal(t_w_data *data);
+void		draw_vertical(t_w_data *data);
 
-float normalize_z(float z, w_data *data);
+int			calculate_color(int z, int min_z, int max_z);
+int			get_negative_color(int z, int min_z);
+int			get_positive_color(int z, int max_z);
+int			get_zero_color(void);
+void		colorize_gradient(t_w_data *data);
 
-int key_handle_interact(int key, w_data *data);
+void		set_origin(t_w_data *data);
 
-void handle_interaction(int key, w_data *data);
-void interaction_functions(int key, w_data *data);
+void		initialize_boundaries(t_w_data *data);
+void		update_boundaries(t_w_data *data);
+void		calc_boundaries(t_w_data *data);
 
-void draw_poly_spherical(w_data *data);
+void		put_string_with_offset(t_w_data *data, int x, int y, char *string);
+void		draw_static_text(t_w_data *data, int x_left, int y, int line_spacing);
+void		draw_dynamic_value(t_w_data *data, int x_left, int y, float value);
+void		draw_information(t_w_data *data);
+void		draw_dynamic_values(t_w_data *data, int x_left, int y, int line_spacing);
 
-
-void change_backup(w_data *data);
-
-void apply_zoom(w_data *data);
 
 #endif

@@ -6,13 +6,13 @@
 /*   By: joamiran <joamiran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 17:55:09 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/30 18:26:40 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/10/01 17:13:38 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "fdf.h"
 
-void pcoords_spherical(w_data *data)
+void pcoords_spherical(t_w_data *data)
 {
     int i;
 	int j;
@@ -79,7 +79,7 @@ void pcoords_spherical(w_data *data)
 
 
 
-void orbit(w_data *data)
+void orbit(t_w_data *data)
 {
 	int i;
 	int j;
@@ -128,7 +128,7 @@ void orbit(w_data *data)
 	apply_zoom(data);
 }
 
-void change_tilt(w_data *data)
+void change_tilt(t_w_data *data)
 {
 	int i;
 	int j;
@@ -179,7 +179,7 @@ void change_tilt(w_data *data)
 	apply_zoom(data);
 }
 
-void ro_sphere(int key, w_data *data)
+void ro_sphere(int key, t_w_data *data)
 {
 	if (key == A || key == D)
 	{
@@ -229,7 +229,7 @@ void ro_sphere(int key, w_data *data)
 	draw_gui(data);
 }
 
-void build_sphere(w_data *data)
+void build_sphere(t_w_data *data)
 {
 	clear_image(data);
 	pcoords_spherical(data);

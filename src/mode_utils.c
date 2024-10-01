@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   mode_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: joamiran <joamiran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 23:56:44 by joao              #+#    #+#             */
-/*   Updated: 2024/09/26 19:35:44 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/10/01 17:13:38 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void pan(int key, w_data *data)
+void pan(int key, t_w_data *data)
 {
 	move(key, data);
 	update_img(data);
 	draw_gui(data);
 }
 
-void rotate(int key, w_data *data)
+void rotate(int key, t_w_data *data)
 {
 	if (key == Q || key == E)
 	{
@@ -41,7 +41,7 @@ void rotate(int key, w_data *data)
 	draw_gui(data);
 }
 
-void fly_conic(int key, w_data *data)
+void fly_conic(int key, t_w_data *data)
 {
 	if (key == W || key == S)
 		change_aero(key, data);
@@ -49,20 +49,20 @@ void fly_conic(int key, w_data *data)
 		change_focal_d(key, data);
 }
 
-void change_focus(int key, w_data *data)
+void change_focus(int key, t_w_data *data)
 {
 	fly_conic(key, data);
 	update_img(data);
 	draw_gui(data);
 }
-void zoom_in_out(int key, w_data *data)
+void zoom_in_out(int key, t_w_data *data)
 {
 	zoom(key, data);
 	update_img(data);
 	draw_gui(data);
 }
 
-void reset(w_data *data)
+void reset(t_w_data *data)
 {
 	init_angle(data);
 	restore_origin(data);
@@ -73,7 +73,7 @@ void reset(w_data *data)
 }
 
 
-void color(int key, w_data *data)
+void color(int key, t_w_data *data)
 {
 	color_mode(data);
 	cycle_color_mode(key, data);
@@ -81,7 +81,7 @@ void color(int key, w_data *data)
 	draw_gui(data);
 }
 
-void display_help(int key, w_data *data)
+void display_help(int key, t_w_data *data)
 {
 	if (key == H)
 	{
@@ -93,7 +93,7 @@ void display_help(int key, w_data *data)
 	}
 }
 
-void change_mode(int key, w_data *data)
+void change_mode(int key, t_w_data *data)
 {
 	if (key == SPACE && !data->mode)
 	{
@@ -139,7 +139,7 @@ void change_mode(int key, w_data *data)
 		color(key, data);
 }
 
-void handle_interaction(int key, w_data *data)
+void handle_interaction(int key, t_w_data *data)
 {
 	//call the appropriate function based on mode
 	if (key == P)
@@ -147,7 +147,7 @@ void handle_interaction(int key, w_data *data)
 		data->interaction = 'p';
 
 	}
-	
+
 	if (key == R && data->mode != 'g')
 		{
 			data->interaction = 'r';
@@ -157,7 +157,7 @@ void handle_interaction(int key, w_data *data)
 	{
 		data->interaction = 'z';
 	}
-	
+
 	if (key == O && data->mode == 'g')
 	{
 		data->interaction = 'o';
@@ -165,7 +165,7 @@ void handle_interaction(int key, w_data *data)
 
 }
 
-void interaction_functions(int key, w_data *data)
+void interaction_functions(int key, t_w_data *data)
 {
 	if (key == W || key == S || key == A || key == D || key == Q || key == E)
 	{
@@ -184,7 +184,7 @@ void interaction_functions(int key, w_data *data)
 
 
 
-int key_handle(int key, w_data *data)
+int key_handle(int key, t_w_data *data)
 {
 	if (key == N || key == I || key == C || key == G || key == ESC || key == F || key == SPACE || key == H)
 	// handle the mode switch

@@ -6,93 +6,54 @@
 /*   By: joamiran <joamiran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 18:36:42 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/30 18:26:40 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/10/01 21:05:42 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int main(int argc, char ** argv)
+static void	f(t_w_data *data, char *c)
 {
-    if (argc != 2)
-    {
-        fprintf(stderr, "Usage: %s <width> <height>\n", argv[0]);
-        return 1;
-    }
+	data->grid->cols = 0;
+	data->grid->rows = 0;
+	data->file = c;
+	data->title = "FDF";
+}
 
-    w_data window;
+void	init_main(t_w_data *data)
+{
+	init_data_w(data);
+	create_window(data);
+	create_image(data);
+	read_fdf(data);
+	intro_screen(data);
+}
 
-    window.title = "FDF";
-/*     window.window_w = 800; //ft_atoi(argv[1]);
-    window.window_h = 800; //ft_atoi(argv[2]); */
+int	main(int argc, char **argv)
+{
+	t_w_data	window;
 
-
-    window.grid = (t_grid *)malloc(sizeof(t_grid));
-    if (window.grid == NULL)
-    {
-        fprintf(stderr, "Memory allocation failed\n");
-        return 1;
-    }
-    window.grid->rows = 0;
-    window.grid->cols = 0;
-
-    window.file = argv[1];
-
-	//init_lookup(&window);
-	// print the sin and cos tables
-/* 	int i = 0;
-	while (i < DEGREE_MAX)
+	if (argc != 2)
 	{
-		printf("sin[%d] = %f\n", i, window.lookup->sin_table[i]);
-		printf("cos[%d] = %f\n", i, window.lookup->cos_table[i]);
-		i++;
-	} */
-
-	init_data_w(&window);
-/* 	// print the angle_x , y and z
-	printf("angle_x = %d\n", window.angle_x);
-	printf("angle_y = %d\n", window.angle_y);
-	printf("angle_z = %d\n", window.angle_z); */
-
-
-    window.mlx = init_mlx();
-//  printf("Mlx address: %p\n", window.mlx);
-    if (window.mlx == NULL)
-    {
-        fprintf(stderr, "Failed to initialize mlx\n");
-        return 1;
-    }
-    create_window(&window);
-    create_image(&window);
-
-    read_fdf(&window);
-    //build_model(&window);
-	//backup_data(&window);
-	//make_image(&window);
-
-    //intro screen
-    intro_screen(&window);
-
-	// print scale
-	//printf("scale: %f\n", window.scale_z);
-
-	//reset_position(&window);
-    //print all p.z
-
-
-    // key input handling
-    mlx_key_hook(window.win, key_handle, &window);
-
-
-    // click upper X to close
-    mlx_hook(window.win, 17, 0, close_window, &window);
-
-    mlx_loop(window.mlx);
-
-    // Free the allocated memory
-
-
-
-
-    return 0;
+		perror("Usage: ./fdf <filename>\n");
+		return (1);
+	}
+	window.grid = (t_grid *)malloc(sizeof(t_grid));
+	if (window.grid == NULL)
+	{
+		perror("Failed to allocate memory for grid\n");
+		return (1);
+	}
+	f(&window, argv[1]);
+	window.mlx = init_mlx();
+	if (window.mlx == NULL)
+	{
+		perror("Failed to initialize mlx\n");
+		return (1);
+	}
+	init_main(&window);
+	mlx_key_hook(window.win, key_handle, &window);
+	mlx_hook(window.win, 17, 0, close_window, &window);
+	mlx_loop(window.mlx);
+	return (0);
 }

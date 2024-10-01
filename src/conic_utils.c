@@ -6,13 +6,13 @@
 /*   By: joamiran <joamiran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 19:27:47 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/30 18:29:58 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/10/01 17:13:38 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	pcoords_conic(w_data *data)
+void	pcoords_conic(t_w_data *data)
 {
 	float	vp_x;
 	float	vp_y;
@@ -40,7 +40,7 @@ void	pcoords_conic(w_data *data)
 	}
 }
 
-void	change_aero(int key, w_data *data)
+void	change_aero(int key, t_w_data *data)
 {
 	if (key == W)
 		data->spr += 5;
@@ -48,7 +48,7 @@ void	change_aero(int key, w_data *data)
 		data->spr -= 5;
 }
 
-void	change_focal_d(int key, w_data *data)
+void	change_focal_d(int key, t_w_data *data)
 {
 	if (key == A)
 		data->scale += 0.5;
@@ -56,7 +56,7 @@ void	change_focal_d(int key, w_data *data)
 		data->scale -= 0.5;
 }
 
-void	build_conic(w_data *data)
+void	build_conic(t_w_data *data)
 {
 	clear_image(data);
 	pcoords_conic(data);

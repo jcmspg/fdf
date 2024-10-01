@@ -6,13 +6,13 @@
 /*   By: joamiran <joamiran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 17:15:24 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/30 18:26:40 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/10/01 17:13:38 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static void count_grid(int fd, w_data *data)
+static void count_grid(int fd, t_w_data *data)
 {
     char *line;
     char **tmp;
@@ -36,7 +36,7 @@ static void count_grid(int fd, w_data *data)
             tmp = ft_split(line, ' ');
             if (!tmp)
             {
-                fprintf(stderr, "Error: Could not allocate memory for tmp\n");
+                perror("Error: Could not allocate memory for tmp\n");
                 exit(1);
             }
             num_cols = 0;
@@ -58,9 +58,9 @@ static void count_grid(int fd, w_data *data)
 
 
 
-// check if theres any color info in the file. If there is, w_data->has_color =1
-// if not, w_data->has_color = 0
-void check_color(const char *line, w_data *data)
+// check if theres any color info in the file. If there is, t_w_data->has_color =1
+// if not, t_w_data->has_color = 0
+void check_color(const char *line, t_w_data *data)
 {
     int i;
 
@@ -78,7 +78,7 @@ void check_color(const char *line, w_data *data)
     data->color_mode = 0;
 }
 
-char **info_parser(int fd, w_data *data)
+char **info_parser(int fd, t_w_data *data)
 {
     char **z_values;
     char *line;
@@ -167,7 +167,7 @@ int ft_getcolor(const char *str)
     return color_value;
 }
 
-void color_mode(w_data *data)
+void color_mode(t_w_data *data)
 {
     if (data->has_color)
         data->color_mode = 0;
@@ -182,7 +182,7 @@ void color_mode(w_data *data)
 }
 
 
-void assign_info(w_data *data)
+void assign_info(t_w_data *data)
 {
     int i;
     int j;
@@ -247,7 +247,7 @@ void assign_info(w_data *data)
     free(data->z_values);
 }
 
-void find_min_max_z(w_data *data)
+void find_min_max_z(t_w_data *data)
 {
     int i;
     int j;
@@ -275,7 +275,7 @@ void find_min_max_z(w_data *data)
 
 
 // reads the file and assigns important values to the data struct
-void read_fdf(w_data *data)
+void read_fdf(t_w_data *data)
 {
     int fd;
 

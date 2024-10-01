@@ -6,13 +6,13 @@
 /*   By: joamiran <joamiran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 18:50:10 by joamiran          #+#    #+#             */
-/*   Updated: 2024/09/30 18:26:40 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/10/01 17:13:38 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void init_angle(w_data *data)
+void init_angle(t_w_data *data)
 {
 	data->angle = ANGLE_VALUE;
 
@@ -23,7 +23,7 @@ void init_angle(w_data *data)
 	data->radius = 100;
 }
 
-void rotate_x(w_data *data)
+void rotate_x(t_w_data *data)
 {
 	int i;
 	int j;
@@ -76,7 +76,7 @@ void rotate_x(w_data *data)
 	apply_zoom(data);
 }
 
-void rotate_y(w_data *data)
+void rotate_y(t_w_data *data)
 {
 	int i;
 	int j;
@@ -129,7 +129,7 @@ void rotate_y(w_data *data)
 	apply_zoom(data);
 }
 
-void rotate_z(w_data *data)
+void rotate_z(t_w_data *data)
 {
 	int i;
 	int j;
@@ -181,7 +181,7 @@ void rotate_z(w_data *data)
 	}
 }
 
-void rotate_z_key(int key, w_data *data)
+void rotate_z_key(int key, t_w_data *data)
 {
 	if (key == W)
 	{
@@ -206,7 +206,7 @@ void rotate_z_key(int key, w_data *data)
 //	z_assign(data);
 }
 
-void rotate_y_key(int key, w_data *data)
+void rotate_y_key(int key, t_w_data *data)
 {
 	if (key == A)
 	{
@@ -230,7 +230,7 @@ void rotate_y_key(int key, w_data *data)
 //	z_assign(data);
 }
 
-void rotate_x_key(int key, w_data *data)
+void rotate_x_key(int key, t_w_data *data)
 {
 	if (key == Q)
 	{
