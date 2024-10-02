@@ -1,5 +1,8 @@
 {
 	"files.associations": {
-		"fdf.h": "c"
-	}
+		"fdf.h": "c",
+		"ft_printf.h": "c",
+		"x.h": "c"
+	},
+	"editor.insertSpaces": false
 }

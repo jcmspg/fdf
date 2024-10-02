@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 18:40:13 by joamiran          #+#    #+#             */
-/*   Updated: 2024/10/01 20:43:30 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/10/02 23:01:33 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,34 @@
 
 # define WINDOW_H 800
 # define WINDOW_W 800
+
+typedef struct s_center
+{
+	float	x;
+	float	y;
+}	t_center;
+
+typedef struct s_rotation_data
+{
+	float	cos_angle;
+	float	sin_angle;
+	int		center_y;
+}	t_rotation_data;
+
+typedef struct s_rotation_y_data
+{
+	float	cos_angle;
+	float	sin_angle;
+	int		center_x;
+}	t_rotation_y_data;
+
+typedef struct s_rotation_z_data
+{
+	float	cos_angle;
+	float	sin_angle;
+	int		center_x;
+	int		center_y;
+}	t_rotation_z_data;
 
 typedef struct image_data
 {
@@ -213,6 +241,10 @@ typedef struct window_data
 	// iterators
 	int			i;
 	int			j;
+
+	float		extra_x;
+	float		extra_y;
+	float		extra_z;
 
 }	t_w_data;
 
@@ -337,7 +369,7 @@ void		display_help(int key, t_w_data *data);
 void		intro_screen(t_w_data *data);
 
 void		show_help(t_w_data *data);
-void 		show_help2(t_w_data *data, int pos);
+void		show_help2(t_w_data *data, int pos);
 void		show_help3(t_w_data *data, int author_x, int author_y, int pos);
 
 void		pcoords_conic(t_w_data *data);
@@ -389,10 +421,20 @@ void		update_boundaries(t_w_data *data);
 void		calc_boundaries(t_w_data *data);
 
 void		put_string_with_offset(t_w_data *data, int x, int y, char *string);
-void		draw_static_text(t_w_data *data, int x_left, int y, int line_spacing);
+void		draw_static_text(t_w_data *data, int x_left, int y,
+				int line_spacing);
 void		draw_dynamic_value(t_w_data *data, int x_left, int y, float value);
 void		draw_information(t_w_data *data);
-void		draw_dynamic_values(t_w_data *data, int x_left, int y, int line_spacing);
+void		draw_dynamic_values(t_w_data *data, int x_left,
+				int y, int line_spacing);
 
+void		start_iso(t_w_data *data);
+void		switch_to_iso(t_w_data *data);
+void		switch_to_globe(t_w_data *data);
+void		switch_to_conic(t_w_data *data);
+
+void		calculate_movement(int keycode, t_w_data *data,
+				int *movement_x, int *movement_y);
+void		apply_movement(t_w_data *data, int movement_x, int movement_y);
 
 #endif

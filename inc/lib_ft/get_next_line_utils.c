@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joamiran <joamiran@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: joamiran <joamiran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 17:29:51 by joamiran          #+#    #+#             */
-/*   Updated: 2024/06/17 22:04:57 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/10/02 23:06:47 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	ft_strdup2(char *str, t_data *data)
 	while (str[data->len])
 		data->len++;
 	if (str[data->j] == '\n')
-		str[data->j++] = 0; 
+		str[data->j++] = 0;
 	while (str[data->j])
 	{
 		str[i++] = str[data->j];
@@ -39,9 +39,6 @@ void	ft_strdup2(char *str, t_data *data)
 		str[i++] = 0;
 }
 
-
-
-// Append the buffer to the line
 char	*append_buffer(t_data *data, char *buffer)
 {
 	size_t	i;
@@ -69,7 +66,6 @@ char	*append_buffer(t_data *data, char *buffer)
 	return (str);
 }
 
-// Free all the memory allocated
 void	clean_all(char *buffer, t_data *data)
 {
 	ft_strdup2(buffer, data);
@@ -91,7 +87,6 @@ size_t	grab_len(char *buffer, t_data *data)
 	return (i);
 }
 
-// Grab the line from the buffer
 void	grab_line(char *buffer, t_data *data)
 {
 	data->len = grab_len(buffer, data);

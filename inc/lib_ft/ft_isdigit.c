@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 19:45:53 by joamiran          #+#    #+#             */
-/*   Updated: 2024/04/22 15:00:46 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/10/02 23:05:27 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,6 @@ int	ft_isdigit(int c)
 	{
 		return (1);
 	}
-	else 
+	else
 		return (0);
 }
