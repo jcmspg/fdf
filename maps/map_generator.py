@@ -1,11 +1,11 @@
 import numpy as np
 
 # Parameters
-map_size = 25
-mean = 5  # Mean height
-std_dev = 20  # Standard deviation to control spread of heights
-min_height = -670
-max_height = 900
+map_size = 76
+mean = 16  # Mean height
+std_dev = 2  # Standard deviation to control spread of heights
+min_height = -10
+max_height = 90
 
 # Function to generate a random HEX color in the format 0xXXXXXX
 def random_hex_color():

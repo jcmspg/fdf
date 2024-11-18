@@ -6,7 +6,7 @@
 /*   By: joamiran <joamiran@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 19:31:12 by joamiran          #+#    #+#             */
-/*   Updated: 2024/10/02 20:24:41 by joamiran         ###   ########.fr       */
+/*   Updated: 2024/10/07 16:53:48 by joamiran         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ void	pcoords_iso(t_w_data *data)
 		j = 0;
 		while (j < data->grid->cols)
 		{
-			data->p[i][j].z = (int)normalize_z(data->p_b[i][j].z, data);
+			if (data->max_z != 0 || data->min_z != 0)
+				data->p[i][j].z = (int)normalize_z(data->p_b[i][j].z, data);
 			x = data->p[i][j].x;
 			y = data->p[i][j].y;
 			data->p[i][j].x = (int)(x - y)*cos(angle);
