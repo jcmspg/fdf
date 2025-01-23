@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   gui_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joamiran <joamiran@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joao <joao@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 16:06:17 by joamiran          #+#    #+#             */
-/*   Updated: 2024/10/01 19:40:25 by joamiran         ###   ########.fr       */
+/*   Updated: 2025/01/23 23:56:08 by joao             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,12 @@ void	draw_author(t_w_data *data, int x, int y, int text_color)
 
 void	draw_gui(t_w_data *data)
 {
-	int	x_left;
 	int	y;
 	int	author_x;
 	int	author_y;
 	int	ascii_art_x;
 
 	ascii_art_x = data->window_w - 200;
-	x_left = data->window_w * 0.05;
 	y = data->window_h * 0.1;
 	draw_ascii_art(data, ascii_art_x, y, data->text_color);
 	draw_information(data);
